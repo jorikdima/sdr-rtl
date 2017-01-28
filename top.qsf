@@ -1,0 +1,365 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2016  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel MegaCore Function License Agreement, or other 
+# applicable license agreement, including, without limitation, 
+# that your use is for the sole purpose of programming logic 
+# devices manufactured by Intel and sold by Intel or its 
+# authorized distributors.  Please refer to the applicable 
+# agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 16.1.1 Build 200 11/30/2016 SJ Lite Edition
+# Date created = 20:41:43  January 10, 2017
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		top_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "MAX 10"
+set_global_assignment -name DEVICE 10M08SAU169C8G
+set_global_assignment -name TOP_LEVEL_ENTITY top
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 16.1.1
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "20:41:43  JANUARY 10, 2017"
+set_global_assignment -name LAST_QUARTUS_VERSION "16.1.1 Lite Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 8
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
+set_global_assignment -name EDA_TIME_SCALE "1 ns" -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "NO HEAT SINK WITH STILL AIR"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name FLOW_ENABLE_POWER_ANALYZER ON
+set_global_assignment -name POWER_DEFAULT_INPUT_IO_TOGGLE_RATE "12.5 %"
+set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS ON
+set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name DEVICE_FILTER_PIN_COUNT 169
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH top_tb -section_id eda_simulation
+set_global_assignment -name EDA_EXTRA_ELAB_OPTION "\"\"" -section_id eda_simulation
+set_instance_assignment -name GLOBAL_SIGNAL GLOBAL_CLOCK -to ft_clk
+set_instance_assignment -name GLOBAL_SIGNAL GLOBAL_CLOCK -to afe_tx_clk
+set_instance_assignment -name GLOBAL_SIGNAL GLOBAL_CLOCK -to afe_tx_sel
+set_global_assignment -name EDA_TEST_BENCH_NAME ft600_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id ft600_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "1 ps" -section_id ft600_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME ft600_vlg_tst -section_id ft600_tb
+set_global_assignment -name SMART_RECOMPILE OFF
+set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_DUPLICATION ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_RETIMING ON
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d[11]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_clk
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d[10]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d[9]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d[8]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_d[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d[11]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d[10]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d[9]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d[8]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_d[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_be
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_be[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_be[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_be[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_be[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[31]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[30]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[29]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[28]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[27]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[26]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[25]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[24]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[23]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[22]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[21]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[20]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[19]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[18]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[17]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[16]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[15]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[14]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[13]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[12]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[11]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[10]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[9]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[8]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_data[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_sel
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_clk
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_sel
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_clk
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_wr_n -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_be[3] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_be[2] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_be[1] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_be[0] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_clk -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[31] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[30] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[29] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[28] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[27] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[26] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[25] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[24] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[23] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[22] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[21] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[20] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[19] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[18] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[17] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[16] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[15] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[14] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[13] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[12] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[11] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[10] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[9] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[8] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[7] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[6] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[5] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[4] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[3] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[2] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[1] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_data[0] -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_oe_n -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_rd_n -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_rxf_n -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ft_txe_n -section_id FT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_sel -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_clk -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_d[11] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_d[10] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_d[9] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_d[8] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_d[7] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_d[6] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_d[5] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_d[4] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_d[3] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_d[2] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_d[1] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_d[0] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_sel -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_clk -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_d[11] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_d[10] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_d[9] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_d[8] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_d[7] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_d[6] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_d[5] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_d[4] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_d[3] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_d[2] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_d[1] -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_d[0] -section_id AFE
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_wr_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_oe_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_rd_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_rxf_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ft_txe_n
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER reset_n -section_id COMMON
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to reset_n
+set_instance_assignment -name GLOBAL_SIGNAL GLOBAL_CLOCK -to "pll:pll_inst|c1"
+set_global_assignment -name EDA_TEST_BENCH_NAME afe_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id afe_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "1 ps" -section_id afe_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME afe_vlg_tst -section_id afe_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME top_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id top_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "1 ps" -section_id top_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME top_vlg_tst -section_id top_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE testbench/ft600.vt -section_id ft600_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE testbench/afe.vt -section_id afe_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE testbench/top.vt -section_id top_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE testbench/afe.vt -section_id top_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE testbench/fifo.vt -section_id top_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE testbench/ft600.vt -section_id top_tb
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to reset_n
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_addr[10] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_addr[9] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_addr[8] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_addr[7] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_addr[6] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_addr[5] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_addr[4] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_addr[3] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_addr[2] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_addr[1] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_addr[0] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_ba[1] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_ba[0] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_cas_n -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_cke -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_cs_n -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[15] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[14] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[13] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[12] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[11] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[10] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[9] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[8] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[7] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[6] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[5] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[4] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[3] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[2] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[1] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dq[0] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dqm[1] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_dqm[0] -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_ras_n -section_id SDRAM
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER sdram_we_n -section_id SDRAM
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_addr[10]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_addr[9]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_addr[8]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_addr[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_addr[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_addr[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_addr[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_addr[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_addr[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_addr[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_addr[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_ba[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_ba[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_cas_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_cke
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_cs_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[15]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[14]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[13]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[12]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[11]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[10]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[9]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[8]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dq[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dqm[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_dqm[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_ras_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_we_n
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_tx_en -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_spi_clk -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_sen -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_rx_en -section_id AFE
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER afe_reset -section_id AFE
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_tx_en
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_spi_clk
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_sen
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_rx_en
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_reset
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_SETUP_SCRIPT testbench/wave.do -section_id eda_simulation
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to i2c_sda
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to i2c_clk
+set_global_assignment -name ENABLE_OCT_DONE OFF
+set_global_assignment -name EXTERNAL_FLASH_FALLBACK_ADDRESS 00000000
+set_global_assignment -name STRATIXV_CONFIGURATION_SCHEME "PASSIVE SERIAL"
+set_global_assignment -name USE_CONFIGURATION_DEVICE OFF
+set_global_assignment -name INTERNAL_FLASH_UPDATE_MODE "SINGLE COMP IMAGE WITH ERAM"
+set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVCMOS"
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
+set_instance_assignment -name GLOBAL_SIGNAL GLOBAL_CLOCK -to sdram_clk
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sdram_clk
+set_global_assignment -name QIP_FILE src/qsys/system/synthesis/system.qip
+set_global_assignment -name SDC_FILE top.out.sdc
+set_global_assignment -name VERILOG_FILE src/top.v
+set_global_assignment -name VERILOG_FILE src/sdram/sdram_controller.v
+set_global_assignment -name VERILOG_FILE src/afe.v
+set_global_assignment -name QIP_FILE src/f2a_fifo/f2a_fifo.qip
+set_global_assignment -name QIP_FILE src/a2f_fifo/a2f_fifo.qip
+set_global_assignment -name QIP_FILE src/pll/pll.qip
+set_global_assignment -name VERILOG_TEST_BENCH_FILE testbench/afe.vt
+set_global_assignment -name VERILOG_TEST_BENCH_FILE testbench/top.vt
+set_global_assignment -name VERILOG_TEST_BENCH_FILE testbench/ft600.vt
+set_global_assignment -name VERILOG_TEST_BENCH_FILE testbench/fifo.vt
+set_global_assignment -name VERILOG_FILE src/ft600_fsm.v
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_spi_mosi
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_spi_miso
+set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
+set_instance_assignment -name AUTO_OPEN_DRAIN_PINS ON -to i2c_clk
+set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_cas_n
+set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_cke
+set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_clk
+set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_cs_n
+set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_ras_n
+set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_we_n
+set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_addr
+set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_ba
+set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_dq
+set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_dqm
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
