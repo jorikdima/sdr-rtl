@@ -3,25 +3,22 @@
     <Options/>
     <Implementation title="impl1" dir="impl1" description="impl1" synthesis="lse" default_strategy="Strategy1">
         <Options def_top="top" top="top"/>
-        <Source name="src/afe.v" type="Verilog" type_short="Verilog">
+        <Source name="ip/a2f_fifo/a2f_fifo.sbx" type="sbx" type_short="SBX">
             <Options/>
         </Source>
-        <Source name="src/ft600_fsm.v" type="Verilog" type_short="Verilog">
-            <Options/>
-        </Source>
-        <Source name="src/top.v" type="Verilog" type_short="Verilog">
+        <Source name="top.v" type="Verilog" type_short="Verilog">
             <Options top_module="top"/>
         </Source>
-        <Source name="src/clarity/des/des.sbx" type="sbx" type_short="SBX">
+        <Source name="ip/f2a_fifo/f2a_fifo.sbx" type="sbx" type_short="SBX">
             <Options/>
         </Source>
-        <Source name="src/sdram/sdram_controller.v" type="Verilog" type_short="Verilog">
+        <Source name="../src/afe.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="sd/sd.spf" type="Simulation Project File" type_short="SPF">
+        <Source name="../src/ft600_fsm.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="sim/sim.spf" type="Simulation Project File" type_short="SPF">
+        <Source name="../src/sdram_controller.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
         <Source name="sdr.lpf" type="Logic Preference" type_short="LPF">

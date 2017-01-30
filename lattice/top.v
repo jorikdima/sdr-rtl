@@ -196,9 +196,7 @@ f2a_fifo f2a_fifo_inst (.Data(ft_rdata ), .WrClock( ft_rd_clk), .RdClock( f2a_fi
     .Reset(1'b0 ), .RPReset(1'b0 ), .Q( f2a_fifo_data), .WCNT(f2a_wr_usedw ), .Empty( f2a_fifo_empty), .Full(f2a_fifo_full ));	
 
 
-ft600_fsm #(.FT_DATA_WIDTH (FT_DATA_WIDTH),
-        .WR_FIFO_WORDS (A2F_FIFO_WORDS),
-        .IQ_PAIR_WIDTH (IQ_PAIR_WIDTH))
+ft600_fsm #(.FT_DATA_WIDTH (FT_DATA_WIDTH),		    .IQ_PAIR_WIDTH (IQ_PAIR_WIDTH))
 fsm_inst
 (
     .clk(ft_clk),
