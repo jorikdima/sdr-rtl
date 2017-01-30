@@ -105,8 +105,8 @@ top i1 (
 	.sdram_we_n(sdram_we_n),
 	.afe_sen(afe_sen),
 	.afe_spi_clk(afe_spi_clk),
-	.afe_spi_sdio(afe_spi_sdio),
-	.afe_spi_sdo(afe_spi_sdo),
+	.afe_spi_mosi(afe_spi_mosi),
+	.afe_spi_miso(afe_spi_miso),
 	.afe_tx_en(afe_tx_en)
 );
 
