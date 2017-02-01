@@ -111,7 +111,7 @@ top i1 (
 );
 
 
-reg [7:0] rxf_n_cnt, txe_n_cnt;
+reg [15:0] rxf_n_cnt, txe_n_cnt;
 reg[11:0] afe_rx_i, afe_rx_q;
 reg inited;
 integer rxf_rnd, txe_rnd;  

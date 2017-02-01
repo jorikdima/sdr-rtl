@@ -41,6 +41,8 @@ i2c_sda
 parameter FT_DATA_WIDTH=32;
 parameter IQ_PAIR_WIDTH = 24;
 
+parameter SDRAM_DQ_WIDTH = 32;
+
 //parameter FT_PACKET_WORDS = 32;
 
 //parameter A2F_FIFO_WORDS = 128;
@@ -64,16 +66,16 @@ input wire	clk_sr1, clk_sr2, reset_n;
 
 // SDRAM
 
-output wire [10:0] sdram_addr;
-output wire [1:0]  sdram_ba;
-output wire        sdram_cas_n;
-output wire        sdram_cke;
-output wire        sdram_cs_n;
-inout  wire [15:0] sdram_dq;
-output wire [1:0]  sdram_dqm;
-output wire        sdram_ras_n;
-output wire        sdram_we_n;
-output wire        sdram_clk;
+output wire [12:0]               sdram_addr;
+output wire [1:0]                sdram_ba;
+output wire                      sdram_cas_n;
+output wire                      sdram_cke;
+output wire                      sdram_cs_n;
+inout  wire [SDRAM_DQ_WIDTH-1:0] sdram_dq;
+output wire                      sdram_dqm;
+output wire                      sdram_ras_n;
+output wire                      sdram_we_n;
+output wire                      sdram_clk;
 
 
 // AFE
@@ -147,6 +149,7 @@ afe_inst(
 
 );
 
+/*
 sdram_controller sdram_controller_inst(
 
     // inputs:
@@ -173,6 +176,37 @@ sdram_controller sdram_controller_inst(
     .zs_ras_n(sdram_ras_n),
     .zs_we_n(sdram_we_n)
 	);
+*/
+
+sdram #(.DQ_WIDTH (SDRAM_DQ_WIDTH))
+sdram_inst (
+    .clk(clk_pll),
+// SDRAM interface
+	.sdram_dq(sdram_dq), 
+	.sdram_addr(sdram_addr), 
+	.sdram_ba(sdram_ba), 
+	.sdram_cs(sdram_cs_n),
+	.sdram_ras(sdram_ras_n), 
+	.sdram_cas(sdram_cas_n), 
+	.sdram_we(sdram_we_n), 
+	.sdram_dqm(sdram_dqm),
+
+	// read/write address
+    .addr(24'hffffff),
+
+	// write port
+	.wr_req(1), 		// write request 
+	//.wr_ack(), 	// write acknowledgement 
+	//.next_wr_ack(),
+	.wr_data(0),
+
+	// read port
+	.rd_req(0) 
+	//.rd_ack(), 
+	//.rd_valid(), 
+	//.next_rd_valid(),
+    //.rd_data()
+);
 
 a2f_fifo a2f_fifo_inst (.Data(afe_wdata ), .WrClock(a2f_fifo_clk ), .RdClock(ft_wr_clk ), .WrEn(a2f_fifo_wr ), .RdEn(ft_wr_req ), 
     .Reset(1'b0 ), .RPReset( 1'b0), .Q( ft_wdata), .AlmostFull(a2f_fifo_enough ), .Empty(a2f_fifo_empty ), .Full(a2f_fifo_full ));
@@ -184,7 +218,7 @@ f2a_fifo f2a_fifo_inst (.Data(ft_rdata ), .WrClock( ft_rd_clk), .RdClock( f2a_fi
 ft600_fsm #(.FT_DATA_WIDTH (FT_DATA_WIDTH),		    .IQ_PAIR_WIDTH (IQ_PAIR_WIDTH))
 fsm_inst
 (
-    .clk(ft_clk),
+    .clk(clk),
     .reset_n(en),
 
     .rxf_n(ft_rxf_n),

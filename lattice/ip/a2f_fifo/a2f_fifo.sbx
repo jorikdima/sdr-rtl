@@ -37,9 +37,9 @@
         </spirit:model>
         <spirit:vendorExtensions>
             <lattice:device>LFE5U-12F-6BG381C</lattice:device>
-            <lattice:synthesis>lse</lattice:synthesis>
+            <lattice:synthesis>synplify</lattice:synthesis>
             <lattice:date>2017-01-29.09:14:16</lattice:date>
-            <lattice:modified>2017-01-31.21:29:55</lattice:modified>
+            <lattice:modified>2017-01-31.23:29:46</lattice:modified>
             <lattice:diamond>3.8.0.115.3</lattice:diamond>
             <lattice:language>Verilog</lattice:language>
             <lattice:attributes>
@@ -125,7 +125,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Time</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">21:29:53</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">23:29:43</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>VendorName</lattice:lpckey>
@@ -247,7 +247,7 @@
                 <lattice:lpcsection lattice:name="Command"/>
                 <lattice:lpcentry>
                     <lattice:lpckey>cmd_line</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">-w -n a2f_fifo -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 8192 -width 24 -rwidth 24 -reset_rel SYNC -pe -1 -pf 4096</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">-w -n a2f_fifo -lang verilog -synth synplify -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 8192 -width 24 -rwidth 24 -reset_rel SYNC -pe -1 -pf 4096</lattice:lpcvalue>
                 </lattice:lpcentry>
             </lattice:lpc>
             <lattice:groups/>

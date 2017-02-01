@@ -1,5 +1,5 @@
 SCUBA, Version Diamond (64-bit) 3.8.0.115.3
-Tue Jan 31 21:29:48 2017
+Tue Jan 31 23:29:53 2017
 
 Copyright (c) 1991-1994 by NeoCAD Inc. All rights reserved.
 Copyright (c) 1995 AT&T Corp.   All rights reserved.
@@ -7,7 +7,7 @@ Copyright (c) 1995-2001 Lucent Technologies Inc.  All rights reserved.
 Copyright (c) 2001 Agere Systems   All rights reserved.
 Copyright (c) 2002-2016 Lattice Semiconductor Corporation,  All rights reserved.
 
-    Issued command   : C:\lscc\diamond\3.8_x64\ispfpga\bin\nt64\scuba.exe -w -n f2a_fifo -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 8192 -width 24 -rwidth 24 -reset_rel SYNC -pe 4096 -pf -1 -fdc C:/work/sdr-rtl/lattice/ip/f2a_fifo/f2a_fifo.fdc 
+    Issued command   : C:\lscc\diamond\3.8_x64\ispfpga\bin\nt64\scuba.exe -w -n f2a_fifo -lang verilog -synth synplify -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 8192 -width 24 -rwidth 24 -reset_rel SYNC -pe 4096 -pf -1 -fdc C:/work/sdr-rtl/lattice/ip/f2a_fifo/f2a_fifo.fdc 
     Circuit name     : f2a_fifo
     Module type      : ebfifo
     Module Version   : 5.8
