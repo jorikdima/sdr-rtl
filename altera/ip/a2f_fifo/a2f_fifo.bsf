@@ -83,13 +83,13 @@ agreement for further details.
 	(port
 		(pt 176 136)
 		(output)
-		(text "rdusedw[7..0]" (rect 0 0 76 13)(font "Arial" (font_size 8)))
-		(text "rdusedw[7..0]" (rect 93 130 159 142)(font "Arial" (font_size 8)))
+		(text "rdusedw[12..0]" (rect 0 0 83 13)(font "Arial" (font_size 8)))
+		(text "rdusedw[12..0]" (rect 87 130 159 142)(font "Arial" (font_size 8)))
 		(line (pt 176 136)(pt 160 136)(line_width 3))
 	)
 	(drawing
 		(text "(ack)" (rect 50 116 122 242)(font "Arial" ))
-		(text "24 bits x 256 words" (rect 79 158 241 326)(font "Arial" ))
+		(text "24 bits x 8192 words" (rect 74 158 236 326)(font "Arial" ))
 		(line (pt 16 100)(pt 160 100))
 		(line (pt 16 148)(pt 160 148))
 		(line (pt 16 32)(pt 160 32))

@@ -41,10 +41,10 @@ i2c_sda
 parameter FT_DATA_WIDTH=32;
 parameter IQ_PAIR_WIDTH = 24;
 
-parameter FT_PACKET_WORDS = 32;
+parameter FT_PACKET_WORDS = 4096;
 
-parameter A2F_FIFO_WORDS = 256;
-parameter F2A_FIFO_WORDS = 128;
+parameter A2F_FIFO_WORDS = 8192;
+parameter F2A_FIFO_WORDS = 8192;
 
 parameter A2F_FIFO_FULL_ENOUGH = FT_PACKET_WORDS;
 parameter F2A_FIFO_FREE_ENOUGH = F2A_FIFO_WORDS - FT_PACKET_WORDS;
@@ -205,7 +205,6 @@ f2a_fifo	f2a_fifo_inst (
 
 
 ft600_fsm #(.FT_DATA_WIDTH (FT_DATA_WIDTH),
-        .WR_FIFO_WORDS (A2F_FIFO_WORDS),
         .IQ_PAIR_WIDTH (IQ_PAIR_WIDTH))
 fsm_inst
 (

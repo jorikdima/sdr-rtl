@@ -38,7 +38,7 @@
 
 
 set_global_assignment -name FAMILY "MAX 10"
-set_global_assignment -name DEVICE 10M08SAU169C8G
+set_global_assignment -name DEVICE 10M16SAU169C8G
 set_global_assignment -name TOP_LEVEL_ENTITY top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 16.1.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "20:41:43  JANUARY 10, 2017"
@@ -333,17 +333,10 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_spi_mosi
 set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to afe_spi_miso
 set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
 set_instance_assignment -name AUTO_OPEN_DRAIN_PINS ON -to i2c_clk
-set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_cas_n
-set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_cke
-set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_clk
-set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_cs_n
-set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_ras_n
-set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_we_n
-set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_addr
-set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_ba
-set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_dq
-set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100000000 MHz" -to sdram_dqm
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name EDA_TEST_BENCH_FILE ../testbench/ft600.vt -section_id ft600_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE ../testbench/afe.vt -section_id afe_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE ../testbench/top.vt -section_id top_tb
+set_global_assignment -name SDC_FILE top.out.sdc
 set_global_assignment -name VERILOG_TEST_BENCH_FILE ../testbench/top.vt
 set_global_assignment -name QSYS_FILE ip/qsys/system.qsys
 set_global_assignment -name QIP_FILE ip/pll/pll.qip
@@ -353,6 +346,4 @@ set_global_assignment -name VERILOG_FILE top.v
 set_global_assignment -name VERILOG_FILE ../src/sdram_controller.v
 set_global_assignment -name VERILOG_FILE ../src/ft600_fsm.v
 set_global_assignment -name VERILOG_FILE ../src/afe.v
-set_global_assignment -name EDA_TEST_BENCH_FILE ../testbench/ft600.vt -section_id ft600_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../testbench/afe.vt -section_id afe_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../testbench/top.vt -section_id top_tb
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

@@ -58,7 +58,7 @@ module f2a_fifo (
 	output	[23:0]  q;
 	output	  rdempty;
 	output	  wrfull;
-	output	[6:0]  wrusedw;
+	output	[12:0]  wrusedw;
 `ifndef ALTERA_RESERVED_QIS
 // synopsys translate_off
 `endif
@@ -70,11 +70,11 @@ module f2a_fifo (
 	wire [23:0] sub_wire0;
 	wire  sub_wire1;
 	wire  sub_wire2;
-	wire [6:0] sub_wire3;
+	wire [12:0] sub_wire3;
 	wire [23:0] q = sub_wire0[23:0];
 	wire  rdempty = sub_wire1;
 	wire  wrfull = sub_wire2;
-	wire [6:0] wrusedw = sub_wire3[6:0];
+	wire [12:0] wrusedw = sub_wire3[12:0];
 
 	dcfifo	dcfifo_component (
 				.aclr (aclr),
@@ -93,11 +93,11 @@ module f2a_fifo (
 				.wrempty ());
 	defparam
 		dcfifo_component.intended_device_family = "MAX 10",
-		dcfifo_component.lpm_numwords = 128,
+		dcfifo_component.lpm_numwords = 8192,
 		dcfifo_component.lpm_showahead = "OFF",
 		dcfifo_component.lpm_type = "dcfifo",
 		dcfifo_component.lpm_width = 24,
-		dcfifo_component.lpm_widthu = 7,
+		dcfifo_component.lpm_widthu = 13,
 		dcfifo_component.overflow_checking = "OFF",
 		dcfifo_component.rdsync_delaypipe = 5,
 		dcfifo_component.read_aclr_synch = "OFF",
@@ -118,7 +118,7 @@ endmodule
 // Retrieval info: PRIVATE: AlmostFullThr NUMERIC "-1"
 // Retrieval info: PRIVATE: CLOCKS_ARE_SYNCHRONIZED NUMERIC "0"
 // Retrieval info: PRIVATE: Clock NUMERIC "4"
-// Retrieval info: PRIVATE: Depth NUMERIC "128"
+// Retrieval info: PRIVATE: Depth NUMERIC "8192"
 // Retrieval info: PRIVATE: Empty NUMERIC "1"
 // Retrieval info: PRIVATE: Full NUMERIC "1"
 // Retrieval info: PRIVATE: INTENDED_DEVICE_FAMILY STRING "MAX 10"
@@ -146,11 +146,11 @@ endmodule
 // Retrieval info: PRIVATE: wsUsedW NUMERIC "1"
 // Retrieval info: LIBRARY: altera_mf altera_mf.altera_mf_components.all
 // Retrieval info: CONSTANT: INTENDED_DEVICE_FAMILY STRING "MAX 10"
-// Retrieval info: CONSTANT: LPM_NUMWORDS NUMERIC "128"
+// Retrieval info: CONSTANT: LPM_NUMWORDS NUMERIC "8192"
 // Retrieval info: CONSTANT: LPM_SHOWAHEAD STRING "OFF"
 // Retrieval info: CONSTANT: LPM_TYPE STRING "dcfifo"
 // Retrieval info: CONSTANT: LPM_WIDTH NUMERIC "24"
-// Retrieval info: CONSTANT: LPM_WIDTHU NUMERIC "7"
+// Retrieval info: CONSTANT: LPM_WIDTHU NUMERIC "13"
 // Retrieval info: CONSTANT: OVERFLOW_CHECKING STRING "OFF"
 // Retrieval info: CONSTANT: RDSYNC_DELAYPIPE NUMERIC "5"
 // Retrieval info: CONSTANT: READ_ACLR_SYNCH STRING "OFF"
@@ -167,7 +167,7 @@ endmodule
 // Retrieval info: USED_PORT: wrclk 0 0 0 0 INPUT NODEFVAL "wrclk"
 // Retrieval info: USED_PORT: wrfull 0 0 0 0 OUTPUT NODEFVAL "wrfull"
 // Retrieval info: USED_PORT: wrreq 0 0 0 0 INPUT NODEFVAL "wrreq"
-// Retrieval info: USED_PORT: wrusedw 0 0 7 0 OUTPUT NODEFVAL "wrusedw[6..0]"
+// Retrieval info: USED_PORT: wrusedw 0 0 13 0 OUTPUT NODEFVAL "wrusedw[12..0]"
 // Retrieval info: CONNECT: @aclr 0 0 0 0 aclr 0 0 0 0
 // Retrieval info: CONNECT: @data 0 0 24 0 data 0 0 24 0
 // Retrieval info: CONNECT: @rdclk 0 0 0 0 rdclk 0 0 0 0
@@ -177,7 +177,7 @@ endmodule
 // Retrieval info: CONNECT: q 0 0 24 0 @q 0 0 24 0
 // Retrieval info: CONNECT: rdempty 0 0 0 0 @rdempty 0 0 0 0
 // Retrieval info: CONNECT: wrfull 0 0 0 0 @wrfull 0 0 0 0
-// Retrieval info: CONNECT: wrusedw 0 0 7 0 @wrusedw 0 0 7 0
+// Retrieval info: CONNECT: wrusedw 0 0 13 0 @wrusedw 0 0 13 0
 // Retrieval info: GEN_FILE: TYPE_NORMAL f2a_fifo.v TRUE
 // Retrieval info: GEN_FILE: TYPE_NORMAL f2a_fifo.inc FALSE
 // Retrieval info: GEN_FILE: TYPE_NORMAL f2a_fifo.cmp FALSE
