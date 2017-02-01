@@ -39,7 +39,7 @@
             <lattice:device>LFE5U-12F-6BG381C</lattice:device>
             <lattice:synthesis>lse</lattice:synthesis>
             <lattice:date>2017-01-29.09:13:24</lattice:date>
-            <lattice:modified>2017-01-30.14:06:33</lattice:modified>
+            <lattice:modified>2017-01-31.21:29:48</lattice:modified>
             <lattice:diamond>3.8.0.115.3</lattice:diamond>
             <lattice:language>Verilog</lattice:language>
             <lattice:attributes>
@@ -52,7 +52,7 @@
                 <lattice:attribute lattice:name="ChangeLocate">false</lattice:attribute>
                 <lattice:attribute lattice:name="ChangePack">false</lattice:attribute>
                 <lattice:attribute lattice:name="ChangePart">false</lattice:attribute>
-                <lattice:attribute lattice:name="ChangeSynthesis">false</lattice:attribute>
+                <lattice:attribute lattice:name="ChangeSynthesis">true</lattice:attribute>
                 <lattice:attribute lattice:name="CoreType">LPM</lattice:attribute>
                 <lattice:attribute lattice:name="DCU_RXREFCLK">PRIMARY</lattice:attribute>
                 <lattice:attribute lattice:name="DCU_TXREFCLK">PRIMARY</lattice:attribute>
@@ -109,7 +109,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Date</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">01/30/2017</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">01/31/2017</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>ModuleName</lattice:lpckey>
@@ -125,7 +125,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Time</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">14:06:31</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">21:29:47</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>VendorName</lattice:lpckey>
@@ -142,7 +142,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Depth</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">512</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">8192</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Destination</lattice:lpckey>
@@ -154,7 +154,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>EmpFlg</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">1</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>EnECC</lattice:lpckey>
@@ -182,7 +182,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>PeAssert</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">10</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">4096</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>PeDeassert</lattice:lpckey>
@@ -190,11 +190,11 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>PeMode</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">Static - Dual Threshold</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">Static - Single Threshold</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>PfAssert</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">508</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">32</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>PfDeassert</lattice:lpckey>
@@ -202,7 +202,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>PfMode</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">Static - Dual Threshold</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">Static - Single Threshold</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>RDataCount</lattice:lpckey>
@@ -210,7 +210,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>RDepth</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">512</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">8192</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>RWidth</lattice:lpckey>
@@ -234,7 +234,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>WDataCount</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">1</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Width</lattice:lpckey>
@@ -247,7 +247,7 @@
                 <lattice:lpcsection lattice:name="Command"/>
                 <lattice:lpcentry>
                     <lattice:lpckey>cmd_line</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">-w -n f2a_fifo -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 512 -width 24 -rwidth 24 -reset_rel SYNC -pe -1 -pf -1 -fill</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">-w -n f2a_fifo -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 8192 -width 24 -rwidth 24 -reset_rel SYNC -pe 4096 -pf -1</lattice:lpcvalue>
                 </lattice:lpcentry>
             </lattice:lpc>
             <lattice:groups/>

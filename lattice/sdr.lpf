@@ -1,19 +1,4 @@
-BLOCK RESETPATHS ;
-BLOCK ASYNCPATHS ;
 FREQUENCY PORT "ft_clk" 100.000000 MHz ;
-DEFINE PORT GROUP "afe_rx" "afe_rx_d[11]" 
-"afe_rx_d[10]" 
-"afe_rx_d[9]" 
-"afe_rx_d[8]" 
-"afe_rx_d[7]" 
-"afe_rx_d[6]" 
-"afe_rx_d[5]" 
-"afe_rx_d[4]" 
-"afe_rx_d[3]" 
-"afe_rx_d[2]" 
-"afe_rx_d[1]" 
-"afe_rx_d[0]" ;
-SYSCONFIG SLAVE_SPI_PORT=DISABLE MASTER_SPI_PORT=DISABLE SLAVE_PARALLEL_PORT=ENABLE MCCLK_FREQ=9.7 CONFIG_IOVOLTAGE=3.3 ;
 PROHIBIT SITE "A6" ;
 PROHIBIT SITE "B6" ;
 PROHIBIT SITE "A19" ;
@@ -30,3 +15,4 @@ PROHIBIT SITE "B5" ;
 PROHIBIT SITE "C5" ;
 PROHIBIT SITE "C4" ;
 PROHIBIT SITE "B4" ;
+USE PRIMARY NET "ft_clk_c" ;

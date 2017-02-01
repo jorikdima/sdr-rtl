@@ -16,7 +16,7 @@ tx_fifo_empty, tx_fifo_data, tx_fifo_req, tx_fifo_clk,
 tx_d, tx_sclk_2x, tx_clk_2x, tx_sel
 );
 
-parameter IQ_PAIR_WIDTH;
+parameter IQ_PAIR_WIDTH=24;
 
 input wire reset_n;
 
@@ -71,7 +71,7 @@ else
  
 // TX
 reg tx_valid_pair;
-wire[IQ_PAIR_WIDTH/2-1:0] tx_output_mask = {IQ_PAIR_WIDTH/2{tx_valid_pair}};
+wire[IQ_PAIR_WIDTH/2-1:0] tx_output_mask = {(IQ_PAIR_WIDTH/2){tx_valid_pair}};
 
 assign tx_fifo_clk = tx_sel;
 assign tx_clk_2x = tx_sclk_2x & reset_n;
@@ -80,8 +80,11 @@ assign tx_d = tx_output_mask & (tx_sel ? tx_fifo_data[IQ_PAIR_WIDTH/2 - 1:0] :
                                 tx_fifo_data[IQ_PAIR_WIDTH-1:IQ_PAIR_WIDTH/2] );
 
 
-always @(negedge tx_fifo_clk)
-    tx_fifo_req = ~tx_fifo_empty;
+always @(negedge tx_fifo_clk or negedge reset_n)
+	if (~reset_n)
+	    tx_fifo_req <= 0;
+	else
+        tx_fifo_req <= ~tx_fifo_empty;
 
 always @(posedge tx_fifo_clk or negedge reset_n)
    if (~reset_n)
@@ -93,7 +96,7 @@ always @(negedge tx_sclk_2x or negedge reset_n)
 if (~reset_n)   
    tx_sel <= 0;      
 else	
-    tx_sel = ~tx_sel;
+    tx_sel <= ~tx_sel;
 
 
 

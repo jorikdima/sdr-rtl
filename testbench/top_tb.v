@@ -65,8 +65,8 @@ wire sdram_ras_n;
 wire sdram_we_n;
 wire afe_sen;
 wire afe_spi_clk;
-wire afe_spi_sdio;
-wire afe_spi_sdo;
+wire afe_spi_mosi;
+wire afe_spi_miso;
 wire afe_tx_en;
 
 // assign statements (if any)                          
@@ -114,7 +114,8 @@ top i1 (
 reg [7:0] rxf_n_cnt, txe_n_cnt;
 reg[11:0] afe_rx_i, afe_rx_q;
 reg inited;
-integer rxf_rnd, txe_rnd;
+integer rxf_rnd, txe_rnd;  
+
 
 initial                                                
 begin                                                  
@@ -138,65 +139,80 @@ afe_rx_q = 0;
 
 inited = 0;
 rxf_rnd = $random%10;
-txe_rnd = $random%10;
+txe_rnd = $random%10; 
 
 
 #10 reset_n = 1;
-#1000 inited = 1;
-
+#10 inited = 1;
+#10 ft_rxf_n = 0;
+#10 ft_txe_n = 0;
                                                        
 // --> end                                             
 $display("Running testbench");                       
 end        
 
-parameter FT_PACKET_WORDS = 32;
+parameter FT_PACKET_WORDS = 4096;
 
 initial forever #5 ft_clk = ~ ft_clk;
 initial forever #12.5 clk_sr1 = ~ clk_sr1;
 initial forever #12.5 clk_sr2 = ~ clk_sr2;
-
+	
+//  TO SDR	
+always @ (posedge ft_rd_n or posedge ft_rxf_n)
+	begin
+	rxf_n_cnt <= 0;
+	rxf_rnd <= $random%10;
+	end
+	
 always @(negedge ft_clk)
-begin
-if (inited)
-begin
-    rxf_n_cnt <= rxf_n_cnt + 1;
-    if (rxf_n_cnt == 0)
-        ft_rxf_n <= 0;
-    if (rxf_n_cnt == FT_PACKET_WORDS)
-        ft_rxf_n <= 1;
-    if (rxf_n_cnt == (FT_PACKET_WORDS * 3 / 2 + rxf_rnd))
-    begin
-        rxf_n_cnt <= 0;
-        rxf_rnd = $random%10;    
-    end
-
-    if (~ft_rd_n & ~ft_rxf_n)
-        treg_ft_data <= treg_ft_data + 17'h10001; 
-    end
+begin		 
+	if (rxf_n_cnt < (FT_PACKET_WORDS / 2 + rxf_rnd))
+		begin
+		rxf_n_cnt <= rxf_n_cnt + 1;
+	    ft_rxf_n <= 1;			  
+		end
+	else if (rxf_n_cnt < (FT_PACKET_WORDS * 3 / 2 + rxf_rnd))  
+		begin
+	    ft_rxf_n <= 0;	  
+		if (~ft_rd_n) 
+			rxf_n_cnt = rxf_n_cnt + 1;
+		end
+	else
+	    ft_rxf_n <= 1;	
+	
+	if (~ft_rd_n & ~ft_rxf_n)
+	    treg_ft_data <= treg_ft_data + 17'h10001;     
 end
 
-always @(posedge ft_clk)
-begin
-if (inited)
-begin
-    txe_n_cnt <= txe_n_cnt + 1;
-    if (txe_n_cnt == 0)
-        ft_txe_n <= 0;
-    if (txe_n_cnt == FT_PACKET_WORDS)
+
+// FROM SDR
+
+
+always @ (posedge ft_wr_n or posedge ft_txe_n)
+	begin
+	txe_n_cnt <= 0;
+	txe_rnd <= $random%10;
+	end
+	
+always @(negedge ft_clk)
+begin    
+    if (txe_n_cnt < (FT_PACKET_WORDS / 2 + txe_rnd))  
+		begin		
+		txe_n_cnt <= txe_n_cnt + 1;
         ft_txe_n <= 1;
-    if (txe_n_cnt == (FT_PACKET_WORDS * 3 / 2 + txe_rnd))
-    begin
-        txe_n_cnt <= 0;
-        txe_rnd = $random%10;    
-    end
-
-    //if (~ft_rd_n & ~ft_rxf_n)
-   //     treg_ft_data <= treg_ft_data + 17'h10001; 
-    end
+		end
+    else if (txe_n_cnt < (FT_PACKET_WORDS * 3 / 2 + txe_rnd)) 
+		begin
+        ft_txe_n <= 0; 
+		if (~ft_wr_n)  
+			txe_n_cnt <= txe_n_cnt + 1;
+		end
+    else
+        ft_txe_n <= 1;	     
 end
 
 
-
+// AFE
 always @(posedge afe_rx_clk)
 begin
     afe_rx_i = afe_rx_i + 1;
