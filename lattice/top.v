@@ -14,6 +14,13 @@ sdram_ras_n,
 sdram_we_n,
 sdram_clk,
 
+// RPi
+rpi_addr,
+rpi_data,
+rpi_oe,
+rpi_we,
+rpi_gpio,
+
 
 // AFE
 afe_tx_d, afe_tx_clk, afe_tx_sel,
@@ -32,6 +39,8 @@ ft_rd_n,
 ft_data,
 ft_be,
 
+usb_typec_sw,
+
 // Si535x
 i2c_clk,
 i2c_sda
@@ -42,14 +51,6 @@ parameter FT_DATA_WIDTH=32;
 parameter IQ_PAIR_WIDTH = 24;
 
 parameter SDRAM_DQ_WIDTH = 32;
-
-//parameter FT_PACKET_WORDS = 32;
-
-//parameter A2F_FIFO_WORDS = 128;
-//parameter F2A_FIFO_WORDS = 128;
-
-//parameter A2F_FIFO_FULL_ENOUGH = FT_PACKET_WORDS;
-//parameter F2A_FIFO_FREE_ENOUGH = F2A_FIFO_WORDS - FT_PACKET_WORDS;
 
 
 function integer log2;
@@ -72,10 +73,20 @@ output wire                      sdram_cas_n;
 output wire                      sdram_cke;
 output wire                      sdram_cs_n;
 inout  wire [SDRAM_DQ_WIDTH-1:0] sdram_dq;
-output wire                      sdram_dqm;
+output wire [SDRAM_DQ_WIDTH/8-1:0]sdram_dqm;
 output wire                      sdram_ras_n;
 output wire                      sdram_we_n;
 output wire                      sdram_clk;
+
+// Si535x
+output reg i2c_clk;
+output reg i2c_sda;
+
+// RPi
+input wire[5:0] rpi_addr;
+output reg[17:0]  rpi_data;
+input wire rpi_oe, rpi_we;
+input wire[1:0] rpi_gpio;
 
 
 // AFE
@@ -98,9 +109,7 @@ output wire ft_oe_n, ft_wr_n, ft_rd_n;
 inout wire[FT_DATA_WIDTH-1:0] ft_data;
 inout wire[3:0] ft_be;
 
-// Si535x
-inout wire i2c_clk;
-inout wire i2c_sda;
+output reg usb_typec_sw;
 
 
 wire rd_req, ft_rd_clk, ft_wr_clk, ft_wr_req, ft_rd_req;
@@ -112,6 +121,12 @@ wire f2a_fifo_enough, a2f_fifo_enough, a2f_fifo_empty;
 wire [IQ_PAIR_WIDTH-1:0] ft_rdata, f2a_fifo_data, afe_wdata, ft_wdata;
 
 wire clk, pll_locked, clk_pll, clk_pll_shifted, i2c_sda_oe, i2c_scl_oe;
+
+wire mem_wr_req, mem_wr_ack, mem_next_wr_ack;
+wire mem_rd_req, mem_rd_ack, mem_rd_valid, mem_next_rd_valid;
+wire [23:0] mem_addr;
+wire [SDRAM_DQ_WIDTH-1:0] mem_wr_data, mem_rd_data;
+wire stb, we, cyc, ack, stall;
 
 wire en = pll_locked & reset_n;
 
@@ -149,64 +164,80 @@ afe_inst(
 
 );
 
-/*
-sdram_controller sdram_controller_inst(
-
-    // inputs:
-    //.az_addr(az_addr),
-    //.az_be_n(az_be_n),
-    //.az_cs(az_cs),
-    //.az_data(az_data),
-    //.az_rd_n(az_rd_n),
-    //.az_wr_n(az_wr_n),
-    .clk(1'b0),
-    .reset_n(1'b0),
-
-   // outputs:
-    //.za_data(za_data),
-    //.za_valid(za_valid),
-    //.za_waitrequest(za_waitrequest),
-    .zs_addr(sdram_addr),
-    .zs_ba(sdram_ba),
-    .zs_cas_n(sdram_cas_n),
-    .zs_cke(sdram_cke),
-    .zs_cs_n(sdram_cs_n),
-    .zs_dq(sdram_dq),
-    .zs_dqm(sdram_dqm),
-    .zs_ras_n(sdram_ras_n),
-    .zs_we_n(sdram_we_n)
-	);
-*/
-
-sdram #(.DQ_WIDTH (SDRAM_DQ_WIDTH))
+sdram //#(.DQ_WIDTH (SDRAM_DQ_WIDTH))
 sdram_inst (
-    .clk(clk_pll),
+    .clk_i(clk_pll),
+	.rst_i(~en),
 // SDRAM interface
-	.sdram_dq(sdram_dq), 
-	.sdram_addr(sdram_addr), 
-	.sdram_ba(sdram_ba), 
-	.sdram_cs(sdram_cs_n),
-	.sdram_ras(sdram_ras_n), 
-	.sdram_cas(sdram_cas_n), 
-	.sdram_we(sdram_we_n), 
-	.sdram_dqm(sdram_dqm),
+    .sdram_cke_o(sdram_cke),
+	.sdram_data_io(sdram_dq), 
+	.sdram_addr_o(sdram_addr), 
+	.sdram_ba_o(sdram_ba), 
+	.sdram_cs_o(sdram_cs_n),
+	.sdram_ras_o(sdram_ras_n), 
+	.sdram_cas_o(sdram_cas_n), 
+	.sdram_we_o(sdram_we_n), 
+	.sdram_dqm_o(sdram_dqm),
 
+    .stb_i(stb),
+    .we_i(we),
+    .sel_i(4'b1111),
+    .cyc_i(cyc),
+    .addr_i(mem_addr),
+    .data_i(mem_wr_data),
+    .data_o(mem_rd_data),
+    .stall_o(stall),
+    .ack_o(ack)
+
+/*
 	// read/write address
-    .addr(24'hffffff),
+    .addr(mem_addr),
 
 	// write port
-	.wr_req(1), 		// write request 
-	//.wr_ack(), 	// write acknowledgement 
-	//.next_wr_ack(),
-	.wr_data(0),
+	.wr_req(mem_wr_req), 		// write request 
+	.wr_ack(mem_wr_ack), 	// write acknowledgement 
+	.next_wr_ack(mem_next_wr_ack),
+	.wr_data(mem_wr_data),
 
 	// read port
-	.rd_req(0) 
-	//.rd_ack(), 
-	//.rd_valid(), 
-	//.next_rd_valid(),
-    //.rd_data()
+	.rd_req(mem_rd_req), 
+	.rd_ack(mem_rd_ack), 
+	.rd_valid(mem_rd_valid), 
+	.next_rd_valid(mem_next_rd_valid),
+    .rd_data(mem_rd_data)
+	*/
 );
+
+/*
+sdram_test sdram_test_inst(
+    .clk(clk_pll),
+	.reset_n(~en),
+    .addr(mem_addr),
+	.wr_req(mem_wr_req),
+	.wr_data(mem_wr_data),
+	.wr_ack(mem_wr_ack),
+    .next_wr_ack(mem_next_wr_ack),
+	.rd_req(mem_rd_req),
+    .rd_ack(mem_rd_ack), 
+	.rd_valid(mem_rd_valid), 
+	.next_rd_valid(mem_next_rd_valid),
+    .rd_data(mem_rd_data)	
+);
+*/
+sdram_test_wb sdram_test_inst(
+    .clk(clk_pll),
+	.reset_n(~en),
+    .stb_o(stb),
+    .we_o(we),
+    
+    .cyc_o(cyc),
+    .addr_o(mem_addr),
+    .data_i(mem_rd_data),
+    .data_o(mem_wr_data),
+    .stall_i(stall),
+    .ack_i(ack)	
+);
+
 
 a2f_fifo a2f_fifo_inst (.Data(afe_wdata ), .WrClock(a2f_fifo_clk ), .RdClock(ft_wr_clk ), .WrEn(a2f_fifo_wr ), .RdEn(ft_wr_req ), 
     .Reset(1'b0 ), .RPReset( 1'b0), .Q( ft_wdata), .AlmostFull(a2f_fifo_enough ), .Empty(a2f_fifo_empty ), .Full(a2f_fifo_full ));
@@ -250,5 +281,22 @@ fsm_inst
 
 
 pll pll_inst (.CLKI(ft_clk ), .CLKOP(clk ), .CLKOS(clk_pll ), .CLKOS2( clk_pll_shifted), .LOCK(pll_locked ));
+
+
+// stub
+reg [5:0] rpi_addr_reg;
+reg[17:0]  rpi_data_reg;
+reg rpi_oe_reg, rpi_we_reg;
+reg[1:0] rpi_gpio_reg;
+always @(posedge clk)
+	begin
+		if (afe_spi_miso & rpi_we & rpi_oe)
+			begin
+		rpi_addr_reg <= rpi_addr + rpi_addr_reg;
+		rpi_data <= rpi_data + rpi_addr_reg;
+		i2c_clk <= afe_spi_miso & rpi_gpio[0];
+		i2c_sda <= afe_spi_miso & rpi_gpio[1];
+		end
+	end
 
 endmodule

@@ -39,7 +39,7 @@
             <lattice:device>LFE5U-12F-6BG381C</lattice:device>
             <lattice:synthesis>synplify</lattice:synthesis>
             <lattice:date>2017-01-29.09:14:16</lattice:date>
-            <lattice:modified>2017-01-31.23:29:46</lattice:modified>
+            <lattice:modified>2017-02-02.09:43:01</lattice:modified>
             <lattice:diamond>3.8.0.115.3</lattice:diamond>
             <lattice:language>Verilog</lattice:language>
             <lattice:attributes>
@@ -109,7 +109,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Date</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">01/31/2017</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">02/02/2017</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>ModuleName</lattice:lpckey>
@@ -125,7 +125,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Time</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">23:29:43</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">09:42:59</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>VendorName</lattice:lpckey>
