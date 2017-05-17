@@ -16,3 +16,254 @@ PROHIBIT SITE "C5" ;
 PROHIBIT SITE "C4" ;
 PROHIBIT SITE "B4" ;
 USE PRIMARY NET "ft_clk_c" ;
+LOCATE COMP "ft_oe_n" SITE "N18" ;
+PROHIBIT SITE "M5" ;
+PROHIBIT SITE "T16" ;
+PROHIBIT SITE "A15" ;
+PROHIBIT SITE "E10" ;
+PROHIBIT SITE "D10" ;
+PROHIBIT SITE "C9" ;
+PROHIBIT SITE "T15" ;
+PROHIBIT SITE "U15" ;
+PROHIBIT SITE "V18" ;
+PROHIBIT SITE "V17" ;
+PROHIBIT SITE "K17" ;
+PROHIBIT SITE "K16" ;
+LOCATE COMP "ft_data[23]" SITE "M19" ;
+IOBUF PORT "afe_rx_d[0]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_d[1]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_d[2]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_d[3]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_d[4]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_d[5]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_d[6]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_d[7]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_d[8]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_d[9]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_d[10]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_d[11]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "clk_sr1" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "clk_sr2" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_clk" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_sel" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_rxf_n" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_txe_n" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "reset_n" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_be[0]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "ft_be[1]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "ft_be[2]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "ft_be[3]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "ft_data[12]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "ft_data[13]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "ft_data[14]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "ft_data[15]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "ft_data[28]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "ft_data[29]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "ft_data[30]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "ft_data[31]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[0]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[1]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[2]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[3]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[4]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[5]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[6]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[7]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[8]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[9]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[10]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[11]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[12]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[13]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[14]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "sdram_dq[15]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
+IOBUF PORT "afe_reset" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_clk" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_rx_en" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_sen" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_spi_clk" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_spi_mosi" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_clk" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_d[0]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_d[1]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_d[2]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_d[3]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_d[4]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_d[5]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_d[6]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_d[7]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_d[8]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_d[9]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_d[10]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_d[11]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_en" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "afe_tx_sel" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_oe_n" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_rd_n" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_wr_n" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_addr[0]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_addr[1]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_addr[2]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_addr[3]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_addr[4]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_addr[5]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_addr[6]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_addr[7]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_addr[8]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_addr[9]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_addr[10]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_ba[0]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_ba[1]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_cas_n" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_cke" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_clk" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_cs_n" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_dqm[0]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_dqm[1]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_ras_n" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "sdram_we_n" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[0]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[1]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[2]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[3]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[4]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[5]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[6]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[7]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[8]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[9]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[10]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[11]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[16]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[17]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[18]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[19]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[20]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[21]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[22]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[23]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[24]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[25]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[26]" IO_TYPE=LVCMOS33 ;
+IOBUF PORT "ft_data[27]" IO_TYPE=LVCMOS33 ;
+LOCATE COMP "ft_be[1]" SITE "T18" ;
+DEFINE PORT GROUP "AFE_D" "afe_rx_d[11]" 
+"afe_rx_d[10]" 
+"afe_rx_d[9]" 
+"afe_rx_d[8]" 
+"afe_rx_d[7]" 
+"afe_rx_d[6]" 
+"afe_rx_d[5]" 
+"afe_rx_d[4]" 
+"afe_rx_d[3]" 
+"afe_rx_d[2]" 
+"afe_rx_d[1]" 
+"afe_rx_d[0]" ;
+DEFINE PORT GROUP "SDRAM_D" "sdram_dq[15]" 
+"sdram_dq[14]" 
+"sdram_dq[13]" 
+"sdram_dq[12]" 
+"sdram_dq[11]" 
+"sdram_dq[10]" 
+"sdram_dq[9]" 
+"sdram_dq[8]" 
+"sdram_dq[7]" 
+"sdram_dq[6]" 
+"sdram_dq[5]" 
+"sdram_dq[4]" 
+"sdram_dq[3]" 
+"sdram_dq[2]" 
+"sdram_dq[1]" 
+"sdram_dq[0]" ;
+DEFINE PORT GROUP "SDRAM_A" "sdram_addr[10]" 
+"sdram_addr[9]" 
+"sdram_addr[8]" 
+"sdram_addr[7]" 
+"sdram_addr[6]" 
+"sdram_addr[5]" 
+"sdram_addr[4]" 
+"sdram_addr[3]" 
+"sdram_addr[2]" 
+"sdram_addr[1]" 
+"sdram_addr[0]" ;
+DEFINE PORT GROUP "AFE_TD" "afe_tx_d[11]" 
+"afe_tx_d[10]" 
+"afe_tx_d[9]" 
+"afe_tx_d[8]" 
+"afe_tx_d[7]" 
+"afe_tx_d[6]" 
+"afe_tx_d[5]" 
+"afe_tx_d[4]" 
+"afe_tx_d[3]" 
+"afe_tx_d[2]" 
+"afe_tx_d[1]" 
+"afe_tx_d[0]" ;
+DEFINE PORT GROUP "FTD" "ft_data[31]" 
+"ft_data[30]" 
+"ft_data[29]" 
+"ft_data[28]" 
+"ft_data[15]" 
+"ft_data[14]" 
+"ft_data[13]" 
+"ft_data[12]" 
+"ft_data[27]" 
+"ft_data[26]" 
+"ft_data[25]" 
+"ft_data[24]" 
+"ft_data[23]" 
+"ft_data[22]" 
+"ft_data[21]" 
+"ft_data[20]" 
+"ft_data[19]" 
+"ft_data[18]" 
+"ft_data[17]" 
+"ft_data[16]" 
+"ft_data[11]" 
+"ft_data[10]" 
+"ft_data[9]" 
+"ft_data[8]" 
+"ft_data[7]" 
+"ft_data[6]" 
+"ft_data[5]" 
+"ft_data[4]" 
+"ft_data[3]" 
+"ft_data[2]" 
+"ft_data[1]" 
+"ft_data[0]" ;
+LOCATE COMP "ft_wr_n" SITE "U20" ;
+LOCATE COMP "ft_rd_n" SITE "P18" ;
+LOCATE COMP "ft_data[27]" SITE "P19" ;
+LOCATE COMP "ft_data[21]" SITE "L19" ;
+LOCATE COMP "ft_be[3]" SITE "U17" ;
+LOCATE COMP "ft_be[0]" SITE "U19" ;
+LOCATE COMP "ft_data[30]" SITE "T20" ;
+LOCATE COMP "ft_data[26]" SITE "P20" ;
+LOCATE COMP "ft_data[31]" SITE "T19" ;
+LOCATE COMP "ft_be[2]" SITE "U18" ;
+LOCATE COMP "ft_data[20]" SITE "L20" ;
+LOCATE COMP "ft_data[25]" SITE "N19" ;
+LOCATE COMP "ft_data[24]" SITE "N20" ;
+LOCATE COMP "ft_data[28]" SITE "R20" ;
+LOCATE COMP "ft_data[29]" SITE "R18" ;
+LOCATE COMP "ft_data[22]" SITE "M20" ;
+LOCATE COMP "ft_data[18]" SITE "K20" ;
+LOCATE COMP "ft_data[13]" SITE "G20" ;
+LOCATE COMP "ft_data[9]" SITE "E19" ;
+LOCATE COMP "ft_data[8]" SITE "D20" ;
+LOCATE COMP "ft_data[16]" SITE "J20" ;
+LOCATE COMP "ft_data[17]" SITE "J18" ;
+LOCATE COMP "ft_data[12]" SITE "F20" ;
+LOCATE COMP "ft_data[10]" SITE "E20" ;
+LOCATE COMP "ft_clk" SITE "J19" ;
+LOCATE COMP "ft_data[15]" SITE "H18" ;
+LOCATE COMP "ft_data[6]" SITE "C20" ;
+LOCATE COMP "ft_data[7]" SITE "D19" ;
+LOCATE COMP "ft_data[11]" SITE "F19" ;
+LOCATE COMP "ft_data[14]" SITE "H20" ;
+LOCATE COMP "ft_data[19]" SITE "K19" ;
+LOCATE COMP "ft_data[4]" SITE "B19" ;
+LOCATE COMP "ft_data[0]" SITE "A17" ;
+LOCATE COMP "ft_data[5]" SITE "C17" ;
+LOCATE COMP "ft_data[3]" SITE "B18" ;
+LOCATE COMP "ft_data[2]" SITE "A18" ;
+LOCATE COMP "ft_data[1]" SITE "B17" ;

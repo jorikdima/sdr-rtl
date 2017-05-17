@@ -34,12 +34,21 @@ ft_be,
 
 // Si535x
 i2c_clk,
-i2c_sda
+i2c_sda,
+
+// Rpi
+rpi_d,
+rpi_a,
+rpi_we,
+rpi_oe
 );
 
 
 parameter FT_DATA_WIDTH=32;
 parameter IQ_PAIR_WIDTH = 24;
+
+parameter RPI_DATA_WIDTH=18;
+parameter RPI_ADDR_WIDTH=6;
 
 //parameter FT_PACKET_WORDS = 32;
 
@@ -99,6 +108,11 @@ inout wire[3:0] ft_be;
 // Si535x
 inout wire i2c_clk;
 inout wire i2c_sda;
+
+// Rpi
+output wire [RPI_DATA_WIDTH-1:0] rpi_d;
+input wire [RPI_ADDR_WIDTH-1:0] rpi_a;
+input wire rpi_oe, rpi_we;
 
 
 wire rd_req, ft_rd_clk, ft_wr_clk, ft_wr_req, ft_rd_req;
@@ -216,5 +230,11 @@ fsm_inst
 
 
 pll pll_inst (.CLKI(ft_clk ), .CLKOP(clk ), .CLKOS(clk_pll ), .CLKOS2( clk_pll_shifted), .LOCK(pll_locked ));
+
+
+	
+assign rpi_d = {{3{rpi_a}}, rpi_we, rpi_oe};
+assign i2c_clk = afe_spi_miso;
+assign i2c_sda = afe_spi_miso;
 
 endmodule

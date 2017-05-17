@@ -16,8 +16,8 @@ CoreRevision=5.8
 ModuleName=f2a_fifo
 SourceFormat=verilog
 ParameterFileVersion=1.0
-Date=01/31/2017
-Time=21:29:47
+Date=05/16/2017
+Time=20:13:30
 
 [Parameters]
 Verilog=1
