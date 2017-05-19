@@ -40,7 +40,8 @@ i2c_sda,
 rpi_d,
 rpi_a,
 rpi_we,
-rpi_oe
+rpi_oe,
+rpi_gpio,
 );
 
 
@@ -113,6 +114,7 @@ inout wire i2c_sda;
 output wire [RPI_DATA_WIDTH-1:0] rpi_d;
 input wire [RPI_ADDR_WIDTH-1:0] rpi_a;
 input wire rpi_oe, rpi_we;
+input wire[1:0] rpi_gpio;
 
 
 wire rd_req, ft_rd_clk, ft_wr_clk, ft_wr_req, ft_rd_req;
@@ -161,7 +163,7 @@ afe_inst(
 
 );
 
-sdram_controller sdram_controller_inst(
+//sdram_controller sdram_controller_inst(
 
     // inputs:
     //.az_addr(az_addr),
@@ -170,23 +172,23 @@ sdram_controller sdram_controller_inst(
     //.az_data(az_data),
     //.az_rd_n(az_rd_n),
     //.az_wr_n(az_wr_n),
-    .clk(1'b0),
-    .reset_n(1'b0),
+    //.clk(1'b0),
+    //.reset_n(1'b0),
 
    // outputs:
     //.za_data(za_data),
     //.za_valid(za_valid),
     //.za_waitrequest(za_waitrequest),
-    .zs_addr(sdram_addr),
-    .zs_ba(sdram_ba),
-    .zs_cas_n(sdram_cas_n),
-    .zs_cke(sdram_cke),
-    .zs_cs_n(sdram_cs_n),
-    .zs_dq(sdram_dq),
-    .zs_dqm(sdram_dqm),
-    .zs_ras_n(sdram_ras_n),
-    .zs_we_n(sdram_we_n)
-	);
+    //.zs_addr(sdram_addr),
+    //.zs_ba(sdram_ba),
+    //.zs_cas_n(sdram_cas_n),
+    //.zs_cke(sdram_cke),
+    //.zs_cs_n(sdram_cs_n),
+    //.zs_dq(sdram_dq),
+    //.zs_dqm(sdram_dqm),
+    //.zs_ras_n(sdram_ras_n),
+    //.zs_we_n(sdram_we_n)
+	//);
 
 a2f_fifo a2f_fifo_inst (.Data(afe_wdata ), .WrClock(a2f_fifo_clk ), .RdClock(ft_wr_clk ), .WrEn(a2f_fifo_wr ), .RdEn(ft_wr_req ), 
     .Reset(1'b0 ), .RPReset( 1'b0), .Q( ft_wdata), .AlmostFull(a2f_fifo_enough ), .Empty(a2f_fifo_empty ), .Full(a2f_fifo_full ));
@@ -234,7 +236,7 @@ pll pll_inst (.CLKI(ft_clk ), .CLKOP(clk ), .CLKOS(clk_pll ), .CLKOS2( clk_pll_s
 
 	
 assign rpi_d = {{3{rpi_a}}, rpi_we, rpi_oe};
-assign i2c_clk = afe_spi_miso;
-assign i2c_sda = afe_spi_miso;
+assign i2c_clk = afe_spi_miso & rpi_gpio[0];
+assign i2c_sda = afe_spi_miso & rpi_gpio[1];
 
 endmodule
