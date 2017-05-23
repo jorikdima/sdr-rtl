@@ -61,22 +61,6 @@ IOBUF PORT "ft_data[28]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
 IOBUF PORT "ft_data[29]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
 IOBUF PORT "ft_data[30]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
 IOBUF PORT "ft_data[31]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[0]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[1]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[2]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[3]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[4]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[5]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[6]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[7]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[8]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[9]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[10]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[11]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[12]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[13]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[14]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
-IOBUF PORT "sdram_dq[15]" IO_TYPE=LVCMOS33 PULLMODE=NONE ;
 IOBUF PORT "afe_reset" IO_TYPE=LVCMOS33 ;
 IOBUF PORT "afe_rx_clk" IO_TYPE=LVCMOS33 ;
 IOBUF PORT "afe_rx_en" IO_TYPE=LVCMOS33 ;
@@ -101,27 +85,6 @@ IOBUF PORT "afe_tx_sel" IO_TYPE=LVCMOS33 ;
 IOBUF PORT "ft_oe_n" IO_TYPE=LVCMOS33 ;
 IOBUF PORT "ft_rd_n" IO_TYPE=LVCMOS33 ;
 IOBUF PORT "ft_wr_n" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_addr[0]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_addr[1]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_addr[2]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_addr[3]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_addr[4]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_addr[5]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_addr[6]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_addr[7]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_addr[8]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_addr[9]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_addr[10]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_ba[0]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_ba[1]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_cas_n" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_cke" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_clk" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_cs_n" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_dqm[0]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_dqm[1]" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_ras_n" IO_TYPE=LVCMOS33 ;
-IOBUF PORT "sdram_we_n" IO_TYPE=LVCMOS33 ;
 IOBUF PORT "ft_data[0]" IO_TYPE=LVCMOS33 ;
 IOBUF PORT "ft_data[1]" IO_TYPE=LVCMOS33 ;
 IOBUF PORT "ft_data[2]" IO_TYPE=LVCMOS33 ;
@@ -159,33 +122,6 @@ DEFINE PORT GROUP "AFE_D" "afe_rx_d[11]"
 "afe_rx_d[2]" 
 "afe_rx_d[1]" 
 "afe_rx_d[0]" ;
-DEFINE PORT GROUP "SDRAM_D" "sdram_dq[15]" 
-"sdram_dq[14]" 
-"sdram_dq[13]" 
-"sdram_dq[12]" 
-"sdram_dq[11]" 
-"sdram_dq[10]" 
-"sdram_dq[9]" 
-"sdram_dq[8]" 
-"sdram_dq[7]" 
-"sdram_dq[6]" 
-"sdram_dq[5]" 
-"sdram_dq[4]" 
-"sdram_dq[3]" 
-"sdram_dq[2]" 
-"sdram_dq[1]" 
-"sdram_dq[0]" ;
-DEFINE PORT GROUP "SDRAM_A" "sdram_addr[10]" 
-"sdram_addr[9]" 
-"sdram_addr[8]" 
-"sdram_addr[7]" 
-"sdram_addr[6]" 
-"sdram_addr[5]" 
-"sdram_addr[4]" 
-"sdram_addr[3]" 
-"sdram_addr[2]" 
-"sdram_addr[1]" 
-"sdram_addr[0]" ;
 DEFINE PORT GROUP "AFE_TD" "afe_tx_d[11]" 
 "afe_tx_d[10]" 
 "afe_tx_d[9]" 
@@ -340,3 +276,8 @@ BANK 7 VCCIO 3.3 V;
 BANK 8 VCCIO 3.3 V;
 LOCATE COMP "ft_rxf_n" SITE "T17" ;
 LOCATE COMP "ft_txe_n" SITE "P17" ;
+LOCATE COMP "clk26" SITE "U16" ;
+IOBUF PORT "clk26" IO_TYPE=LVCMOS33 ;
+USE PRIMARY NET "clk26_c" ;
+LOCATE COMP "ft_gpio0" SITE "R17" ;
+IOBUF PORT "ft_gpio0" IO_TYPE=LVCMOS33 ;

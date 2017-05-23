@@ -1,18 +1,18 @@
 
 module top(
-clk_sr1, clk_sr2, reset_n, 
+clk26, clk_sr1, clk_sr2, reset_n, 
 
 // SDRAM
-sdram_addr,
-sdram_ba,
-sdram_cas_n,
-sdram_cke,
-sdram_cs_n,
-sdram_dq,
-sdram_dqm,
-sdram_ras_n,
-sdram_we_n,
-sdram_clk,
+//sdram_addr,
+//sdram_ba,
+//sdram_cas_n,
+//sdram_cke,
+//sdram_cs_n,
+//sdram_dq,
+//sdram_dqm,
+//sdram_ras_n,
+//sdram_we_n,
+//sdram_clk,
 
 
 // AFE
@@ -31,6 +31,7 @@ ft_rd_n,
 
 ft_data,
 ft_be,
+ft_gpio0,
 
 // Si535x
 i2c_clk,
@@ -70,20 +71,20 @@ function integer log2;
 endfunction
 
 
-input wire	clk_sr1, clk_sr2, reset_n;
+input wire	clk26, clk_sr1, clk_sr2, reset_n;
 
 // SDRAM
 
-output wire [10:0] sdram_addr;
-output wire [1:0]  sdram_ba;
-output wire        sdram_cas_n;
-output wire        sdram_cke;
-output wire        sdram_cs_n;
-inout  wire [15:0] sdram_dq;
-output wire [1:0]  sdram_dqm;
-output wire        sdram_ras_n;
-output wire        sdram_we_n;
-output wire        sdram_clk;
+//output wire [10:0] sdram_addr;
+//output wire [1:0]  sdram_ba;
+//output wire        sdram_cas_n;
+//output wire        sdram_cke;
+//output wire        sdram_cs_n;
+//inout  wire [15:0] sdram_dq;
+//output wire [1:0]  sdram_dqm;
+//output wire        sdram_ras_n;
+//output wire        sdram_we_n;
+//output wire        sdram_clk;
 
 
 // AFE
@@ -105,13 +106,14 @@ output wire ft_oe_n, ft_wr_n, ft_rd_n;
 
 inout wire[FT_DATA_WIDTH-1:0] ft_data;
 inout wire[3:0] ft_be;
+inout wire ft_gpio0;
 
 // Si535x
 inout wire i2c_clk;
 inout wire i2c_sda;
 
 // Rpi
-output wire [RPI_DATA_WIDTH-1:0] rpi_d;
+inout wire [RPI_DATA_WIDTH-1:0] rpi_d;
 input wire [RPI_ADDR_WIDTH-1:0] rpi_a;
 input wire rpi_oe, rpi_we;
 input wire[1:0] rpi_gpio;
@@ -231,12 +233,13 @@ fsm_inst
 );
 
 
-pll pll_inst (.CLKI(ft_clk ), .CLKOP(clk ), .CLKOS(clk_pll ), .CLKOS2( clk_pll_shifted), .LOCK(pll_locked ));
+pll pll_inst (.CLKI(clk26 ), .CLKOP(clk ), .CLKOS(clk_pll ), .CLKOS2( clk_pll_shifted), .LOCK(pll_locked ));
 
 
 	
 assign rpi_d = {{3{rpi_a}}, rpi_we, rpi_oe};
 assign i2c_clk = afe_spi_miso & rpi_gpio[0];
 assign i2c_sda = afe_spi_miso & rpi_gpio[1];
+assign ft_gpio0 = rpi_d[0];
 
 endmodule
