@@ -14,6 +14,9 @@ clk26, clk_sr1, clk_sr2, reset_n,
 //sdram_we_n,
 //sdram_clk,
 
+// virtual vccio
+vcc_virt_1, vcc_virt_2,
+
 
 // AFE
 afe_tx_d, afe_tx_clk, afe_tx_sel,
@@ -72,6 +75,8 @@ endfunction
 
 
 input wire	clk26, clk_sr1, clk_sr2, reset_n;
+
+output wire vcc_virt_1, vcc_virt_2;
 
 // SDRAM
 
@@ -235,6 +240,9 @@ fsm_inst
 
 pll pll_inst (.CLKI(clk26 ), .CLKOP(clk ), .CLKOS(clk_pll ), .CLKOS2( clk_pll_shifted), .LOCK(pll_locked ));
 
+// virtual vccio
+assign vcc_virt_1 = 1;
+assign vcc_virt_2 = 1;
 
 	
 assign rpi_d = {{3{rpi_a}}, rpi_we, rpi_oe};
