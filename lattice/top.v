@@ -46,6 +46,10 @@ rpi_a,
 rpi_we,
 rpi_oe,
 rpi_gpio,
+
+// Misc
+tx_mux, rx_mux,
+tx_led, rx_led
 );
 
 
@@ -123,6 +127,8 @@ input wire [RPI_ADDR_WIDTH-1:0] rpi_a;
 input wire rpi_oe, rpi_we;
 input wire[1:0] rpi_gpio;
 
+// Misc
+output reg tx_mux, rx_mux, tx_led, rx_led;
 
 wire rd_req, ft_rd_clk, ft_wr_clk, ft_wr_req, ft_rd_req;
 
