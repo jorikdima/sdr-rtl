@@ -45,8 +45,8 @@
             <lattice:device>LFE5U-12F-6BG381C</lattice:device>
             <lattice:synthesis>lse</lattice:synthesis>
             <lattice:date>2017-01-30.16:47:40</lattice:date>
-            <lattice:modified>2017-05-16.08:16:42 PM</lattice:modified>
-            <lattice:diamond>3.8.0.115.3</lattice:diamond>
+            <lattice:modified>2017-07-25.21:12:19</lattice:modified>
+            <lattice:diamond>3.9.1.119</lattice:diamond>
             <lattice:language>Verilog</lattice:language>
             <lattice:attributes>
                 <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
@@ -115,7 +115,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Date</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">05/16/2017</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">07/25/2017</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>ModuleName</lattice:lpckey>
@@ -131,7 +131,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Time</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">20:16:40</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">21:12:16</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>VendorName</lattice:lpckey>

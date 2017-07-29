@@ -71,3 +71,6 @@ src/qsys/system/system\.xml
 /lattice/.setting.ini
 /lattice/.spread_sheet.ini
 /lattice/.recovery
+Debug
+ecpu
+.metadata

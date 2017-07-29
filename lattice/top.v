@@ -246,14 +246,44 @@ fsm_inst
 
 pll pll_inst (.CLKI(clk26 ), .CLKOP(clk ), .CLKOS(clk_pll ), .CLKOS2( clk_pll_shifted), .LOCK(pll_locked ));
 
+
+
+ecpu ecpu_u ( 
+.clk_i(clk_pll),
+.reset_n(en)
+, .spiMISO_MASTER(afe_spi_miso) // 
+, .spiMOSI_MASTER(afe_spi_mosi) // 
+, .spiSS_N_MASTER(afe_sen) // [1-1:0]
+, .spiSCLK_MASTER(afe_spi_clk) // 
+, .i2cm_ocSDA(i2c_sda) // 
+, .i2cm_ocSCL(i2c_clk) // 
+, .gpioPIO_BOTH_IN(gpioPIO_BOTH_IN) // [1-1:0]
+, .gpioPIO_BOTH_OUT(gpioPIO_BOTH_OUT) // [1-1:0]
+, .memory_passthruclk(memory_passthruclk) // 
+, .memory_passthrurst(memory_passthrurst) // 
+, .memory_passthrumem_adr(memory_passthrumem_adr) // [32-1:0]
+, .memory_passthrumem_master_data(memory_passthrumem_master_data) // [32-1:0]
+, .memory_passthrumem_slave_data(memory_passthrumem_slave_data) // [32-1:0]
+, .memory_passthrumem_strb(memory_passthrumem_strb) // 
+, .memory_passthrumem_cyc(memory_passthrumem_cyc) // 
+, .memory_passthrumem_ack(memory_passthrumem_ack) // 
+, .memory_passthrumem_err(memory_passthrumem_err) // 
+, .memory_passthrumem_rty(memory_passthrumem_rty) // 
+, .memory_passthrumem_sel(memory_passthrumem_sel) // [3:0] 
+, .memory_passthrumem_we(memory_passthrumem_we) // 
+, .memory_passthrumem_bte(memory_passthrumem_bte) // [1:0] 
+, .memory_passthrumem_cti(memory_passthrumem_cti) // [2:0] 
+, .memory_passthrumem_lock(memory_passthrumem_lock) // 
+);
+
 // virtual vccio
 assign vcc_virt_1 = 1;
 assign vcc_virt_2 = 1;
 
 	
 assign rpi_d = {{3{rpi_a}}, rpi_we, rpi_oe};
-assign i2c_clk = afe_spi_miso & rpi_gpio[0];
-assign i2c_sda = afe_spi_miso & rpi_gpio[1];
+//assign i2c_clk = afe_spi_miso & rpi_gpio[0];
+//assign i2c_sda = afe_spi_miso & rpi_gpio[1];
 assign ft_gpio0 = rpi_d[0];
 
 endmodule

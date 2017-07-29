@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<BaliProject version="3.2" title="sdr" device="LFE5U-12F-6BG381C" default_implementation="impl1">
+<BaliProject version="3.2" title="sdr" device="LFE5U-25F-6BG381C" default_implementation="impl1">
     <Options/>
     <Implementation title="impl1" dir="impl1" description="impl1" synthesis="lse" default_strategy="Strategy1">
-        <Options def_top="top_vlg_tst" top="top"/>
+        <Options top="top"/>
         <Source name="ip/a2f_fifo/a2f_fifo.sbx" type="sbx" type_short="SBX">
             <Options/>
         </Source>
@@ -18,13 +18,16 @@
         <Source name="../src/ft600_fsm.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="../src/sdram_controller.v" type="Verilog" type_short="Verilog" excluded="TRUE">
-            <Options/>
-        </Source>
         <Source name="../testbench/top_tb.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
         <Source name="ip/pll/pll.sbx" type="sbx" type_short="SBX">
+            <Options/>
+        </Source>
+        <Source name="ip/mico/ecpu/soc/ecpu.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="../src/command.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
         <Source name="sdr.lpf" type="Logic Preference" type_short="LPF">

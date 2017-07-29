@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SYSLIB>
+<MSB_FILE name="ecpu.msb" path="../soc"/>
+<MemorySections Deployflag="false" UCflag="true">
+<Section DEPLOY="yes" Load="false" Name=".text" Value="Instruction_IM"/>
+<Section Load="false" Name=".rodata" Value="Data_IM"/>
+<Section Load="false" Name=".data" Value="Data_IM"/>
+</MemorySections>
+<LinkerSettings>
+<Param Name="UserDefinedLinkerFile" Value=""/>
+</LinkerSettings>
+<STDIO_Redirection>
+<Param InstanceName="LM32" Name="stdin" Text="JTAG UART"/>
+<Param InstanceName="LM32" Name="stdout" Text="JTAG UART"/>
+<Param InstanceName="LM32" Name="stderr" Text="JTAG UART"/>
+</STDIO_Redirection>
+<LibSettings>
+<Param Name="SyslibOption" Value="on"/>
+<Param Name="USE_SMALL_LIBC" Value="TRUE"/>
+<Param Name="USE_STANDALONE_SMALL_PRINTF" Value="TRUE"/>
+</LibSettings>
+<PREPROCESSOR_IFDEF>
+<Param IFDEF_NAME="__MICOGPIO_USER_IRQ_HANDLER__" Value="off"/>
+</PREPROCESSOR_IFDEF>
+</SYSLIB>
