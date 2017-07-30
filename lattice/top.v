@@ -2,18 +2,6 @@
 module top(
 clk26, clk_sr1, clk_sr2, reset_n, 
 
-// SDRAM
-//sdram_addr,
-//sdram_ba,
-//sdram_cas_n,
-//sdram_cke,
-//sdram_cs_n,
-//sdram_dq,
-//sdram_dqm,
-//sdram_ras_n,
-//sdram_we_n,
-//sdram_clk,
-
 // virtual vccio
 vcc_virt_1, vcc_virt_2,
 
@@ -81,19 +69,6 @@ endfunction
 input wire	clk26, clk_sr1, clk_sr2, reset_n;
 
 output wire vcc_virt_1, vcc_virt_2;
-
-// SDRAM
-
-//output wire [10:0] sdram_addr;
-//output wire [1:0]  sdram_ba;
-//output wire        sdram_cas_n;
-//output wire        sdram_cke;
-//output wire        sdram_cs_n;
-//inout  wire [15:0] sdram_dq;
-//output wire [1:0]  sdram_dqm;
-//output wire        sdram_ras_n;
-//output wire        sdram_we_n;
-//output wire        sdram_clk;
 
 
 // AFE
@@ -176,32 +151,6 @@ afe_inst(
 
 );
 
-//sdram_controller sdram_controller_inst(
-
-    // inputs:
-    //.az_addr(az_addr),
-    //.az_be_n(az_be_n),
-    //.az_cs(az_cs),
-    //.az_data(az_data),
-    //.az_rd_n(az_rd_n),
-    //.az_wr_n(az_wr_n),
-    //.clk(1'b0),
-    //.reset_n(1'b0),
-
-   // outputs:
-    //.za_data(za_data),
-    //.za_valid(za_valid),
-    //.za_waitrequest(za_waitrequest),
-    //.zs_addr(sdram_addr),
-    //.zs_ba(sdram_ba),
-    //.zs_cas_n(sdram_cas_n),
-    //.zs_cke(sdram_cke),
-    //.zs_cs_n(sdram_cs_n),
-    //.zs_dq(sdram_dq),
-    //.zs_dqm(sdram_dqm),
-    //.zs_ras_n(sdram_ras_n),
-    //.zs_we_n(sdram_we_n)
-	//);
 
 a2f_fifo a2f_fifo_inst (.Data(afe_wdata ), .WrClock(a2f_fifo_clk ), .RdClock(ft_wr_clk ), .WrEn(a2f_fifo_wr ), .RdEn(ft_wr_req ), 
     .Reset(1'b0 ), .RPReset( 1'b0), .Q( ft_wdata), .AlmostFull(a2f_fifo_enough ), .Empty(a2f_fifo_empty ), .Full(a2f_fifo_full ));
