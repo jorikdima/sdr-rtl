@@ -33,7 +33,7 @@ module top_vlg_tst();
 // test vector input registers
 reg [11:0] afe_rx_d;
 reg afe_rx_sel;
-reg clk_sr1, clk_sr2;
+reg clk_sr1, clk_sr2, clk26;
 wire [3:0] ft_be;
 reg [3:0]  treg_ft_be;
 reg ft_clk;
@@ -42,27 +42,18 @@ reg [31:0] treg_ft_data;
 reg ft_rxf_n;
 reg ft_txe_n;
 reg reset_n;
-reg [15:0] treg_sdram_dq;
+
 // wires                                               
 wire afe_rx_clk;
 wire afe_tx_clk;
 wire [11:0]  afe_tx_d;
 wire afe_tx_sel;
-wire sdram_clk;
 wire ft_oe_n;
 wire ft_rd_n;
 wire ft_wr_n;
 wire afe_reset;
-wire afe_rx_en;
-wire [10:0]  sdram_addr;
-wire [1:0]  sdram_ba;
-wire sdram_cas_n;
-wire sdram_cke;
-wire sdram_cs_n;
-wire [15:0]  sdram_dq;
-wire [1:0]  sdram_dqm;
-wire sdram_ras_n;
-wire sdram_we_n;
+wire afe_rx_en;	  
+
 wire afe_sen;
 wire afe_spi_clk;
 wire afe_spi_mosi;
@@ -70,7 +61,7 @@ wire afe_spi_miso;
 wire afe_tx_en;
 
 // assign statements (if any)                          
-assign sdram_dq = treg_sdram_dq;
+
 assign ft_data = ft_rd_n ? 32'hzzzzzzzz : treg_ft_data;
 top i1 (
 // port map - connection between master ports and signals/registers   
@@ -81,8 +72,8 @@ top i1 (
 	.afe_tx_d(afe_tx_d),
 	.afe_tx_sel(afe_tx_sel),
 	.clk_sr1(clk_sr1),
-	.clk_sr2(clk_sr2),
-	.sdram_clk(sdram_clk),
+	.clk_sr2(clk_sr2), 
+	.clk26(clk26),
 	.ft_be(ft_be),
 	.ft_clk(ft_clk),
 	.ft_data(ft_data),
@@ -94,15 +85,6 @@ top i1 (
 	.afe_reset(afe_reset),
 	.reset_n(reset_n),
 	.afe_rx_en(afe_rx_en),
-	.sdram_addr(sdram_addr),
-	.sdram_ba(sdram_ba),
-	.sdram_cas_n(sdram_cas_n),
-	.sdram_cke(sdram_cke),
-	.sdram_cs_n(sdram_cs_n),
-	.sdram_dq(sdram_dq),
-	.sdram_dqm(sdram_dqm),
-	.sdram_ras_n(sdram_ras_n),
-	.sdram_we_n(sdram_we_n),
 	.afe_sen(afe_sen),
 	.afe_spi_clk(afe_spi_clk),
 	.afe_spi_mosi(afe_spi_mosi),
@@ -121,10 +103,11 @@ initial
 begin                                                  
 // code that executes only once                        
 // insert code here --> begin                          
-reset_n = 0;
+reset_n = 1;
 ft_clk=0;
 clk_sr1 = 0;
-clk_sr2 = 0;
+clk_sr2 = 0; 
+clk26 = 0;
 ft_rxf_n = 1;
 ft_txe_n = 1;
 treg_ft_data = 32'haa0000;
@@ -141,11 +124,12 @@ inited = 0;
 rxf_rnd = $random%10;
 txe_rnd = $random%10; 
 
+#1 	reset_n = 0;
+inited = 1;
+ft_rxf_n = 0;
+ft_txe_n = 0;
 
-#10 reset_n = 1;
-#10 inited = 1;
-#10 ft_rxf_n = 0;
-#10 ft_txe_n = 0;
+#9 reset_n = 1;
                                                        
 // --> end                                             
 $display("Running testbench");                       
@@ -154,6 +138,7 @@ end
 parameter FT_PACKET_WORDS = 4096;
 
 initial forever #5 ft_clk = ~ ft_clk;
+initial forever #1.25 clk26 = ~ clk26;
 initial forever #12.5 clk_sr1 = ~ clk_sr1;
 initial forever #12.5 clk_sr2 = ~ clk_sr2;
 	

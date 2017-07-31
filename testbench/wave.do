@@ -3,7 +3,7 @@ quietly WaveActivateNextPane {} 0
 add wave -noupdate /top_vlg_tst/clk_in
 add wave -noupdate /top_vlg_tst/reset_n
 add wave -noupdate /top_vlg_tst/i1/pll_inst/locked
-add wave -noupdate /top_vlg_tst/clk_sdram
+add wave -noupdate /top_vlg_tst/clk26
 add wave -noupdate /top_vlg_tst/i1/clk_main
 add wave -noupdate -divider FT600
 add wave -noupdate /top_vlg_tst/ft_clk
@@ -15,7 +15,7 @@ add wave -noupdate /top_vlg_tst/ft_oe_n
 add wave -noupdate /top_vlg_tst/ft_rd_n
 add wave -noupdate /top_vlg_tst/ft_wr_n
 add wave -noupdate /top_vlg_tst/ft_txe_n
-add wave -noupdate /top_vlg_tst/i1/ft_inst/write_mode
+add wave -noupdate /top_vlg_tst/i1/fsm_inst/write_mode
 add wave -noupdate -divider F2A_FIFO
 add wave -noupdate /top_vlg_tst/i1/f2a_fifo_inst/aclr
 add wave -noupdate /top_vlg_tst/i1/f2a_fifo_inst/wrclk
@@ -36,7 +36,7 @@ add wave -noupdate /top_vlg_tst/i1/a2f_fifo_inst/wrreq
 add wave -noupdate -radix hexadecimal /top_vlg_tst/i1/a2f_fifo_inst/q
 add wave -noupdate -radix hexadecimal /top_vlg_tst/i1/a2f_fifo_inst/rdusedw
 add wave -noupdate /top_vlg_tst/i1/a2f_fifo_inst/wrfull
-add wave -noupdate -divider AFE
+add wave -noupdate -divider AFETX
 add wave -noupdate /top_vlg_tst/i1/afe_inst/tx_sclk_2x
 add wave -noupdate /top_vlg_tst/i1/afe_inst/tx_clk_2x
 add wave -noupdate /top_vlg_tst/i1/afe_inst/tx_fifo_req
@@ -45,7 +45,7 @@ add wave -noupdate /top_vlg_tst/afe_tx_sel
 add wave -noupdate -radix hexadecimal /top_vlg_tst/i1/afe_inst/tx_fifo_data
 add wave -noupdate -radix hexadecimal /top_vlg_tst/afe_tx_d
 add wave -noupdate /top_vlg_tst/i1/afe_inst/tx_valid_pair
-add wave -noupdate -divider <NULL>
+add wave -noupdate -divider AFERX
 add wave -noupdate /top_vlg_tst/afe_rx_clk
 add wave -noupdate /top_vlg_tst/afe_rx_sel
 add wave -noupdate -radix hexadecimal /top_vlg_tst/afe_rx_i
@@ -55,16 +55,6 @@ add wave -noupdate -radix hexadecimal /top_vlg_tst/afe_rx_d
 add wave -noupdate -radix hexadecimal /top_vlg_tst/i1/afe_inst/rx_fifo_data
 add wave -noupdate /top_vlg_tst/i1/afe_inst/rx_fifo_clk
 add wave -noupdate /top_vlg_tst/i1/afe_inst/rx_fifo_wr
-add wave -noupdate -divider SDRAM
-add wave -noupdate /top_vlg_tst/sdram_addr
-add wave -noupdate /top_vlg_tst/sdram_ba
-add wave -noupdate /top_vlg_tst/sdram_cas_n
-add wave -noupdate /top_vlg_tst/sdram_cke
-add wave -noupdate /top_vlg_tst/sdram_cs_n
-add wave -noupdate /top_vlg_tst/sdram_dq
-add wave -noupdate /top_vlg_tst/sdram_dqm
-add wave -noupdate /top_vlg_tst/sdram_ras_n
-add wave -noupdate /top_vlg_tst/sdram_we_n
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {10074768 ps} 0} {{Cursor 2} {420744 ps} 0}
 quietly wave cursor active 2
