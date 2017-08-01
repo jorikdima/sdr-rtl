@@ -110,7 +110,7 @@ clk_sr2 = 0;
 clk26 = 0;
 ft_rxf_n = 1;
 ft_txe_n = 1;
-treg_ft_data = 32'haa0000;
+treg_ft_data = 32'haa000f;
 
 // local
 rxf_n_cnt = 0;

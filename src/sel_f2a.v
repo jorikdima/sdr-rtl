@@ -1,6 +1,7 @@
 
 
 module sel_f2a(
+    reset_n,
 		// FTDI to FIFO/ECPU
 	// FTDI interface
 	// input
@@ -36,6 +37,7 @@ module sel_f2a(
 	parameter TOFIFO=0, TOCPU=1;
 	
 	
+	input wire reset_n;
 	// FTDI to FIFO/ECPU
 	//input
 	input wire[FT_DATA_WIDTH-1:0] data_i;
@@ -44,7 +46,8 @@ module sel_f2a(
 	
 	//output to FIFO
 	output wire[IQ_PAIR_WIDTH-1:0] fifo_data_o;
-	output wire fifo_clk_o, fifo_we_o;
+	output wire fifo_clk_o;
+    output wire fifo_we_o;
 	input wire fifo_full_i, fifo_enough_i;
 	
 	//output to ECPU
@@ -62,17 +65,50 @@ module sel_f2a(
     assign full_o = fifo_full_i;
 	assign enough_o = fifo_enough_i;
 	
-	assign fifo_we_o = we_i;
-
+	//assign fifo_we_o = we_i;
+    assign fifo_we_o = we_i & fifo_we;
+    reg fifo_we;
 // Internal
-    reg state;
+    reg[15:0] packet_cnt, req_packets;
+	reg mode;
 	
 	
 	initial 
 	begin
-		state <= TOFIFO;
-		
+		packet_cnt <= 16'h0000;
+		req_packets <= 16'hffff;
+		mode <= TOFIFO;
     end
+	
+always @ (negedge clk_i or negedge reset_n)
+begin
+if (~reset_n)
+    fifo_we <= 1'b0;
+else
+    fifo_we <= mode==TOFIFO & packet_cnt > 0;
+end	   
+ 
+always @ (posedge clk_i or negedge reset_n)
+begin
+if (~reset_n) begin
+   packet_cnt <= 16'h0000;
+   req_packets <= 16'hffff;
+   mode <= TOFIFO;
+   end
+else if (we_i) begin
+   if (packet_cnt == 16'h0000) begin
+       // decode
+       mode <= data_i[FT_DATA_WIDTH-1];
+       req_packets <= data_i[15:0];       
+	   end
+   if (packet_cnt == req_packets)
+	   packet_cnt <= 16'h0000;
+   else
+	   packet_cnt <= packet_cnt + 16'h1;
+   end
+end
+
+
 
 	
 endmodule

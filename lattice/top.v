@@ -166,6 +166,7 @@ f2a_fifo f2a_fifo_inst (.Data(f2a_fifo_data ), .WrClock(f2a_fifo_wrclk ), .RdClo
 sel_f2a #(.FT_DATA_WIDTH (FT_DATA_WIDTH), .IQ_PAIR_WIDTH(IQ_PAIR_WIDTH), .QSTART_BIT_INDEX(16))
 sel_f2a_inst
 (
+    .reset_n(en),
 	.data_i(ft_rdata),
 	.clk_i(ft_rd_clk),
 	.we_i(ft_rd_req),
