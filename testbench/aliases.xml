@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HdlAlias>
+	<Aliases>
+		<Alias name="sel_f2a">
+			<Mapping value="0" mnemonic="TOFIFO"/>
+			<Mapping value="1" mnemonic="TOCPU"/>
+		</Alias>
+		<Alias name="state">
+			<Mapping value="0" mnemonic="IDLE"/>
+			<Mapping value="1" mnemonic="WRITE (A2F)"/>
+			<Mapping value="2" mnemonic="READ (F2A)"/>
+		</Alias>
+	</Aliases>
+</HdlAlias>

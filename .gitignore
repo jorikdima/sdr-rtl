@@ -74,3 +74,15 @@ src/qsys/system/system\.xml
 Debug
 ecpu
 .metadata
+/lattice/ip/cpucmd_fifo/cpucmd_fifo.ldc
+/lattice/ip/cpucmd_fifo/cpucmd_fifo.cst
+/lattice/ip/cpucmd_fifo/cpucmd_fifo.edn
+/lattice/ip/cpucmd_fifo/cpucmd_fifo.fdc
+/lattice/ip/cpucmd_fifo/tb_cpucmd_fifo_tmpl.v
+/lattice/ip/cpucmd_fifo/cpucmd_fifo.v
+/lattice/ip/cpucmd_fifo/cpucmd_fifo_generate.log
+/lattice/ip/cpucmd_fifo/cpucmd_fifo_tmpl.v
+/lattice/ip/cpucmd_fifo/generate_core.tcl
+/lattice/ip/cpucmd_fifo/generate_ngd.tcl
+/lattice/ip/cpucmd_fifo/msg_file.log
+archv

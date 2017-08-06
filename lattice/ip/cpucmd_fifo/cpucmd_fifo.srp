@@ -1,0 +1,41 @@
+SCUBA, Version Diamond (64-bit) 3.9.1.119
+Tue Aug 01 21:34:58 2017
+
+Copyright (c) 1991-1994 by NeoCAD Inc. All rights reserved.
+Copyright (c) 1995 AT&T Corp.   All rights reserved.
+Copyright (c) 1995-2001 Lucent Technologies Inc.  All rights reserved.
+Copyright (c) 2001 Agere Systems   All rights reserved.
+Copyright (c) 2002-2017 Lattice Semiconductor Corporation,  All rights reserved.
+
+    Issued command   : C:\lscc\diamond\3.9_x64\ispfpga\bin\nt64\scuba.exe -w -n cpucmd_fifo -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 64 -width 32 -pfu_fifo -reset_rel SYNC -pe -1 -pf -1 -fdc C:/work/sdr-rtl/lattice/ip/cpucmd_fifo/cpucmd_fifo/cpucmd_fifo.fdc 
+    Circuit name     : cpucmd_fifo
+    Module type      : ebfifo
+    Module Version   : 5.8
+    Ports            : 
+	Inputs       : Data[31:0], WrClock, RdClock, WrEn, RdEn, Reset, RPReset
+	Outputs      : Q[31:0], Empty, Full
+    I/O buffer       : not inserted
+    EDIF output      : cpucmd_fifo.edn
+    Verilog output   : cpucmd_fifo.v
+    Verilog template : cpucmd_fifo_tmpl.v
+    Verilog testbench: tb_cpucmd_fifo_tmpl.v
+    Verilog purpose  : for synthesis and simulation
+    Bus notation     : big endian
+    Report output    : cpucmd_fifo.srp
+    Element Usage    :
+          CCU2C : 22
+           AND2 : 2
+        FD1P3BX : 2
+        FD1P3DX : 72
+        FD1S3BX : 1
+        FD1S3DX : 29
+            INV : 4
+          MUX41 : 32
+            OR2 : 1
+       ROM16X1A : 20
+       DPR16X4C : 32
+           XOR2 : 12
+    Estimated Resource Usage:
+            LUT : 111
+           DRAM : 32
+            Reg : 104

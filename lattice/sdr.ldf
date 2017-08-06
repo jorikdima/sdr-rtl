@@ -2,7 +2,7 @@
 <BaliProject version="3.2" title="sdr" device="LFE5U-25F-6BG381C" default_implementation="impl1">
     <Options/>
     <Implementation title="impl1" dir="impl1" description="impl1" synthesis="lse" default_strategy="Strategy1">
-        <Options def_top="selector" top="top"/>
+        <Options def_top="cpucmd_fifo" top="top"/>
         <Source name="ip/a2f_fifo/a2f_fifo.sbx" type="sbx" type_short="SBX">
             <Options/>
         </Source>
@@ -21,19 +21,28 @@
         <Source name="../testbench/top_tb.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="ip/pll/pll.sbx" type="sbx" type_short="SBX">
+        <Source name="ip/pll/pll.sbx" type="sbx" type_short="SBX" excluded="TRUE">
             <Options/>
         </Source>
-        <Source name="ip/mico/ecpu/soc/ecpu.v" type="Verilog" type_short="Verilog">
+        <Source name="ip/mico/ecpu/soc/ecpu.v" type="Verilog" type_short="Verilog" excluded="TRUE">
             <Options/>
         </Source>
-        <Source name="../src/selector.v" type="Verilog" type_short="Verilog">
+        <Source name="../src/sel_a2f.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="../src/sel_f2a.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="ip/cpucmd_fifo/cpucmd_fifo.sbx" type="sbx" type_short="SBX">
             <Options/>
         </Source>
         <Source name="sdr.lpf" type="Logic Preference" type_short="LPF">
             <Options/>
         </Source>
         <Source name="sim/sim.spf" type="Simulation Project File" type_short="SPF">
+            <Options/>
+        </Source>
+        <Source name="simpost/simpost.spf" type="Simulation Project File" type_short="SPF">
             <Options/>
         </Source>
     </Implementation>

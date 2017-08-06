@@ -1,17 +1,3 @@
-// Copyright (C) 2016  Intel Corporation. All rights reserved.
-// Your use of Intel Corporation's design tools, logic functions 
-// and other software and tools, and its AMPP partner logic 
-// functions, and any output files from any of the foregoing 
-// (including device programming or simulation files), and any 
-// associated documentation or information are expressly subject 
-// to the terms and conditions of the Intel Program License 
-// Subscription Agreement, the Intel Quartus Prime License Agreement,
-// the Intel MegaCore Function License Agreement, or other 
-// applicable license agreement, including, without limitation, 
-// that your use is for the sole purpose of programming logic 
-// devices manufactured by Intel and sold by Intel or its 
-// authorized distributors.  Please refer to the applicable 
-// agreement for further details.
 
 // *****************************************************************************
 // This file contains a Verilog test bench template that is freely editable to  
@@ -62,7 +48,7 @@ wire afe_tx_en;
 
 // assign statements (if any)                          
 
-assign ft_data = ft_rd_n ? 32'hzzzzzzzz : treg_ft_data;
+assign ft_data = (oe_local & ~ft_rxf_n) ? treg_ft_data : 32'hzzzzzzzz;
 top i1 (
 // port map - connection between master ports and signals/registers   
 	.afe_rx_clk(afe_rx_clk),
@@ -95,8 +81,22 @@ top i1 (
 
 reg [15:0] rxf_n_cnt, txe_n_cnt;
 reg[11:0] afe_rx_i, afe_rx_q;
-reg inited;
+reg inited, rd_local, wr_local, oe_local, cmd_sent;
 integer rxf_rnd, txe_rnd;  
+
+
+parameter TOFIFO=1'b0, TOCPU=1'b1;
+wire [31:0] cmd;
+
+reg cmd_type; 
+reg[15:0] cmd_fifo_num; 
+reg[2:0] cmd_cpu_id;
+reg[7:0] cmd_cpu_num;
+ 
+assign cmd[27:20] = cmd_cpu_num;
+assign cmd[31] = cmd_type;
+assign cmd[15:0] = cmd_fifo_num;
+assign cmd[30:28] = cmd_cpu_id;
 
 
 initial                                                
@@ -110,7 +110,7 @@ clk_sr2 = 0;
 clk26 = 0;
 ft_rxf_n = 1;
 ft_txe_n = 1;
-treg_ft_data = 32'haa000f;
+treg_ft_data = 32'haa0000;
 
 // local
 rxf_n_cnt = 0;
@@ -123,6 +123,11 @@ afe_rx_q = 0;
 inited = 0;
 rxf_rnd = $random%10;
 txe_rnd = $random%10; 
+
+rd_local = 0;
+oe_local = 0;
+wr_local = 0;
+cmd_sent = 0;
 
 #1 	reset_n = 0;
 inited = 1;
@@ -142,16 +147,38 @@ initial forever #1.25 clk26 = ~ clk26;
 initial forever #12.5 clk_sr1 = ~ clk_sr1;
 initial forever #12.5 clk_sr2 = ~ clk_sr2;
 	
-//  TO SDR	
+//  TO SDR	(F2A)
 always @ (posedge ft_rd_n or posedge ft_rxf_n)
-	begin
+begin
 	rxf_n_cnt <= 0;
 	rxf_rnd <= $random%10;
+end
+
+always @(posedge ft_clk)
+begin
+    rd_local <= ~ft_rd_n;
+    oe_local <= ~ft_oe_n;
+    wr_local <= ~ft_wr_n;
+end
+
+always @(negedge ft_rxf_n)
+begin
+    cmd_sent <= 1'b0;    
+    if (cmd_type == TOCPU) begin        
+        cmd_type <= TOFIFO;
+        cmd_fifo_num <= 16'd4095; 
 	end
+    else begin        
+        cmd_type <= TOCPU;
+        cmd_cpu_id <= 1;
+        cmd_cpu_num <= 0;
+    end
+    treg_ft_data <= cmd;
+end
 	
 always @(negedge ft_clk)
 begin		 
-	if (rxf_n_cnt < (FT_PACKET_WORDS / 2 + rxf_rnd))
+	if (rxf_n_cnt <= (FT_PACKET_WORDS / 2 + rxf_rnd))
 		begin
 		rxf_n_cnt <= rxf_n_cnt + 1;
 	    ft_rxf_n <= 1;			  
@@ -159,14 +186,22 @@ begin
 	else if (rxf_n_cnt < (FT_PACKET_WORDS * 3 / 2 + rxf_rnd))  
 		begin
 	    ft_rxf_n <= 0;	  
-		if (~ft_rd_n) 
+		if (rd_local) 
 			rxf_n_cnt = rxf_n_cnt + 1;
 		end
 	else
 	    ft_rxf_n <= 1;	
 	
-	if (~ft_rd_n & ~ft_rxf_n)
-	    treg_ft_data <= treg_ft_data + 17'h10001;     
+	if (rd_local & ~ft_rxf_n)
+    begin
+        if (~cmd_sent) 
+            begin
+            cmd_sent <= 1'b1;
+            treg_ft_data <= 0;
+            end
+        else        
+            treg_ft_data <= treg_ft_data + 17'h10001;        
+    end
 end
 
 

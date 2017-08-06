@@ -34,7 +34,7 @@ module sel_f2a(
 	parameter IQ_PAIR_WIDTH = 24;
 	parameter QSTART_BIT_INDEX = 16;	
 	
-	parameter TOFIFO=0, TOCPU=1;
+	parameter TOFIFO=1'b0, TOCPU=1'b1;
 	
 	
 	input wire reset_n;
@@ -65,27 +65,33 @@ module sel_f2a(
     assign full_o = fifo_full_i;
 	assign enough_o = fifo_enough_i;
 	
-	//assign fifo_we_o = we_i;
     assign fifo_we_o = we_i & fifo_we;
-    reg fifo_we;
+    assign cpu_we_o = we_i & cpu_we;
+    
 // Internal
     reg[15:0] packet_cnt, req_packets;
 	reg mode;
+	reg fifo_we, cpu_we;
 	
-	
-	initial 
-	begin
-		packet_cnt <= 16'h0000;
-		req_packets <= 16'hffff;
-		mode <= TOFIFO;
-    end
+initial 
+begin
+    packet_cnt <= 16'h0000;
+    req_packets <= 16'hffff;
+    mode <= TOFIFO;
+    fifo_we <= 1'b0;
+    cpu_we <= 1'b0;
+end
 	
 always @ (negedge clk_i or negedge reset_n)
 begin
-if (~reset_n)
+if (~reset_n) begin
     fifo_we <= 1'b0;
-else
+    cpu_we <= 1'b0;
+    end
+else begin
     fifo_we <= mode==TOFIFO & packet_cnt > 0;
+    cpu_we <= mode == TOCPU & packet_cnt > 0;
+    end
 end	   
  
 always @ (posedge clk_i or negedge reset_n)
@@ -99,7 +105,15 @@ else if (we_i) begin
    if (packet_cnt == 16'h0000) begin
        // decode
        mode <= data_i[FT_DATA_WIDTH-1];
-       req_packets <= data_i[15:0];       
+       case (mode)
+           TOFIFO: 
+               req_packets <= data_i[15:0];
+               
+           TOCPU: begin
+               req_packets <= {{8{1'b0}}, data_i[27:20]};
+               end
+       endcase
+              
 	   end
    if (packet_cnt == req_packets)
 	   packet_cnt <= 16'h0000;
@@ -108,7 +122,4 @@ else if (we_i) begin
    end
 end
 
-
-
-	
 endmodule

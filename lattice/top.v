@@ -111,7 +111,7 @@ wire f2a_fifo_empty, f2a_fifo_full, f2a_fifo_req, f2a_fifo_clk;
 wire a2f_fifo_wr, a2f_fifo_clk, a2f_fifo_full;
 wire f2a_fifo_enough, a2f_fifo_enough, a2f_fifo_empty;
 
-wire [IQ_PAIR_WIDTH-1:0] f2a_fifo_q, afe_wdata, ft_wdata;
+wire [IQ_PAIR_WIDTH-1:0] f2a_fifo_q, afe_wdata;
 
 wire clk, pll_locked, clk_pll, clk_pll_shifted, i2c_sda_oe, i2c_scl_oe;
 
@@ -152,12 +152,18 @@ afe_inst(
 
 wire rd_full, rd_enough;
 wire f2a_fifo_wren, f2a_fifo_wrclk;
-wire[IQ_PAIR_WIDTH-1:0] f2a_fifo_data;
-wire[FT_DATA_WIDTH-1:0] ft_rdata;
+wire a2f_fifo_rden, a2f_fifo_rdclk;
+wire[IQ_PAIR_WIDTH-1:0] f2a_fifo_data, a2f_fifo_data;
+wire[FT_DATA_WIDTH-1:0] ft_rdata, ft_wdata;
+wire[FT_DATA_WIDTH-1:0] cpucmd_fifo_data;
+wire cpucmd_fifo_rd, cpucmd_fifo_clk, cpucmd_fifo_empty;
 
 
-a2f_fifo a2f_fifo_inst (.Data(afe_wdata ), .WrClock(a2f_fifo_clk ), .RdClock(ft_wr_clk ), .WrEn(a2f_fifo_wr ), .RdEn(ft_wr_req ), 
-    .Reset(1'b0 ), .RPReset( 1'b0), .Q( ft_wdata), .AlmostFull(a2f_fifo_enough ), .Empty(a2f_fifo_empty ), .Full(a2f_fifo_full ));
+cpucmd_fifo cpucmd_fifo_inst (.Data( ), .WrClock( ), .RdClock(cpucmd_fifo_clk ), .WrEn( ), .RdEn(cpucmd_fifo_rd ), 
+    .Reset(1'b0 ), .RPReset(1'b0 ), .Q(cpucmd_fifo_data ), .Empty(cpucmd_fifo_empty ), .Full( ));
+    
+a2f_fifo a2f_fifo_inst (.Data(afe_wdata ), .WrClock(a2f_fifo_clk ), .RdClock(a2f_fifo_rdclk ), .WrEn(a2f_fifo_wr ), .RdEn(a2f_fifo_rden ), 
+    .Reset(1'b0 ), .RPReset( 1'b0), .Q(a2f_fifo_data), .AlmostFull(a2f_fifo_enough ), .Empty(a2f_fifo_empty ), .Full(a2f_fifo_full ));
 	
 f2a_fifo f2a_fifo_inst (.Data(f2a_fifo_data ), .WrClock(f2a_fifo_wrclk ), .RdClock( f2a_fifo_clk), .WrEn(f2a_fifo_wren ), .RdEn(f2a_fifo_req ), 
     .Reset(1'b0 ), .RPReset(1'b0 ), .Q( f2a_fifo_q), .AlmostEmpty(f2a_fifo_enough ), .Empty( f2a_fifo_empty), .Full(f2a_fifo_full ));	
@@ -167,6 +173,8 @@ sel_f2a #(.FT_DATA_WIDTH (FT_DATA_WIDTH), .IQ_PAIR_WIDTH(IQ_PAIR_WIDTH), .QSTART
 sel_f2a_inst
 (
     .reset_n(en),
+    // FTDI interface
+    // input
 	.data_i(ft_rdata),
 	.clk_i(ft_rd_clk),
 	.we_i(ft_rd_req),
@@ -190,6 +198,27 @@ sel_f2a_inst
 	.cpu_we_o()
 );
 
+sel_a2f #(.FT_DATA_WIDTH (FT_DATA_WIDTH), .IQ_PAIR_WIDTH(IQ_PAIR_WIDTH), .QSTART_BIT_INDEX(16))
+sel_a2f_inst
+(
+    .reset_n(en),
+		// FIFO/ECPU to FTDI
+	//input from FIFO
+	.fifo_data_i(a2f_fifo_data),
+	.fifo_clk_o(a2f_fifo_rdclk),
+	.fifo_re_o(a2f_fifo_rden),
+	
+	//input from ECPU
+	.cpu_data_i(cpucmd_fifo_data),
+    .cpu_empty_i(cpucmd_fifo_empty),
+	.cpu_clk_o(cpucmd_fifo_clk),
+	.cpu_re_o(cpucmd_fifo_rd),
+    	
+	//output to FTDI
+	.data_o(ft_wdata),
+	.clk_i(ft_wr_clk),
+	.re_i(ft_wr_req)
+);
 
 ft600_fsm #(.FT_DATA_WIDTH (FT_DATA_WIDTH))
 fsm_inst

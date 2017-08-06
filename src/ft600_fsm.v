@@ -53,8 +53,8 @@ input wire[FT_DATA_WIDTH-1:0] wdata;
 
 // output
 
-output wire rd_req;
-output reg oe_n, wr_req, rd_n, wr_n;
+output wire rd_req, wr_req;
+output reg oe_n, rd_n, wr_n;
 
 output wire wr_clk, rd_clk;
 
@@ -66,6 +66,7 @@ inout wire[3:0] ft_be;
 
 parameter IDLE=0, WRITE=1, READ=2;
 reg [1:0] state, next_state;
+reg rd_n_local;
 wire[FT_DATA_WIDTH-1:0] wdata_out;
 
 
@@ -75,7 +76,7 @@ assign ft_data = oe_n ? wdata_out : {FT_DATA_WIDTH{1'bz}};
 
                    
 assign rd_clk = clk;
-assign wr_clk = ~clk;
+assign wr_clk = clk;
 
 
 assign rdata =  ft_data;
@@ -86,40 +87,49 @@ wire no_more_read = rxf_n | rd_full;
 wire no_more_write = txe_n | wr_empty;
 
 
+initial 
+begin
+    state <= IDLE; 
+    next_state <= IDLE;
+    
+    wr_n <= 1'b1;
+    rd_n <= 1'b1;
+    rd_n_local <= 1'b1;
+    oe_n <= 1'b1;  
+end
 
 //----------Seq Logic-----------------------------
     
 //----------Output Logic-----------------------------
 
 assign rd_req = ~rd_n & ~rxf_n;
+assign wr_req = ~wr_n & ~txe_n;
 		  
 always @ (posedge clk or negedge reset_n)
-    if (~reset_n)
-		begin
-        state <= IDLE; 
-		//next_state <= IDLE;
-		//wr_req = 1'b0;
-		end
-    else
-		begin
-        state <= next_state;
-		wr_req <= ((state == WRITE) & ~wr_empty & ~txe_n) ? 1'b1 : 1'b0;
-		
-		end
+if (~reset_n)
+    begin
+    state <= IDLE; 
+    //next_state <= IDLE;    
+    end
+else
+    begin
+    state <= next_state;    
+    end
 		
 always @ (negedge clk or negedge reset_n)
 if (~reset_n)
 	begin
 		wr_n <= 1'b1;
-		rd_n <= 1'b0;  
-		oe_n <= 1'b0;
+		rd_n <= 1'b1;
+        rd_n_local <= 1'b1;
+		oe_n <= 1'b1;        
 	end
 else	
     begin
-	wr_n <= (state == WRITE & wr_req & ~txe_n) ? 1'b0 : 1'b1;
-    rd_n <= (state == READ | state == IDLE) ? 1'b0 : 1'b1;
-	oe_n <= (state == WRITE) ? 1'b1 : 1'b0;
-	//wr_req = ((state == WRITE) & ~wr_empty & ~txe_n) ? 1'b1 : 1'b0;
+	wr_n <= (state == WRITE & ~txe_n & ~wr_empty) ? 1'b0 : 1'b1;
+    rd_n_local <= (state == READ) ? 1'b0 : 1'b1;
+    oe_n <= (state == READ) ? 1'b0 : 1'b1;	
+    rd_n <= rd_n_local | (state != READ);	
     end	
 		
                              
@@ -132,6 +142,8 @@ begin
                 next_state <= WRITE;
             else if (have_rd_chance)
                 next_state <= READ;
+            else
+                next_state <= IDLE;
 
         WRITE:
         //either we have sent all data (which should not happen) or FT is full

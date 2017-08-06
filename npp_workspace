@@ -1,0 +1,9 @@
+<NotepadPlus>
+    <Project name="sdr">
+        <File name="src\afe.v" />
+        <File name="src\ft600_fsm.v" />
+        <File name="src\sel_a2f.v" />
+        <File name="src\sel_f2a.v" />
+        <File name="lattice\top.v" />
+    </Project>
+</NotepadPlus>
