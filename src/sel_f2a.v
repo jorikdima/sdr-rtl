@@ -34,8 +34,8 @@ module sel_f2a(
 	parameter IQ_PAIR_WIDTH = 24;
 	parameter QSTART_BIT_INDEX = 16;	
 	
-	parameter TOFIFO=1'b0, TOCPU=1'b1;
-	
+	parameter ST_DECODE=2'h0, ST_FIFO=2'h1, ST_CPU=2'h2;
+    parameter TOFIFO=1'b0, TOCPU=1'b1;	
 	
 	input wire reset_n;
 	// FTDI to FIFO/ECPU
@@ -51,14 +51,13 @@ module sel_f2a(
 	input wire fifo_full_i, fifo_enough_i;
 	
 	//output to ECPU
-	output wire[FT_DATA_WIDTH-1:0] cpu_data_o;
+	output reg [FT_DATA_WIDTH-1:0] cpu_data_o;
 	output wire cpu_clk_o, cpu_we_o;	
 	
 	
 	assign fifo_data_o = {data_i[QSTART_BIT_INDEX + IQ_PAIR_WIDTH/2 - 1:QSTART_BIT_INDEX],
 						data_i[IQ_PAIR_WIDTH/2 - 1:0] };
-	assign cpu_data_o = data_i;
-	
+		
 	assign fifo_clk_o = clk_i;
 	assign cpu_clk_o = clk_i;
 	
@@ -66,20 +65,25 @@ module sel_f2a(
 	assign enough_o = fifo_enough_i;
 	
     assign fifo_we_o = we_i & fifo_we;
-    assign cpu_we_o = we_i & cpu_we;
+    assign cpu_we_o = cpu_we;
     
 // Internal
     reg[15:0] packet_cnt, req_packets;
-	reg mode;
+	reg [1:0] mode;
 	reg fifo_we, cpu_we;
+    reg [FT_DATA_WIDTH-1:0] data_i_delayed;
+    reg cpu_we_local;
 	
 initial 
 begin
-    packet_cnt <= 16'h0000;
-    req_packets <= 16'hffff;
-    mode <= TOFIFO;
+    packet_cnt <= 16'h0;
+    req_packets <= 16'h0;
+    mode <= ST_DECODE;
     fifo_we <= 1'b0;
     cpu_we <= 1'b0;
+    data_i_delayed <= {(FT_DATA_WIDTH){1'b0}};
+    cpu_data_o <= {(FT_DATA_WIDTH){1'b0}};
+    cpu_we_local <= 1'b0;
 end
 	
 always @ (negedge clk_i or negedge reset_n)
@@ -87,10 +91,12 @@ begin
 if (~reset_n) begin
     fifo_we <= 1'b0;
     cpu_we <= 1'b0;
+    cpu_data_o <= {(FT_DATA_WIDTH){1'b0}};
     end
 else begin
-    fifo_we <= mode==TOFIFO & packet_cnt > 0;
-    cpu_we <= mode == TOCPU & packet_cnt > 0;
+    fifo_we <= mode==ST_FIFO;
+    cpu_we <= cpu_we_local;
+    cpu_data_o <= data_i_delayed;
     end
 end	   
  
@@ -98,28 +104,45 @@ always @ (posedge clk_i or negedge reset_n)
 begin
 if (~reset_n) begin
    packet_cnt <= 16'h0000;
-   req_packets <= 16'hffff;
-   mode <= TOFIFO;
+   req_packets <= 16'h0;
+   mode <= ST_DECODE;
+   cpu_we_local <= 1'b0;
+   data_i_delayed <= {(FT_DATA_WIDTH){1'b0}};
    end
-else if (we_i) begin
-   if (packet_cnt == 16'h0000) begin
-       // decode
-       mode <= data_i[FT_DATA_WIDTH-1];
-       case (mode)
-           TOFIFO: 
-               req_packets <= data_i[15:0];
-               
-           TOCPU: begin
-               req_packets <= {{8{1'b0}}, data_i[27:20]};
-               end
-       endcase
-              
-	   end
-   if (packet_cnt == req_packets)
-	   packet_cnt <= 16'h0000;
-   else
-	   packet_cnt <= packet_cnt + 16'h1;
-   end
+else begin 
+    cpu_we_local <= 1'b0;
+    data_i_delayed <= data_i;
+    
+    case (mode)
+        ST_DECODE: 
+            if (we_i) begin                
+                case (data_i[FT_DATA_WIDTH-1])
+                    TOFIFO: begin
+                        req_packets <= data_i[15:0];                        
+                        mode <= ST_FIFO;
+                        end
+                    TOCPU: begin
+                        cpu_we_local <= 1'b1;
+                        req_packets <= {{8{1'b0}}, data_i[27:20]}; 
+                        if (data_i[27:20] > 0)
+                            mode <= ST_CPU;
+                        end
+                endcase
+                packet_cnt <= 16'h0;
+                end
+        ST_CPU, ST_FIFO: begin
+            if (mode == ST_CPU)
+                cpu_we_local <= 1'b1;
+            if (we_i)
+                packet_cnt <= packet_cnt + 16'h1;
+            if (packet_cnt + 16'h1 == req_packets) begin
+                mode <= ST_DECODE;
+                req_packets <= 16'h0;
+                end
+            end
+    endcase
+    
+    end
 end
 
 endmodule

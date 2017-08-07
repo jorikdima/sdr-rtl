@@ -2,8 +2,9 @@
 <HdlAlias>
 	<Aliases>
 		<Alias name="sel_f2a">
-			<Mapping value="0" mnemonic="TOFIFO"/>
-			<Mapping value="1" mnemonic="TOCPU"/>
+			<Mapping value="0" mnemonic="ST_DECODE"/>
+			<Mapping value="1" mnemonic="ST_FIFO"/>
+			<Mapping value="2" mnemonic="ST_CPU"/>
 		</Alias>
 		<Alias name="state">
 			<Mapping value="0" mnemonic="IDLE"/>
