@@ -1,6 +1,6 @@
 
 module top(
-clk26, clk_sr1, clk_sr2, reset_n, 
+clk26, clk_sr1, clk_sr2, 
 
 // virtual vccio
 vcc_virt_1, vcc_virt_2,
@@ -66,7 +66,7 @@ function integer log2;
 endfunction
 
 
-input wire	clk26, clk_sr1, clk_sr2, reset_n;
+input wire	clk26, clk_sr1, clk_sr2;
 
 output wire vcc_virt_1, vcc_virt_2;
 
@@ -118,6 +118,19 @@ wire clk, pll_locked, clk_pll, clk_pll_shifted, i2c_sda_oe, i2c_scl_oe;
 //wire en = pll_locked & reset_n;
 wire en = reset_n;
 
+reg reset_n;
+
+reg[17:0] tmp;
+
+assign rpi_d[16] = ft_clk;
+initial
+begin
+	reset_n <= 1'b1;
+	tx_led <= 1'b1;
+	rx_led <= 1'b1;
+	
+	tmp <= 18'h3ffff;
+end
 
 GSR GSR_INST (.GSR (reset_n));
 PUR PUR_INST (.PUR (reset_n));
@@ -157,6 +170,7 @@ wire[IQ_PAIR_WIDTH-1:0] f2a_fifo_data, a2f_fifo_data;
 wire[FT_DATA_WIDTH-1:0] ft_rdata, ft_wdata;
 wire[FT_DATA_WIDTH-1:0] cpucmd_fifo_data;
 wire cpucmd_fifo_rd, cpucmd_fifo_clk, cpucmd_fifo_empty;
+wire a2f_empty, a2f_enough;
 
 
 cpucmd_fifo cpucmd_fifo_inst (.Data( ), .WrClock( ), .RdClock(cpucmd_fifo_clk ), .WrEn( ), .RdEn(cpucmd_fifo_rd ), 
@@ -207,6 +221,8 @@ sel_a2f_inst
 	.fifo_data_i(a2f_fifo_data),
 	.fifo_clk_o(a2f_fifo_rdclk),
 	.fifo_re_o(a2f_fifo_rden),
+    .fifo_empty_i(a2f_fifo_empty),
+    .fifo_enough_i(a2f_fifo_enough),
 	
 	//input from ECPU
 	.cpu_data_i(cpucmd_fifo_data),
@@ -217,7 +233,9 @@ sel_a2f_inst
 	//output to FTDI
 	.data_o(ft_wdata),
 	.clk_i(ft_wr_clk),
-	.re_i(ft_wr_req)
+	.re_i(ft_wr_req),
+    .enough_o(a2f_enough),
+    .empty_o(a2f_empty)
 );
 
 ft600_fsm #(.FT_DATA_WIDTH (FT_DATA_WIDTH))
@@ -230,8 +248,8 @@ fsm_inst
     .wr_n(ft_wr_n),
     
     .wdata(ft_wdata),
-    .wr_enough(a2f_fifo_enough),
-    .wr_empty(a2f_fifo_empty),
+    .wr_enough(a2f_enough),
+    .wr_empty(a2f_empty),
     
     .rd_full(rd_full),
     .rd_enough(rd_enough),
@@ -290,10 +308,6 @@ ecpu ecpu_u (
 assign vcc_virt_1 = 1;
 assign vcc_virt_2 = 1;
 
-	
-assign rpi_d = {{3{rpi_a}}, rpi_we, rpi_oe};
-//assign i2c_clk = afe_spi_miso & rpi_gpio[0];
-//assign i2c_sda = afe_spi_miso & rpi_gpio[1];
-assign ft_gpio0 = rpi_d[0];
+ 
 
 endmodule

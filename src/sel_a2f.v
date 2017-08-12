@@ -7,6 +7,8 @@ module sel_a2f(
 	fifo_data_i,
 	fifo_clk_o,
 	fifo_re_o,
+    fifo_empty_i,
+    fifo_enough_i,
 	
 	//input from ECPU
 	cpu_data_i,
@@ -15,9 +17,11 @@ module sel_a2f(
 	cpu_re_o,
 	
 	//output to FTDI
-	data_o,
 	clk_i,
-	re_i
+	re_i,
+    data_o,
+    enough_o,
+    empty_o
 	);
 	
 	
@@ -51,10 +55,15 @@ module sel_a2f(
             {(QSTART_BIT_INDEX-IQ_PAIR_WIDTH/2){1'b0}},
                fifo_data_i[IQ_PAIR_WIDTH/2 - 1:0]}; 
                             
-    //assign data_o = fifo_data_32;
+    assign data_o = fifo_data_32;
     
     assign fifo_re_o = re_i;
     
+    input wire fifo_empty_i, fifo_enough_i;
+    output wire enough_o, empty_o;
+    
+    assign enough_o = fifo_enough_i;
+    assign empty_o = fifo_empty_i;
     
     // Internal  
     
