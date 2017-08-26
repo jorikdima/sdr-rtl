@@ -3,22 +3,27 @@
 module afe
 (
 //input
-reset_n, 
+reset_n, loopback,
 // output
 spi_clk, spi_sdo, spi_sdio, sen, tx_en, rx_en, reset,
 
 // RX
-rx_d, rx_sclk_2x, rx_clk_2x, rx_sel,
-rx_fifo_full, rx_fifo_data, rx_fifo_wr, rx_fifo_clk,
+// input
+rx_sclk_2x, rx_fifo_full, rx_sel, rx_d,
+// output
+rx_clk_2x, rx_fifo_data, rx_fifo_wr, rx_fifo_clk,
 
 // TX
-tx_fifo_empty, tx_fifo_data, tx_fifo_req, tx_fifo_clk,
-tx_d, tx_sclk_2x, tx_clk_2x, tx_sel
+// input
+tx_sclk_2x, tx_fifo_empty, tx_fifo_data, 
+// output
+tx_fifo_req, tx_fifo_clk,
+tx_d, tx_clk_2x, tx_sel
 );
 
 parameter IQ_PAIR_WIDTH=24;
 
-input wire reset_n;
+input wire reset_n, loopback;
 
 output reg spi_clk, spi_sdo, spi_sdio, sen, tx_en, rx_en, reset;
 
@@ -55,7 +60,7 @@ assign rx_fifo_data = {rx_d, rx_low_part};
 always @(negedge rx_sclk_2x or negedge reset_n)
 if (~reset_n) 
     begin
-    rx_low_part <= 0;
+    rx_low_part <= {FT_DATA_WIDTH{1'b0}};
     rx_fifo_clk <= 0;
     end
 else
@@ -81,16 +86,16 @@ assign tx_d = tx_output_mask & (tx_sel ? tx_fifo_data[IQ_PAIR_WIDTH/2 - 1:0] :
 
 
 always @(negedge tx_fifo_clk or negedge reset_n)
-	if (~reset_n)
-	    tx_fifo_req <= 0;
-	else
-        tx_fifo_req <= ~tx_fifo_empty;
+if (~reset_n)
+    tx_fifo_req <= 0;
+else
+    tx_fifo_req <= ~tx_fifo_empty;
 
 always @(posedge tx_fifo_clk or negedge reset_n)
-   if (~reset_n)
-	    tx_valid_pair <= 0;
-	else
-	    tx_valid_pair <= tx_fifo_req & reset_n;
+if (~reset_n)
+    tx_valid_pair <= 0;
+else
+    tx_valid_pair <= tx_fifo_req & reset_n;
 
 always @(negedge tx_sclk_2x or negedge reset_n)
 if (~reset_n)   

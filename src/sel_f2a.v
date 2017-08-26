@@ -63,9 +63,6 @@ module sel_f2a(
 	
     assign full_o = fifo_full_i;
 	assign enough_o = fifo_enough_i;
-	
-    assign fifo_we_o = we_i & fifo_we;
-    assign cpu_we_o = cpu_we;
     
 // Internal
     reg[15:0] packet_cnt, req_packets;
@@ -74,16 +71,19 @@ module sel_f2a(
     reg [FT_DATA_WIDTH-1:0] data_i_delayed;
     reg cpu_we_local;
 	
+	assign fifo_we_o = we_i & fifo_we;
+    assign cpu_we_o = cpu_we;
+	
 initial 
 begin
-    packet_cnt <= 16'h0;
-    req_packets <= 16'h0;
-    mode <= ST_DECODE;
-    fifo_we <= 1'b0;
-    cpu_we <= 1'b0;
-    data_i_delayed <= {(FT_DATA_WIDTH){1'b0}};
-    cpu_data_o <= {(FT_DATA_WIDTH){1'b0}};
-    cpu_we_local <= 1'b0;
+    packet_cnt = 16'h0;
+    req_packets = 16'h0;
+    mode = ST_DECODE;
+    fifo_we = 1'b0;
+    cpu_we = 1'b0;
+    data_i_delayed = {(FT_DATA_WIDTH){1'b0}};
+    cpu_data_o = {(FT_DATA_WIDTH){1'b0}};
+    cpu_we_local = 1'b0;
 end
 	
 always @ (negedge clk_i or negedge reset_n)

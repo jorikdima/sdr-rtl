@@ -1,0 +1,32 @@
+<Project ModBy="Analyzer" Name="C:/work/sdr-rtl/lattice/fsm.rvs" Date="2017-08-25">
+ <Core Name="top_LA0">
+  <Setting>
+   <Capture SamplesPerTrig="32768" NumTrigsCap="1"/>
+   <Event EventCnt="0" CntEnableRun="0"/>
+   <TrigSetting PreTrgSamples="" AND_ALL="0" PostTrgSamples="" TURadix="0"/>
+  </Setting>
+  <Dataset Name="Base">
+   <Trace>
+    <Sig Name="ft_clk"/>
+    <Sig Name="ft_oe_n"/>
+    <Sig Name="ft_rd_n"/>
+    <Sig Name="ft_rxf_n"/>
+    <Sig Name="fsm_inst/have_rd_chance"/>
+    <Sig Name="fsm_inst/no_more_read"/>
+    <Sig Name="fsm_inst/rd_enough"/>
+    <Sig Name="fsm_inst/rd_full"/>
+    <Sig Name="fsm_inst/rd_req"/>
+    <Bus Name="fsm_inst/state" Radix="0">
+     <Sig Name="fsm_inst/state:0"/>
+     <Sig Name="fsm_inst/state:1"/>
+     <Sig Name="fsm_inst/state:2"/>
+    </Bus>
+    <Sig Name="sel_f2a_inst/fifo_we_o"/>
+   </Trace>
+   <Trigger>
+    <TU Operator="7" Name="TU1" ID="1" Value="1" Radix="0"/>
+    <TE Enable="1" Expression="TU1" Name="TE1" ID="1"/>
+   </Trigger>
+  </Dataset>
+ </Core>
+</Project>

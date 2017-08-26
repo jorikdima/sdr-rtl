@@ -27,7 +27,7 @@ wire [31:0] ft_data;
 reg [31:0] treg_ft_data;
 reg ft_rxf_n;
 reg ft_txe_n;
-reg reset_n;
+
 
 // wires                                               
 wire afe_rx_clk;
@@ -57,9 +57,9 @@ top i1 (
 	.afe_tx_clk(afe_tx_clk),
 	.afe_tx_d(afe_tx_d),
 	.afe_tx_sel(afe_tx_sel),
-	.clk_sr1(clk_sr1),
-	.clk_sr2(clk_sr2), 
-	.clk26(clk26),
+	//.clk_sr1(clk_sr1),
+	//.clk_sr2(clk_sr2), 
+	//.clk26(clk26),
 	.ft_be(ft_be),
 	.ft_clk(ft_clk),
 	.ft_data(ft_data),
@@ -69,7 +69,6 @@ top i1 (
 	.ft_txe_n(ft_txe_n),
 	.ft_wr_n(ft_wr_n),
 	.afe_reset(afe_reset),
-	.reset_n(reset_n),
 	.afe_rx_en(afe_rx_en),
 	.afe_sen(afe_sen),
 	.afe_spi_clk(afe_spi_clk),
@@ -102,25 +101,51 @@ assign cmd[15:0] = cmd_fifo_num;
 
 
 integer rx_head_idx, rx_head_idx_idx;
-reg [31:0] rx_head_case1 [0:3] = '{32'h90200000,32'hfeedbeef,32'hdeefb00b, 32'hffc};
-reg [31:0] rx_head_case2 [0:0] = '{32'hfff};
-reg [31:0] rx_head_case3 [0:0] = '{32'h90000000};
-reg [31:0] rx_head_case4 [0:1] = '{32'h90100000, 32'hfeedbeef};
+reg [31:0] rx_head_case1 [0:3]; //= '{32'h90200000,32'hfeedbeef,32'hdeefb00b, 32'hffc};
+reg [31:0] rx_head_case2 [0:0]; //= '{32'hfff};
+reg [31:0] rx_head_case3 [0:0]; //= '{32'h90000000};
+reg [31:0] rx_head_case4 [0:1]; //= '{32'h90100000, 32'hfeedbeef};
 
-integer rx_head_sizes[0:3] = '{$size(rx_head_case1), $size(rx_head_case2), $size(rx_head_case3), $size(rx_head_case4)};
-integer rx_head_correction[0:3] = '{0, 0, FT_PACKET_WORDS-1, FT_PACKET_WORDS - 2};
-integer rx_head_cpuonly[0:3] = '{0,0,1,1};
+integer rx_head_sizes[0:3] ;//= '{$size(rx_head_case1), $size(rx_head_case2), $size(rx_head_case3), $size(rx_head_case4)};
+integer rx_head_correction[0:3]; //= '{0, 0, FT_PACKET_WORDS-1, FT_PACKET_WORDS - 2};
+integer rx_head_cpuonly[0:3];// = '{0,0,1,1};
 integer rx_head_corr;
 
 initial                                                
-begin                                                  
+begin             
+
+rx_head_case1[0] = 32'h90200000;
+rx_head_case1[1] = 32'hfeedbeef;
+rx_head_case1[2] = 32'hdeefb00b;
+rx_head_case1[3] = 32'hffc;
+
+rx_head_case2[0] = 32'hfff;
+rx_head_case3[0] = 32'h90000000;
+
+rx_head_case4[0] = 32'h90100000;
+rx_head_case4[1] = 32'hfeedbeef;
+
+rx_head_sizes[0] = $size(rx_head_case1);
+rx_head_sizes[1] = $size(rx_head_case2);
+rx_head_sizes[2] = $size(rx_head_case3);
+rx_head_sizes[3] = $size(rx_head_case4);
+
+rx_head_correction[0] = 0;
+rx_head_correction[1] = 0;
+rx_head_correction[2] = FT_PACKET_WORDS-1;
+rx_head_correction[3] = FT_PACKET_WORDS-2;
+
+rx_head_cpuonly[0] = 0;
+rx_head_cpuonly[0] = 0;
+rx_head_cpuonly[0] = 1;
+rx_head_cpuonly[0] = 1;
+                                     
 // code that executes only once                        
 // insert code here --> begin                          
-reset_n = 1;
 ft_clk=0;
-clk_sr1 = 0;
-clk_sr2 = 0; 
-clk26 = 0;
+//clk_sr1 = 0;
+//clk_sr2 = 0; 
+//clk26 = 0;
 ft_rxf_n = 1;
 ft_txe_n = 1;
 treg_ft_data = 32'haa0000;
@@ -146,22 +171,20 @@ rx_head_idx = 100;
 rx_head_idx_idx = 0;
 cmd_sent = 0;
 
-#1 	reset_n = 0;
 inited = 1;
 ft_rxf_n = 0;
 ft_txe_n = 0;
 
-#9 reset_n = 1;
                                                        
 // --> end                                             
 $display("Running testbench"); 
                      
 end        
 
-initial forever #5 ft_clk = ~ ft_clk;
-initial forever #1.25 clk26 = ~ clk26;
-initial forever #12.5 clk_sr1 = ~ clk_sr1;
-initial forever #12.5 clk_sr2 = ~ clk_sr2;
+initial forever #10 ft_clk = ~ ft_clk;
+//initial forever #1.25 clk26 = ~ clk26;
+//initial forever #12.5 clk_sr1 = ~ clk_sr1;
+//initial forever #12.5 clk_sr2 = ~ clk_sr2;
 	
 //  TO SDR	(F2A)
 always @ (posedge ft_rd_n or posedge ft_rxf_n)

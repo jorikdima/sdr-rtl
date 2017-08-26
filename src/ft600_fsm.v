@@ -64,8 +64,8 @@ inout wire[FT_DATA_WIDTH-1:0] ft_data;
 inout wire[3:0] ft_be;
 
 
-parameter IDLE=0, WRITE=1, READ=2;
-reg [1:0] state, next_state;
+parameter IDLE=3'b001, WRITE=3'b010, READ=3'b100;
+reg [2:0] state;
 reg rd_n_local;
 wire[FT_DATA_WIDTH-1:0] wdata_out;
 
@@ -73,7 +73,6 @@ wire[FT_DATA_WIDTH-1:0] wdata_out;
 assign ft_be   = oe_n ? 4'b1111 : 4'bzzzz;
 assign wdata_out = wdata;                    
 assign ft_data = oe_n ? wdata_out : {FT_DATA_WIDTH{1'bz}};
-
                    
 assign rd_clk = clk;
 assign wr_clk = clk;
@@ -87,17 +86,6 @@ wire no_more_read = rxf_n | rd_full;
 wire no_more_write = txe_n | wr_empty;
 
 
-initial 
-begin
-    state <= IDLE; 
-    next_state <= IDLE;
-    
-    wr_n <= 1'b1;
-    rd_n <= 1'b1;
-    rd_n_local <= 1'b1;
-    oe_n <= 1'b1;  
-end
-
 //----------Seq Logic-----------------------------
     
 //----------Output Logic-----------------------------
@@ -109,11 +97,28 @@ always @ (posedge clk or negedge reset_n)
 if (~reset_n)
     begin
     state <= IDLE; 
-    //next_state <= IDLE;    
     end
-else
-    begin
-    state <= next_state;    
+else begin
+    case (state)         
+        IDLE:        
+            if (have_wr_chance) // even if we have smth to read wr has priority
+                state <= WRITE;
+            else if (have_rd_chance)
+                state <= READ;
+            else
+                state <= IDLE;
+
+        WRITE:
+        //either we have sent all data (which should not happen) or FT is full
+        if (no_more_write) 
+            state <= IDLE;        
+        
+        READ:
+        if (no_more_read)  //either FT has sent all data or we're full
+            state <= IDLE;
+              
+    endcase 
+     
     end
 		
 always @ (negedge clk or negedge reset_n)
@@ -133,29 +138,4 @@ else
     end	
 		
                              
- //==========FSM Logic==========================
-always @ (state or have_wr_chance or have_rd_chance or no_more_write or no_more_read)
-begin
-    case (state) 
-        IDLE:        
-            if (have_wr_chance) // even if we have smth to read wr has priority
-                next_state <= WRITE;
-            else if (have_rd_chance)
-                next_state <= READ;
-            else
-                next_state <= IDLE;
-
-        WRITE:
-        //either we have sent all data (which should not happen) or FT is full
-        if (no_more_write) 
-            next_state <= IDLE;        
-        
-        READ:
-        if (no_more_read)  //either FT has sent all data or we're full
-            next_state <= IDLE;
-              
-    endcase 
-end
-
-
 endmodule

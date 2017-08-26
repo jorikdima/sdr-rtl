@@ -1,6 +1,6 @@
 
 module top(
-clk26, clk_sr1, clk_sr2, 
+//clk26, clk_sr1, clk_sr2, 
 
 // virtual vccio
 vcc_virt_1, vcc_virt_2,
@@ -56,17 +56,8 @@ parameter RPI_ADDR_WIDTH=6;
 //parameter F2A_FIFO_FREE_ENOUGH = F2A_FIFO_WORDS - FT_PACKET_WORDS;
 
 
-function integer log2;
-  input integer value;
-  begin
-    value = value-1;
-    for (log2=0; value>0; log2=log2+1)
-      value = value>>1;
-  end
-endfunction
-
-
-input wire	clk26, clk_sr1, clk_sr2;
+//input wire	clk26, clk_sr1, clk_sr2;
+wire clk_sr1, clk_sr2;
 
 output wire vcc_virt_1, vcc_virt_2;
 
@@ -90,7 +81,7 @@ output wire ft_oe_n, ft_wr_n, ft_rd_n;
 
 inout wire[FT_DATA_WIDTH-1:0] ft_data;
 inout wire[3:0] ft_be;
-inout wire ft_gpio0;
+input wire ft_gpio0;
 
 // Si535x
 inout wire i2c_clk;
@@ -113,24 +104,14 @@ wire f2a_fifo_enough, a2f_fifo_enough, a2f_fifo_empty;
 
 wire [IQ_PAIR_WIDTH-1:0] f2a_fifo_q, afe_wdata;
 
-wire clk, pll_locked, clk_pll, clk_pll_shifted, i2c_sda_oe, i2c_scl_oe;
+wire clk, pll_locked, clk_pll, i2c_sda_oe, i2c_scl_oe;
 
-//wire en = pll_locked & reset_n;
+
+
+wire reset_n;
 wire en = reset_n;
 
-reg reset_n;
 
-reg[17:0] tmp;
-
-assign rpi_d[16] = ft_clk;
-initial
-begin
-	reset_n <= 1'b1;
-	tx_led <= 1'b1;
-	rx_led <= 1'b1;
-	
-	tmp <= 18'h3ffff;
-end
 
 GSR GSR_INST (.GSR (reset_n));
 PUR PUR_INST (.PUR (reset_n));
@@ -138,29 +119,29 @@ PUR PUR_INST (.PUR (reset_n));
 afe #(.IQ_PAIR_WIDTH (IQ_PAIR_WIDTH))
 afe_inst(
 .reset_n(en), 
-
-// AFE RX
-.rx_d(afe_rx_d),
-.rx_clk_2x(afe_rx_clk),
-.rx_sel(afe_rx_sel),
+.loopback(1'b1),
+// AFE RX input
 .rx_sclk_2x(clk_sr2),
-
+.rx_d(afe_rx_d),
+.rx_sel(afe_rx_sel),
 .rx_fifo_full(a2f_fifo_full),
+// AFE RX output
+.rx_clk_2x(afe_rx_clk),
 .rx_fifo_data(afe_wdata),
 .rx_fifo_wr(a2f_fifo_wr),
 .rx_fifo_clk(a2f_fifo_clk),
 
-// AFE TX
+// AFE TX input
 .tx_sclk_2x(clk_sr1),
+.tx_fifo_empty(f2a_fifo_empty),
+.tx_fifo_data(f2a_fifo_q),
+
+// AFE TX output
 .tx_clk_2x(afe_tx_clk),
 .tx_sel(afe_tx_sel),
 .tx_d(afe_tx_d),
-
-.tx_fifo_empty(f2a_fifo_empty),
-.tx_fifo_data(f2a_fifo_q),
 .tx_fifo_req(f2a_fifo_req),
 .tx_fifo_clk(f2a_fifo_clk)
-
 );
 
 wire rd_full, rd_enough;
@@ -271,10 +252,6 @@ fsm_inst
     .ft_be(ft_be)
 );
 
-
-//rpll pll_inst (.CLKI(clk26 ), .CLKOP(clk ), .CLKOS(clk_pll ), .CLKOS2( clk_pll_shifted), .LOCK(pll_locked ));
-
-
 /*
 ecpu ecpu_u ( 
 .clk_i(clk_pll),
@@ -305,9 +282,21 @@ ecpu ecpu_u (
 );
   */
 // virtual vccio
-assign vcc_virt_1 = 1;
-assign vcc_virt_2 = 1;
+assign vcc_virt_1 = 1'b1;
+assign vcc_virt_2 = 1'b1;
 
- 
+wire osc;
+pll pll_inst (.CLKI(osc ), .CLKOP( clk), .LOCK( pll_locked));
+OSCG #(.DIV (8)) osc_i (.OSC(osc));
+assign clk_sr1 = osc;
+assign clk_sr2 = osc;
+
+
+reg[7:0] rst_cnt = 8'h00;
+assign reset_n = rst_cnt[6];
+
+always @(posedge osc)
+if (rst_cnt< 8'hff)
+    rst_cnt <= rst_cnt + 8'h1;
 
 endmodule
