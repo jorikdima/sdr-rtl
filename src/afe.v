@@ -5,7 +5,7 @@ module afe
 //input
 reset_n, loopback,
 // output
-spi_clk, spi_sdo, spi_sdio, sen, tx_en, rx_en, reset,
+tx_en, rx_en, afe_reset,
 
 // RX
 // input
@@ -25,84 +25,107 @@ parameter IQ_PAIR_WIDTH=24;
 
 input wire reset_n, loopback;
 
-output reg spi_clk, spi_sdo, spi_sdio, sen, tx_en, rx_en, reset;
+output wire tx_en, rx_en, afe_reset;
 
 // AFE RX
 input wire rx_sclk_2x;
 output wire rx_clk_2x;
 input wire rx_sel;
-input wire [IQ_PAIR_WIDTH/2 - 1:0] rx_d;
+input wire[IQ_PAIR_WIDTH/2 - 1:0] rx_d;
 // AFE RX FIFO
 input wire rx_fifo_full;
 output wire[IQ_PAIR_WIDTH - 1:0] rx_fifo_data;
 output wire rx_fifo_wr;
-output reg rx_fifo_clk;
+output wire rx_fifo_clk;
 
 // AFE TX
 input wire tx_sclk_2x;
 output wire tx_clk_2x;
-output reg tx_sel;
-output wire [IQ_PAIR_WIDTH/2 - 1:0] tx_d;
+output wire tx_sel;
+output wire[IQ_PAIR_WIDTH/2 - 1:0] tx_d;
 // AFE TX FIFO
 input wire tx_fifo_empty;
 input wire[IQ_PAIR_WIDTH - 1:0] tx_fifo_data;
-output reg tx_fifo_req;
+output wire tx_fifo_req;
 output wire tx_fifo_clk;
  
  
-// RX 
-reg[IQ_PAIR_WIDTH/2-1:0] rx_low_part;
+ 
+// local 
 
-assign rx_clk_2x = rx_sclk_2x & reset_n;
-assign rx_fifo_wr = ~rx_fifo_full & reset_n;
-assign rx_fifo_data = {rx_d, rx_low_part};
+wire[IQ_PAIR_WIDTH-1:0] rx_fifo_data_afe;
+reg[IQ_PAIR_WIDTH-1:0] lpbck_d;
+reg rx_sclk_1x;
+wire rx_fifo_wr_afe, rx_fifo_clk_afe, tx_fifo_clk_afe;
+reg lpbck_tx_req, lpbck_rx_wr;
 
-always @(negedge rx_sclk_2x or negedge reset_n)
-if (~reset_n) 
+assign txrx_reset_n = reset_n & ~loopback;
+
+assign tx_en = ~loopback;
+assign rx_en = ~loopback;
+
+afe_rx afe_rx_inst
+(
+    //input
+    .reset_n(txrx_reset_n), 
+
+    // RX
+    // input
+    .sclk_2x(rx_sclk_2x),
+    .fifo_full(rx_fifo_full),
+    .sel(rx_sel),
+    .d(rx_d),
+    // output
+    .clk_2x(rx_clk_2x),
+    .fifo_data(rx_fifo_data_afe),
+    .fifo_wr(rx_fifo_wr_afe),
+    .fifo_clk(rx_fifo_clk_afe)
+);
+
+
+afe_tx afe_tx_inst
+(
+    //input
+    .reset_n(txrx_reset_n),
+
+    // TX
+    // input
+    .sclk_2x(tx_sclk_2x),
+    .fifo_empty(tx_fifo_empty),
+    .fifo_data(tx_fifo_data),
+    // output
+    .fifo_req(tx_fifo_req_afe),
+    .fifo_clk(tx_fifo_clk_afe),
+    .d(tx_d),
+    .clk_2x(tx_clk_2x),
+    .sel(tx_sel)
+);
+
+assign rx_fifo_data = loopback ? lpbck_d : rx_fifo_data_afe;
+assign rx_fifo_clk = loopback ? rx_sclk_1x : rx_fifo_clk_afe;
+assign rx_fifo_wr = loopback ? lpbck_rx_wr : rx_fifo_wr_afe;
+assign tx_fifo_clk = loopback ? rx_sclk_1x : tx_fifo_clk_afe;
+assign tx_fifo_req = loopback ? lpbck_tx_req : tx_fifo_req_afe;
+
+always @(negedge rx_sclk_1x or negedge reset_n)
+if (~reset_n)
     begin
-    rx_low_part <= {FT_DATA_WIDTH{1'b0}};
-    rx_fifo_clk <= 0;
+    lpbck_tx_req <= 1'b0;
+    lpbck_rx_wr <= 1'b0;
+    lpbck_d <= {IQ_PAIR_WIDTH{1'b0}};
     end
 else
-    if (rx_sel)
-        begin
-        rx_fifo_clk <= 0;
-        rx_low_part <= rx_d;
-        end
-    else
-        rx_fifo_clk <= 1;
-    
-	 
- 
-// TX
-reg tx_valid_pair;
-wire[IQ_PAIR_WIDTH/2-1:0] tx_output_mask = {(IQ_PAIR_WIDTH/2){tx_valid_pair}};
+    begin
+    lpbck_tx_req <= ~tx_fifo_empty & ~rx_fifo_full;
+    lpbck_rx_wr <= lpbck_tx_req;
+    if (lpbck_tx_req)
+        lpbck_d <= tx_fifo_data;
+    end
 
-assign tx_fifo_clk = tx_sel;
-assign tx_clk_2x = tx_sclk_2x & reset_n;
-
-assign tx_d = tx_output_mask & (tx_sel ? tx_fifo_data[IQ_PAIR_WIDTH/2 - 1:0] :
-                                tx_fifo_data[IQ_PAIR_WIDTH-1:IQ_PAIR_WIDTH/2] );
-
-
-always @(negedge tx_fifo_clk or negedge reset_n)
+always @(posedge rx_sclk_2x or negedge reset_n)
 if (~reset_n)
-    tx_fifo_req <= 0;
-else
-    tx_fifo_req <= ~tx_fifo_empty;
-
-always @(posedge tx_fifo_clk or negedge reset_n)
-if (~reset_n)
-    tx_valid_pair <= 0;
-else
-    tx_valid_pair <= tx_fifo_req & reset_n;
-
-always @(negedge tx_sclk_2x or negedge reset_n)
-if (~reset_n)   
-   tx_sel <= 0;      
-else	
-    tx_sel <= ~tx_sel;
-
-
+    rx_sclk_1x <= 1'b0;
+else    
+    rx_sclk_1x <= ~rx_sclk_1x;
 
 endmodule

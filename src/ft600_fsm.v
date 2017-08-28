@@ -65,14 +65,12 @@ inout wire[3:0] ft_be;
 
 
 parameter IDLE=3'b001, WRITE=3'b010, READ=3'b100;
-reg [2:0] state;
-reg rd_n_local;
-wire[FT_DATA_WIDTH-1:0] wdata_out;
-
+reg[2:0] state;
+reg rd_n_local, wr_n_local;
+reg[FT_DATA_WIDTH-1:0] wdata_out;
 
 assign ft_be   = oe_n ? 4'b1111 : 4'bzzzz;
-assign wdata_out = wdata;                    
-assign ft_data = oe_n ? wdata_out : {FT_DATA_WIDTH{1'bz}};
+assign ft_data = oe_n ? wdata : {FT_DATA_WIDTH{1'bz}};
                    
 assign rd_clk = clk;
 assign wr_clk = clk;
@@ -86,17 +84,17 @@ wire no_more_read = rxf_n | rd_full;
 wire no_more_write = txe_n | wr_empty;
 
 
-//----------Seq Logic-----------------------------
-    
+ 
 //----------Output Logic-----------------------------
 
 assign rd_req = ~rd_n & ~rxf_n;
-assign wr_req = ~wr_n & ~txe_n;
+assign wr_req = ~wr_n_local & ~txe_n;
 		  
 always @ (posedge clk or negedge reset_n)
 if (~reset_n)
     begin
     state <= IDLE; 
+    wdata_out <= {FT_DATA_WIDTH{1'b0}};
     end
 else begin
     case (state)         
@@ -117,24 +115,32 @@ else begin
         if (no_more_read)  //either FT has sent all data or we're full
             state <= IDLE;
               
-    endcase 
-     
+    endcase
+    
+    wdata_out <= wdata;
     end
 		
 always @ (negedge clk or negedge reset_n)
 if (~reset_n)
 	begin
 		wr_n <= 1'b1;
+        wr_n_local <= 1'b1;
 		rd_n <= 1'b1;
         rd_n_local <= 1'b1;
-		oe_n <= 1'b1;        
+		oe_n <= 1'b1;
+        //wdata_out <= {FT_DATA_WIDTH{1'b0}};
 	end
 else	
     begin
-	wr_n <= (state == WRITE & ~txe_n & ~wr_empty) ? 1'b0 : 1'b1;
+	wr_n_local <= (state == WRITE & ~txe_n & ~wr_empty) ? 1'b0 : 1'b1;
+    wr_n <= wr_n_local | (state != WRITE);
+    
+    oe_n <= (state == READ) ? 1'b0 : 1'b1;
+    
     rd_n_local <= (state == READ) ? 1'b0 : 1'b1;
-    oe_n <= (state == READ) ? 1'b0 : 1'b1;	
-    rd_n <= rd_n_local | (state != READ);	
+    rd_n <= rd_n_local | (state != READ);
+    
+    //wdata_out <= wdata;
     end	
 		
                              
