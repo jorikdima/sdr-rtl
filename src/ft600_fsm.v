@@ -26,6 +26,7 @@ reset_n,
 	wdata,
 	wr_enough, // >4kB
 	wr_empty,
+    wr_incomming,  // writing to FIFO right now
 	
 	// output
 	wr_req,
@@ -48,7 +49,7 @@ parameter FT_DATA_WIDTH = 32;
 input wire reset_n;
 input wire clk, txe_n, rxf_n;
 
-input wire wr_enough, rd_full, wr_empty, rd_enough;
+input wire wr_enough, rd_full, wr_empty, rd_enough, wr_incomming;
 input wire[FT_DATA_WIDTH-1:0] wdata;
 
 // output
@@ -67,7 +68,6 @@ inout wire[3:0] ft_be;
 parameter IDLE=3'b001, WRITE=3'b010, READ=3'b100;
 reg[2:0] state;
 reg rd_n_local, wr_n_local;
-reg[FT_DATA_WIDTH-1:0] wdata_out;
 
 assign ft_be   = oe_n ? 4'b1111 : 4'bzzzz;
 assign ft_data = oe_n ? wdata : {FT_DATA_WIDTH{1'bz}};
@@ -78,7 +78,7 @@ assign wr_clk = clk;
 
 assign rdata =  ft_data;
 
-wire have_wr_chance = ~txe_n & wr_enough;
+wire have_wr_chance = ~txe_n & (wr_enough | ~(wr_incomming | wr_empty));
 wire have_rd_chance = ~rxf_n & rd_enough;
 wire no_more_read = rxf_n | rd_full;
 wire no_more_write = txe_n | wr_empty;
@@ -94,7 +94,6 @@ always @ (posedge clk or negedge reset_n)
 if (~reset_n)
     begin
     state <= IDLE; 
-    wdata_out <= {FT_DATA_WIDTH{1'b0}};
     end
 else begin
     case (state)         
@@ -116,8 +115,6 @@ else begin
             state <= IDLE;
               
     endcase
-    
-    wdata_out <= wdata;
     end
 		
 always @ (negedge clk or negedge reset_n)
@@ -128,7 +125,6 @@ if (~reset_n)
 		rd_n <= 1'b1;
         rd_n_local <= 1'b1;
 		oe_n <= 1'b1;
-        //wdata_out <= {FT_DATA_WIDTH{1'b0}};
 	end
 else	
     begin
@@ -139,8 +135,6 @@ else
     
     rd_n_local <= (state == READ) ? 1'b0 : 1'b1;
     rd_n <= rd_n_local | (state != READ);
-    
-    //wdata_out <= wdata;
     end	
 		
                              

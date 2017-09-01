@@ -9,19 +9,22 @@ module sel_a2f(
 	fifo_re_o,
     fifo_empty_i,
     fifo_enough_i,
+    fifo_data_incomming_i,
 	
 	//input from ECPU
 	cpu_data_i,
     cpu_empty_i,
 	cpu_clk_o,
 	cpu_re_o,
+    cpu_data_incomming_i,
 	
 	//output to FTDI
 	clk_i,
 	re_i,
     data_o,
     enough_o,
-    empty_o
+    empty_o,
+    data_incomming_o
 	);
 	
 	
@@ -59,22 +62,18 @@ module sel_a2f(
     
     assign fifo_re_o = re_i;
     
-    input wire fifo_empty_i, fifo_enough_i;
-    output wire enough_o, empty_o;
+    input wire fifo_empty_i, fifo_enough_i, cpu_data_incomming_i, fifo_data_incomming_i;
+    output wire enough_o, empty_o, data_incomming_o;
     
     assign enough_o = fifo_enough_i;
     assign empty_o = fifo_empty_i;
+    assign data_incomming_o = cpu_data_incomming_i | fifo_data_incomming_i;
     
     // Internal  
     
     reg[FT_DATA_WIDTH-1:0] data_reg;
     
-    
-initial 
-begin
-    
-    
-end  
+   
 
 /*
 always @ (negedge clk_i or negedge reset_n)

@@ -111,6 +111,8 @@ wire clk, pll_locked, clk_pll, i2c_sda_oe, i2c_scl_oe;
 wire reset_n;
 wire en = reset_n;
 
+wire loopback = 1'b1;
+
 
 
 GSR GSR_INST (.GSR (reset_n));
@@ -119,7 +121,7 @@ PUR PUR_INST (.PUR (reset_n));
 afe #(.IQ_PAIR_WIDTH (IQ_PAIR_WIDTH))
 afe_inst(
 .reset_n(en), 
-.loopback(1'b1),
+.loopback(loopback),
 // AFE RX input
 .rx_sclk_2x(clk_sr2),
 .rx_d(afe_rx_d),
@@ -152,6 +154,7 @@ wire[FT_DATA_WIDTH-1:0] ft_rdata, ft_wdata;
 wire[FT_DATA_WIDTH-1:0] cpucmd_fifo_data;
 wire cpucmd_fifo_rd, cpucmd_fifo_clk, cpucmd_fifo_empty;
 wire a2f_empty, a2f_enough;
+wire a2f_data_incomming;
 
 
 cpucmd_fifo cpucmd_fifo_inst (.Data( ), .WrClock( ), .RdClock(cpucmd_fifo_clk ), .WrEn( ), .RdEn(cpucmd_fifo_rd ), 
@@ -168,6 +171,7 @@ sel_f2a #(.FT_DATA_WIDTH (FT_DATA_WIDTH), .IQ_PAIR_WIDTH(IQ_PAIR_WIDTH), .QSTART
 sel_f2a_inst
 (
     .reset_n(en),
+    .loopback(loopback),
     // FTDI interface
     // input
 	.data_i(ft_rdata),
@@ -204,19 +208,22 @@ sel_a2f_inst
 	.fifo_re_o(a2f_fifo_rden),
     .fifo_empty_i(a2f_fifo_empty),
     .fifo_enough_i(a2f_fifo_enough),
+    .fifo_data_incomming_i(a2f_fifo_wr),
 	
 	//input from ECPU
 	.cpu_data_i(cpucmd_fifo_data),
     .cpu_empty_i(cpucmd_fifo_empty),
 	.cpu_clk_o(cpucmd_fifo_clk),
 	.cpu_re_o(cpucmd_fifo_rd),
+    .cpu_data_incomming_i(1'b0),
     	
 	//output to FTDI
 	.data_o(ft_wdata),
 	.clk_i(ft_wr_clk),
 	.re_i(ft_wr_req),
     .enough_o(a2f_enough),
-    .empty_o(a2f_empty)
+    .empty_o(a2f_empty),
+    .data_incomming_o(a2f_data_incomming)
 );
 
 ft600_fsm #(.FT_DATA_WIDTH (FT_DATA_WIDTH))
@@ -231,6 +238,7 @@ fsm_inst
     .wdata(ft_wdata),
     .wr_enough(a2f_enough),
     .wr_empty(a2f_empty),
+    .wr_incomming(a2f_data_incomming),
     
     .rd_full(rd_full),
     .rd_enough(rd_enough),
