@@ -59,7 +59,7 @@ reg rx_sclk_1x;
 wire rx_fifo_wr_afe, rx_fifo_clk_afe, tx_fifo_clk_afe;
 reg lpbck_tx_req, lpbck_rx_wr;
 
-assign txrx_reset_n = reset_n & ~loopback;
+wire txrx_reset_n = reset_n & ~loopback;
 
 assign tx_en = ~loopback;
 assign rx_en = ~loopback;

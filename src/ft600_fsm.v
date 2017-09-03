@@ -78,17 +78,30 @@ assign wr_clk = clk;
 
 assign rdata =  ft_data;
 
-wire have_wr_chance = ~txe_n & (wr_enough | ~(wr_incomming | wr_empty));
+reg have_unread_word_a2f;
+wire have_smth_towrite = ~wr_empty | have_unread_word_a2f;
+
+wire have_wr_chance = ~txe_n & (wr_enough | (~wr_incomming & have_smth_towrite));
 wire have_rd_chance = ~rxf_n & rd_enough;
 wire no_more_read = rxf_n | rd_full;
-wire no_more_write = txe_n | wr_empty;
+wire no_more_write = txe_n | (wr_empty & ~have_unread_word_a2f);
 
 
+
+
+always @ (posedge no_more_write or negedge reset_n)
+if (~reset_n)
+    begin
+    have_unread_word_a2f <= 1'b0; 
+    end
+else begin
+    have_unread_word_a2f <= txe_n & ~wr_empty;
+end
  
 //----------Output Logic-----------------------------
 
 assign rd_req = ~rd_n & ~rxf_n;
-assign wr_req = ~wr_n_local & ~txe_n;
+assign wr_req = (have_unread_word_a2f?~wr_n:~wr_n_local) & ~txe_n;
 		  
 always @ (posedge clk or negedge reset_n)
 if (~reset_n)
@@ -128,7 +141,7 @@ if (~reset_n)
 	end
 else	
     begin
-	wr_n_local <= (state == WRITE & ~txe_n & ~wr_empty) ? 1'b0 : 1'b1;
+	wr_n_local <= (state == WRITE & ~txe_n & have_smth_towrite) ? 1'b0 : 1'b1;
     wr_n <= wr_n_local | (state != WRITE);
     
     oe_n <= (state == READ) ? 1'b0 : 1'b1;
