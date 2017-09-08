@@ -108,11 +108,6 @@ integer rx_head_correction[0:3]; //= '{0, 0, FT_PACKET_WORDS-1, FT_PACKET_WORDS 
 integer rx_head_cpuonly[0:3];// = '{0,0,1,1};
 integer rx_head_corr;  
 
-
-reg [31:0] wr_data [0:1050]; 
-reg [31:0] rd_data [0:1050];
-integer len;
-
 initial                                                
 begin             
 
@@ -154,31 +149,11 @@ clk26 = 0;
 ft_rxf_n = 1;
 ft_txe_n = 1;
 treg_ft_data = 32'haa0000;
-
-// local
-
-rx_head_idx = 100;
-rx_head_idx_idx = 0;
-cmd_sent = 0;
-                                                       
+                                                     
 // --> end                                             
 $display("Running testbench");
 
-len = $size(wr_data);
-wr_data[0] = 32'd1050;
-get_seq_array(wr_data, 1, len - 1);
-
-
-#10000 write(wr_data, len);
-#1000  read(rd_data, len);
-
-$display("Write/Read %0d words, equal = %0d", len, arrays_equal(wr_data, rd_data, len));
-
-len = 10;
-#1000 write(wr_data, len);
-#1000 read(rd_data, len);
-
-$display("Write/Read %0d words, equal = %0d", len, arrays_equal(wr_data, rd_data, len));
+#10000 start_testing(cmd_sent);
                      
 end        
 
@@ -189,42 +164,84 @@ initial forever #12.5 clk_sr1 = ~ clk_sr1;
 
 
 
-function logic arrays_equal( input reg [31:0] arr1[], input reg [31:0] arr2[], input integer num);
-for (int i = 0 ; i < num; i++) begin
-    if (arr1[i] != arr2[i]) begin
-        return 0;
-        end
-    end
-return 1;
-endfunction
+task automatic start_testing(output logic result);
 
-task automatic get_seq_array( inout reg [31:0] arr[], input integer start_idx, input integer num);
-begin    
-    for (int i = 0 ; i < num; i++) begin
-        arr[start_idx+i] = i;
-    end
-end
+reg [31:0] wr_data []; 
+reg [31:0] rd_data [];
+integer len;
+logic res;
+
+wr_data = new[1050];
+rd_data = new[1050];
+len = wr_data.size();
+get_seq_array(wr_data, 0, len);
+
+
+#1000 write_read_seq(wr_data, len, res);
+
+$display("Sequentially Write/Read with %0d words, result = %s", len, res?"PASS":"NOT PASS");
+
+len = 10;
+#1000 write_read_seq(wr_data, len, res);
+$display("Sequentially Write/Read with %0d words, result = %s", len, res?"PASS":"NOT PASS");
+
+
+
+
+wr_data = new[1026];
+rd_data = new[1026];
+len = 1025;
+get_seq_array(wr_data, 0, wr_data.size());
+
+#1000 write_read_seq(wr_data, len, res);
+$display("Sequentially Write/Read with %0d words, result = %s", len, res?"PASS":"NOT PASS");
+
+len = 1024;
+wr_data[0] = len - 1;
+
+#1000 write_read_seq(wr_data, len, res);
+$display("Sequentially Write/Read with %0d words, result = %s", len, res?"PASS":"NOT PASS");
+
+len = 1023;
+wr_data[0] = len - 1;
+
+#1000 write_read_seq(wr_data, len, res);
+$display("Sequentially Write/Read with %0d words, result = %s", len, res?"PASS":"NOT PASS");
+
+endtask
+
+task automatic write_read_seq( input reg [31:0] data[], input integer num, output logic result);
+reg [31:0] rdata [];
+rdata = new[$size(data)]; 
+
+#1000 write(data, num);
+#1000 read(rdata, num);
+
+result = arrays_equal(data, rdata, num);
 endtask
 
 task automatic read( inout reg [31:0] data[], input integer num);
 integer pause_cnt = 0;
 
-$display ("%m %g Read task with num : %d", $time, num);
-
+//$display ("%m %g Read task with num : %d", $time, num);
+@(negedge ft_clk);
 ft_txe_n <= 1'b0; 
 
 for (int idx = 0 ; idx < num; ) begin
     @(posedge ft_clk);
     if (pause_cnt > 0) begin
-        if (--pause_cnt == 0)
+        if (--pause_cnt == 0) begin
+            @(negedge ft_clk);
             ft_txe_n <= 1'b0;
+            end
         end
     else if (~ft_wr_n) begin
         data[idx] = ft_data;
         idx = idx + 1;
         
-        if ((idx % FT_PACKET_WORDS) == 0) begin
+        if ((idx % FT_PACKET_WORDS) == 0 & idx < num) begin
             pause_cnt = 10;
+            @(negedge ft_clk);
             ft_txe_n <= 1'b1;
             end
         end
@@ -239,20 +256,21 @@ endtask
 task automatic write( inout reg [31:0] data[], input integer num);
 integer pause_cnt = 0;	
 
-$display ("%m %g Write task with num : %d", $time, num);
-
+//$display ("%m %g Write task with num : %d", $time, num);
+@(negedge ft_clk);
 ft_rxf_n <= 1'b0;
 for (int idx = 0 ; idx < num; ) begin
     @(negedge ft_clk) begin        
         if (pause_cnt > 0) begin
-            if (--pause_cnt == 0)
+            if (--pause_cnt == 0) begin                
                 ft_rxf_n <= 1'b0;
+                end
             end
-        else if (~ft_rd_n | (~ft_oe_n & idx == 0)) begin           
+        else if (~ft_rd_n | (~ft_oe_n & idx == 0)) begin   
             treg_ft_data <= data[idx++];
 			
-			if ((idx % FT_PACKET_WORDS) == 0) begin
-	            pause_cnt = 10;
+			if ((idx % FT_PACKET_WORDS) == 0 & idx < num) begin
+	            pause_cnt = 10;                
 	            ft_rxf_n <= 1'b1;
 	            end
 			
@@ -267,24 +285,23 @@ endtask
 
 
 
-	
-      
 
-function[31:0]  get_header;
-input integer idx, idx_idx;
-begin 
-    case (idx)
-    0:
-        get_header = rx_head_case1[idx_idx];
-    1:
-        get_header = rx_head_case2[idx_idx];
-    2:
-        get_header = rx_head_case3[idx_idx];
-    3:
-        get_header = rx_head_case4[idx_idx];
-    endcase
+function automatic logic arrays_equal( input reg [31:0] arr1[], input reg [31:0] arr2[], input integer num);
+for (int i = 0 ; i < num; i++) begin
+    if (arr1[i] != arr2[i]) begin
+        return 0;
+        end
+    end
+return 1;
+endfunction
+
+task automatic get_seq_array( inout reg [31:0] arr[], input integer start_idx, input integer num);
+begin    
+    for (int i = 0 ; i < num; i++) begin
+        arr[start_idx+i] = i;
+    end
 end
-endfunction      
+endtask  
 
 endmodule
 

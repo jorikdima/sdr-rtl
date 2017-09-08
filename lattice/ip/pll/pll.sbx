@@ -45,7 +45,7 @@
             <lattice:device>LFE5U-25F-6BG381C</lattice:device>
             <lattice:synthesis>lse</lattice:synthesis>
             <lattice:date>2017-01-30.16:47:40</lattice:date>
-            <lattice:modified>2017-08-25.22:55:10</lattice:modified>
+            <lattice:modified>2017-09-05.20:44:01</lattice:modified>
             <lattice:diamond>3.9.1.119</lattice:diamond>
             <lattice:language>Verilog</lattice:language>
             <lattice:attributes>
@@ -115,7 +115,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Date</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">08/25/2017</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">09/05/2017</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>ModuleName</lattice:lpckey>
@@ -131,7 +131,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Time</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">22:55:08</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">20:43:59</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>VendorName</lattice:lpckey>
@@ -168,7 +168,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>CLKOP_FREQ</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">200.00</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">190</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>CLKOP_MUXA</lattice:lpckey>
@@ -413,7 +413,7 @@
                 <lattice:lpcsection lattice:name="Command"/>
                 <lattice:lpcentry>
                     <lattice:lpckey>cmd_line</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">-w -n pll -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type pll -fin 38.75 -fclkop 200.00 -fclkop_tol 10.0 -phase_cntl STATIC -lock -fb_mode 1</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">-w -n pll -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type pll -fin 38.75 -fclkop 190 -fclkop_tol 10.0 -phase_cntl STATIC -lock -fb_mode 1</lattice:lpcvalue>
                 </lattice:lpcentry>
             </lattice:lpc>
             <lattice:groups/>

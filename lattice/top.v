@@ -156,6 +156,8 @@ wire cpucmd_fifo_rd, cpucmd_fifo_clk, cpucmd_fifo_empty;
 wire a2f_empty, a2f_enough;
 wire a2f_data_incomming;
 
+wire error;
+
 
 cpucmd_fifo cpucmd_fifo_inst (.Data( ), .WrClock( ), .RdClock(cpucmd_fifo_clk ), .WrEn( ), .RdEn(cpucmd_fifo_rd ), 
     .Reset(1'b0 ), .RPReset(1'b0 ), .Q(cpucmd_fifo_data ), .Empty(cpucmd_fifo_empty ), .Full( ));
@@ -257,7 +259,9 @@ fsm_inst
     
     //inout
     .ft_data(ft_data),
-    .ft_be(ft_be)
+    .ft_be(ft_be),
+    
+    .error(error)
 );
 
 /*
@@ -298,6 +302,8 @@ pll pll_inst (.CLKI(osc ), .CLKOP( clk), .LOCK( pll_locked));
 OSCG #(.DIV (8)) osc_i (.OSC(osc));
 assign clk_sr1 = osc;
 assign clk_sr2 = osc;
+
+assign rpi_d[6] = error;
 
 
 reg[7:0] rst_cnt = 8'h00;

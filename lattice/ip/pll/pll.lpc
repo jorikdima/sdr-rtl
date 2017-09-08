@@ -16,8 +16,8 @@ CoreRevision=5.8
 ModuleName=pll
 SourceFormat=verilog
 ParameterFileVersion=1.0
-Date=08/25/2017
-Time=22:55:08
+Date=09/05/2017
+Time=20:43:59
 
 [Parameters]
 Verilog=1
@@ -32,7 +32,7 @@ CLKI_DIV=1
 ENABLE_HBW=DISABLED
 REFERENCE=0
 IOBUF=LVCMOS33
-CLKOP_FREQ=200.00
+CLKOP_FREQ=190
 CLKOP_TOL=10.0
 CLKOP_DIV=3
 CLKOP_ACTUAL_FREQ=193.750000
@@ -90,4 +90,4 @@ PLL_LOCK_STK=DISABLED
 PLL_USE_SMI=DISABLED
 
 [Command]
-cmd_line= -w -n pll -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type pll -fin 38.75 -fclkop 200.00 -fclkop_tol 10.0 -phase_cntl STATIC -lock -fb_mode 1
+cmd_line= -w -n pll -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type pll -fin 38.75 -fclkop 190 -fclkop_tol 10.0 -phase_cntl STATIC -lock -fb_mode 1
