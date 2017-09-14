@@ -74,8 +74,6 @@ reg[2:0] state, next_state;
 reg rd_n_local, wr_local, wr_local_delayed;
 
 assign ft_be   = oe_n ? 4'b1111 : 4'bzzzz;
-reg[FT_DATA_WIDTH-1:0] wdata_out;
-//assign ft_data = oe_n ? wdata_out : {FT_DATA_WIDTH{1'bz}};
 assign ft_data = oe_n ? wdata : {FT_DATA_WIDTH{1'bz}};
                    
 assign rd_clk = clk;
@@ -84,20 +82,13 @@ assign wr_clk = ~clk;
 
 assign rdata =  ft_data;
 
-reg have_unread_word_a2f, wr_empty_delayed;
+reg have_unread_word_a2f;
 
 wire have_wr_chance = ~txe_n & (wr_enough | (~wr_incomming & (~wr_empty | have_unread_word_a2f)));
 wire have_rd_chance = ~rxf_n & rd_enough;
 wire no_more_read = rxf_n | rd_full;
-wire no_more_write = txe_n | (wr_empty );
+wire no_more_write = txe_n | wr_empty;
 
-
-always @ (posedge clk or negedge reset_n)
-if (~reset_n)
-    wr_empty_delayed <= 1'b0;
-else begin
-    wr_empty_delayed <= wr_empty;
-end
 
 always @ (posedge clk or negedge reset_n)
 if (~reset_n)
@@ -150,7 +141,7 @@ begin
 end
 
 
-assign rd_req = ~rd_n & ~rxf_n;
+assign rd_req = ~rd_n & ~no_more_read;
 
 always @ (posedge clk or negedge reset_n)
 if (~reset_n) begin
@@ -158,8 +149,8 @@ if (~reset_n) begin
 	wr_req <= 1'b0;
     end
 else begin
-    wr_local <= (state[WRITE] & ~txe_n & ~wr_empty) ? 1'b1 : 1'b0;
-	wr_req <= state[WRITE] & ~txe_n & ~wr_empty;
+    wr_local <= state[WRITE] & ~no_more_write;
+	wr_req <= state[WRITE] & ~no_more_write;
     end
     
 always @ (negedge clk or negedge reset_n)

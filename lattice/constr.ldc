@@ -11,6 +11,18 @@ create_clock -period 10.000000 [ get_ports { ft_clk } ]
 create_clock -period 25.000000 [ get_nets { clk_sr1 } ]
 set_clock_groups -exclusive -group [ get_clocks ft_clk  ] -group [ get_clocks clk_sr1  ]
 
+#// Inputs
+set_input_delay -clock [get_clocks ft_clk] -max 4  [get_ports {ft_rxf_n ft_txe_n}]
+set_input_delay -clock [get_clocks ft_clk] -max 7  [get_ports { ft_data[*]}]
+set_input_delay -clock [get_clocks ft_clk] -min 3.5  [get_ports {ft_rxf_n ft_txe_n}]
+set_input_delay -clock [get_clocks ft_clk] -min 6.5  [get_ports { ft_data[*]}]
+#// outputs
+set_output_delay -clock [get_clocks ft_clk] -max 1.2 [get_ports {ft_wr_n ft_rd_n ft_oe_n}]
+set_output_delay -clock [get_clocks ft_clk] -max 1.2 [get_ports {ft_data[*]}]
+set_output_delay -clock [get_clocks ft_clk] -min 0.7 [get_ports {ft_wr_n ft_rd_n ft_oe_n}]
+set_output_delay -clock [get_clocks ft_clk] -min 0.7 [get_ports {ft_data[*]}]
+#
+
 ################################################
 # This section describes the HDL Attributes that are supported
 # by the Lattice Synthesis Engine (LSE).

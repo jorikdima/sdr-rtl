@@ -16,8 +16,8 @@ CoreRevision=5.8
 ModuleName=pll
 SourceFormat=verilog
 ParameterFileVersion=1.0
-Date=09/05/2017
-Time=20:43:59
+Date=09/11/2017
+Time=22:10:39
 
 [Parameters]
 Verilog=1
@@ -32,10 +32,10 @@ CLKI_DIV=1
 ENABLE_HBW=DISABLED
 REFERENCE=0
 IOBUF=LVCMOS33
-CLKOP_FREQ=190
+CLKOP_FREQ=170
 CLKOP_TOL=10.0
-CLKOP_DIV=3
-CLKOP_ACTUAL_FREQ=193.750000
+CLKOP_DIV=4
+CLKOP_ACTUAL_FREQ=164.687500
 CLKOP_MUXA=DISABLED
 CLKOS_Enable=DISABLED
 CLKOS_FREQ=160.00
@@ -56,11 +56,11 @@ CLKOS3_DIV=1
 CLKOS3_ACTUAL_FREQ=
 CLKOS3_MUXD=DISABLED
 FEEDBK_PATH=CLKOP
-CLKFB_DIV=5
+CLKFB_DIV=4
 FRACN_ENABLE=DISABLED
 FRACN_DIV=
-VCO_RATE=581.250
-PLL_BW=4.584
+VCO_RATE=658.750
+PLL_BW=4.655
 CLKOP_DPHASE=0
 CLKOP_APHASE=0.00
 CLKOP_TRIM_POL=Rising
@@ -90,4 +90,4 @@ PLL_LOCK_STK=DISABLED
 PLL_USE_SMI=DISABLED
 
 [Command]
-cmd_line= -w -n pll -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type pll -fin 38.75 -fclkop 190 -fclkop_tol 10.0 -phase_cntl STATIC -lock -fb_mode 1
+cmd_line= -w -n pll -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type pll -fin 38.75 -fclkop 170 -fclkop_tol 10.0 -phase_cntl STATIC -lock -fb_mode 1

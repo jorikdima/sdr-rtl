@@ -1,3 +1,4 @@
+rvl_alias "clk" "clk";
 RVL_ALIAS "clk" "clk"; 
 RVL_ALIAS "clk" "clk"; 
 RVL_ALIAS "clk" "clk"; 

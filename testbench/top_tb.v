@@ -171,9 +171,9 @@ reg [31:0] rd_data [];
 integer len;
 logic res;
 
-wr_data = new[1050];
-rd_data = new[1050];
+wr_data = new[2024];
 len = wr_data.size();
+rd_data = new[len];
 get_seq_array(wr_data, 0, len);
 
 

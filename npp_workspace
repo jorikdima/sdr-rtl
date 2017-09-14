@@ -5,5 +5,7 @@
         <File name="src\sel_a2f.v" />
         <File name="src\sel_f2a.v" />
         <File name="lattice\top.v" />
+        <File name="src\afe_rx.v" />
+        <File name="src\afe_tx.v" />
     </Project>
 </NotepadPlus>
