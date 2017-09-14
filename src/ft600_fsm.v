@@ -70,7 +70,7 @@ inout wire[3:0] ft_be;
 
 
 parameter [2:0] IDLE=0, WRITE=1, READ=2;
-reg[2:0] state, next_state;
+reg[2:0] state;
 reg rd_n_local, wr_local, wr_local_delayed;
 
 assign ft_be   = oe_n ? 4'b1111 : 4'bzzzz;
@@ -83,6 +83,7 @@ assign wr_clk = ~clk;
 assign rdata =  ft_data;
 
 reg have_unread_word_a2f;
+reg have_wr_chance_reg, have_rd_chance_reg, no_more_read_reg, no_more_write_reg;
 
 wire have_wr_chance = ~txe_n & (wr_enough | (~wr_incomming & (~wr_empty | have_unread_word_a2f)));
 wire have_rd_chance = ~rxf_n & rd_enough;
@@ -102,41 +103,46 @@ else if (~txe_n & ~wr_n)
 
 always @ (posedge clk or negedge reset_n)
 if (~reset_n) begin
+    have_wr_chance_reg <= 0;
+    have_rd_chance_reg <= 0;
+    no_more_read_reg <= 0;
+    no_more_write_reg <= 0;
+    end
+else begin
+    have_wr_chance_reg <= have_wr_chance;
+    have_rd_chance_reg <= have_rd_chance;
+    no_more_read_reg <= no_more_read;
+    no_more_write_reg <= no_more_write;    
+    end
+    
+
+//always @ (state or have_wr_chance or have_rd_chance or no_more_write or no_more_read)
+always @ (posedge clk or negedge reset_n)
+if (~reset_n) begin
     state <= 3'b000;
     state[IDLE] <= 1;    
     error <= 1'b0;    
     end
 else begin
-    state <= next_state;
-    if (next_state == 3'b000 | next_state == 3'b111 | next_state == 3'b110 | next_state == 3'b101 | next_state == 3'b011)
+    if (state == 3'b000 | state == 3'b111 | state == 3'b110 | state == 3'b101 | state == 3'b011)        
         error <= 1;
-    end
-    
-
-always @ (state or have_wr_chance or have_rd_chance or no_more_write or no_more_read)
-begin        
-    next_state = 3'b000;
+        
     case (1'b1) // synopsys full_case parallel_case
     state[IDLE]:        
-        if (have_wr_chance) // even if we have smth to read wr has priority
-            next_state[WRITE] = 1;            
-        else if (have_rd_chance)            
-            next_state[READ] = 1;
-        else
-            next_state[IDLE] = 1;
-            
+        if (have_wr_chance_reg) // even if we have smth to read wr has priority
+            state <= (3'b001 << WRITE);            
+        else if (have_rd_chance_reg)            
+            state <= (3'b001 << READ);
+                    
     state[WRITE]:        
         //either we have sent all data (which should not happen) or FT is full
-        if (no_more_write) 
-            next_state[IDLE] = 1;
-        else 
-            next_state[WRITE] = 1;
-
+        if (no_more_write_reg) 
+            state <= (3'b001 << IDLE);
+        
     state[READ]: 
-        if (no_more_read)  //either FT has sent all data or we're full
-            next_state[IDLE] = 1;
-        else
-            next_state[READ] = 1;        
+        if (no_more_read_reg)  //either FT has sent all data or we're full
+            state <= (3'b001 << IDLE);
+                
     endcase   
 end
 
@@ -166,7 +172,7 @@ if (~reset_n)
 else	
     begin
 	    
-    wr_n <= (~have_unread_word_a2f & (~wr_local | wr_empty)) | txe_n;
+    wr_n <= (~have_unread_word_a2f & (~wr_local | wr_empty)) | txe_n | ~state[WRITE];
     
     oe_n <= (state[READ]) ? 1'b0 : 1'b1;
     
