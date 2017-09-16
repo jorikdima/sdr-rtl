@@ -42,6 +42,8 @@ tx_led, rx_led
 
 
 parameter FT_DATA_WIDTH=32;
+
+wire loopback = 1'b1;
 parameter IQ_PAIR_WIDTH = 24;
 
 parameter RPI_DATA_WIDTH=18;
@@ -110,9 +112,6 @@ wire clk, pll_locked, clk_pll, i2c_sda_oe, i2c_scl_oe;
 
 wire reset_n;
 wire en = reset_n;
-
-wire loopback = 1'b1;
-
 
 
 GSR GSR_INST (.GSR (reset_n));
@@ -299,7 +298,7 @@ assign vcc_virt_2 = 1'b1;
 
 wire osc;
 pll pll_inst (.CLKI(osc ), .CLKOP( clk), .LOCK( pll_locked));
-OSCG #(.DIV (8)) osc_i (.OSC(osc));
+OSCG #(.DIV (4)) osc_i (.OSC(osc));
 assign clk_sr1 = osc;
 assign clk_sr2 = osc;
 

@@ -8,7 +8,7 @@
 ################################################
 
 create_clock -period 10.000000 [ get_ports { ft_clk } ]
-create_clock -period 25.000000 [ get_nets { clk_sr1 } ]
+create_clock -period 12.000000 [ get_nets { clk_sr1 } ]
 set_clock_groups -exclusive -group [ get_clocks ft_clk  ] -group [ get_clocks clk_sr1  ]
 
 #// Inputs
