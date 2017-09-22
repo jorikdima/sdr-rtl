@@ -7,5 +7,7 @@
         <File name="lattice\top.v" />
         <File name="src\afe_rx.v" />
         <File name="src\afe_tx.v" />
+        <File name="src\sdr.v" />
+        <File name="src\wb2fifo.v" />
     </Project>
 </NotepadPlus>

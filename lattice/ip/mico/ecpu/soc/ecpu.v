@@ -37,7 +37,7 @@
 //
 //      Project:           ecpu
 //      File:              ecpu.v
-//      Date:              Wed, 26 Jul 2017 23:39:00 PDT
+//      Date:              Wed, 20 Sep 2017 22:55:03 PDT
 //      Version:           2.1
 //      Targeted Family:   All
 //
@@ -333,6 +333,7 @@ endmodule
 `include "../components/gpio/rtl/verilog/tpio.v"
 `include "../components/memory_passthru/rtl/verilog/memory_passthru.v"
 `include "../components/memory_passthru/rtl/verilog/mpassthru.v"
+`include "../components/wb_ebr_ctrl/rtl/verilog/wb_ebr_ctrl.v"
 
 
 module ecpu ( 
@@ -343,8 +344,7 @@ module ecpu (
 , spiSCLK_MASTER
 , i2cm_ocSDA
 , i2cm_ocSCL
-, gpioPIO_BOTH_IN
-, gpioPIO_BOTH_OUT
+, gpioPIO_OUT
 , memory_passthruclk
 , memory_passthrurst
 , memory_passthrumem_adr
@@ -439,8 +439,7 @@ wire   gpioGPIO_ERR_O;
 wire   gpioGPIO_RTY_O;
 wire gpioGPIO_en;
 wire gpioIRQ_O;
-input [1-1:0] gpioPIO_BOTH_IN;
-output [1-1:0] gpioPIO_BOTH_OUT;
+output [32-1:0] gpioPIO_OUT;
 
 wire [31:0] memory_passthruMEM_DAT_O;
 wire   memory_passthruMEM_ACK_O;
@@ -462,6 +461,12 @@ output  memory_passthrumem_we;
 output [1:0]  memory_passthrumem_bte;
 output [2:0]  memory_passthrumem_cti;
 output  memory_passthrumem_lock;
+
+wire [31:0] ebrEBR_DAT_O;
+wire   ebrEBR_ACK_O;
+wire   ebrEBR_ERR_O;
+wire   ebrEBR_RTY_O;
+wire ebrEBR_en;
 reg [2:0] counter;
 wire sys_reset = !counter[2];
 always @(posedge clk_i or negedge reset_n)
@@ -533,6 +538,7 @@ spiSPI_en ? spiSPI_DAT_O :
 i2cm_ocI2CM_en ? i2cm_ocI2CM_DAT_O : 
 gpioGPIO_en ? gpioGPIO_DAT_O : 
 memory_passthruMEM_en ? memory_passthruMEM_DAT_O : 
+ebrEBR_en ? ebrEBR_DAT_O : 
 0;
 assign SHAREDBUS_ERR_O = SHAREDBUS_CYC_I & !(
 (!LM32DEBUG_ERR_O & LM32DEBUG_en) | 
@@ -540,6 +546,7 @@ assign SHAREDBUS_ERR_O = SHAREDBUS_CYC_I & !(
 (!i2cm_ocI2CM_ERR_O & i2cm_ocI2CM_en) | 
 (!gpioGPIO_ERR_O & gpioGPIO_en) | 
 (!memory_passthruMEM_ERR_O & memory_passthruMEM_en) | 
+(!ebrEBR_ERR_O & ebrEBR_en) | 
 0);
 assign SHAREDBUS_ACK_O = 
 LM32DEBUG_en ? LM32DEBUG_ACK_O : 
@@ -547,6 +554,7 @@ spiSPI_en ? spiSPI_ACK_O :
 i2cm_ocI2CM_en ? i2cm_ocI2CM_ACK_O : 
 gpioGPIO_en ? gpioGPIO_ACK_O : 
 memory_passthruMEM_en ? memory_passthruMEM_ACK_O : 
+ebrEBR_en ? ebrEBR_ACK_O : 
 0;
 assign SHAREDBUS_RTY_O = 
 LM32DEBUG_en ? LM32DEBUG_RTY_O : 
@@ -554,12 +562,13 @@ spiSPI_en ? spiSPI_RTY_O :
 i2cm_ocI2CM_en ? i2cm_ocI2CM_RTY_O : 
 gpioGPIO_en ? gpioGPIO_RTY_O : 
 memory_passthruMEM_en ? memory_passthruMEM_RTY_O : 
+ebrEBR_en ? ebrEBR_RTY_O : 
 0;
 wire [31:0] LM32DEBUG_DAT_I;
 assign LM32DEBUG_DAT_I = SHAREDBUS_DAT_I[31:0];
 wire [3:0] LM32DEBUG_SEL_I;
 assign LM32DEBUG_SEL_I = SHAREDBUS_SEL_I;
-assign LM32DEBUG_en = ( SHAREDBUS_ADR_I[31:14] == 18'b000000000000000000);
+assign LM32DEBUG_en = ( SHAREDBUS_ADR_I[31:14] == 18'b000000000000000010);
 lm32_top 
  LM32( 
 .I_ADR_O(LM32I_ADR_O),
@@ -651,7 +660,7 @@ assign i2cm_ocI2CM_en = ( SHAREDBUS_ADR_I[31:7] == 25'b1000000000000000000000010
 i2cm_opencores 
 #(
 .SPEED(400),
-.SYSCLK(25.0))
+.SYSCLK(40.0))
  i2cm_oc( 
 .I2CM_ADR_I(SHAREDBUS_ADR_I[31:0]),
 .I2CM_DAT_I(i2cm_ocI2CM_DAT_I[31:0]),
@@ -681,11 +690,11 @@ gpio
 #(
 .GPIO_WB_DAT_WIDTH(32),
 .GPIO_WB_ADR_WIDTH(4),
-.OUTPUT_PORTS_ONLY(0),
+.OUTPUT_PORTS_ONLY(1),
 .INPUT_PORTS_ONLY(0),
 .TRISTATE_PORTS(0),
-.BOTH_INPUT_AND_OUTPUT(1),
-.DATA_WIDTH(32'h1),
+.BOTH_INPUT_AND_OUTPUT(0),
+.DATA_WIDTH(32'h20),
 .INPUT_WIDTH(32'h1),
 .OUTPUT_WIDTH(32'h1),
 .IRQ_MODE(0),
@@ -708,8 +717,7 @@ gpio
 .GPIO_LOCK_I(SHAREDBUS_LOCK_I),
 .GPIO_CYC_I(SHAREDBUS_CYC_I & gpioGPIO_en),
 .GPIO_STB_I(SHAREDBUS_STB_I & gpioGPIO_en),
-.PIO_BOTH_IN(gpioPIO_BOTH_IN),
-.PIO_BOTH_OUT(gpioPIO_BOTH_OUT),
+.PIO_OUT(gpioPIO_OUT),
 .IRQ_O(gpioIRQ_O),
 .CLK_I(clk_i), .RST_I(sys_reset));
 
@@ -718,7 +726,7 @@ wire [31:0] memory_passthruMEM_DAT_I;
 assign memory_passthruMEM_DAT_I = SHAREDBUS_DAT_I[31:0];
 wire [3:0] memory_passthruMEM_SEL_I;
 assign memory_passthruMEM_SEL_I = SHAREDBUS_SEL_I;
-assign memory_passthruMEM_en = ( SHAREDBUS_ADR_I[31:8] == 24'b000000000000000001000000);
+assign memory_passthruMEM_en = ( SHAREDBUS_ADR_I[31:8] == 24'b000000000000000100000000);
 memory_passthru 
 #(
 .MEM_WB_DAT_WIDTH(32),
@@ -753,6 +761,34 @@ memory_passthru
 .mem_cti(memory_passthrumem_cti),
 .mem_lock(memory_passthrumem_lock),
 .CLK_I(clk_i), .RST_I(sys_reset));
+
+
+wire [31:0] ebrEBR_DAT_I;
+assign ebrEBR_DAT_I = SHAREDBUS_DAT_I[31:0];
+wire [3:0] ebrEBR_SEL_I;
+assign ebrEBR_SEL_I = SHAREDBUS_SEL_I;
+assign ebrEBR_en = ( SHAREDBUS_ADR_I[31:15] == 17'b00000000000000000);
+wb_ebr_ctrl 
+#(
+.SIZE(24576),
+.EBR_WB_DAT_WIDTH(32),
+.INIT_FILE_NAME("none"),
+.INIT_FILE_FORMAT("hex"))
+ ebr( 
+.EBR_ADR_I(SHAREDBUS_ADR_I[31:0]),
+.EBR_DAT_I(ebrEBR_DAT_I[31:0]),
+.EBR_DAT_O(ebrEBR_DAT_O[31:0]),
+.EBR_SEL_I(ebrEBR_SEL_I[3:0]),
+.EBR_WE_I(SHAREDBUS_WE_I),
+.EBR_ACK_O(ebrEBR_ACK_O),
+.EBR_ERR_O(ebrEBR_ERR_O),
+.EBR_RTY_O(ebrEBR_RTY_O),
+.EBR_CTI_I(SHAREDBUS_CTI_I),
+.EBR_BTE_I(SHAREDBUS_BTE_I),
+.EBR_LOCK_I(SHAREDBUS_LOCK_I),
+.EBR_CYC_I(SHAREDBUS_CYC_I & ebrEBR_en),
+.EBR_STB_I(SHAREDBUS_STB_I & ebrEBR_en),
+.CLK_I (clk_i), .RST_I (sys_reset));
 
 
 assign LM32interrupt_n[0] = !spiSPI_INT_O ;

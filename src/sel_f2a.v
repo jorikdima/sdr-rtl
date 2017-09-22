@@ -75,6 +75,9 @@ module sel_f2a(
 	assign fifo_we_o = we_i & (fifo_we | loopback);
     assign cpu_we_o = cpu_we & ~loopback;
 	
+	wire[15:0] fifo_num_field = data_i[15:0];
+	wire[8:0] cpu_num_field = data_i[27:20];
+	
 
 always @ (negedge clk_i or negedge reset_n)
 begin
@@ -107,14 +110,15 @@ else begin
         ST_DECODE: 
             if (we_i) begin                
                 case (data_i[FT_DATA_WIDTH-1])
-                    TOFIFO: begin
-                        req_packets <= data_i[15:0];                        
-                        mode <= ST_FIFO;
+                    TOFIFO: begin                        
+                        req_packets <= fifo_num_field;
+                        if (fifo_num_field > 0)
+                            mode <= ST_FIFO;
                         end
                     TOCPU: begin
                         cpu_we_local <= 1'b1;
-                        req_packets <= {{8{1'b0}}, data_i[27:20]}; 
-                        if (data_i[27:20] > 0)
+                        req_packets <= {{8{1'b0}}, cpu_num_field}; 
+                        if (cpu_num_field > 0)
                             mode <= ST_CPU;
                         end
                 endcase

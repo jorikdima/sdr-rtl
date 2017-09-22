@@ -86,6 +86,8 @@
 #include "OpenCoresI2CMaster.h"
 #include "MicoUtils.h"
 #include "string.h"
+#include "system_conf.h"
+#include "MicoGPIO.h"
 
 /*****************************************************************************
  *                                                                           *
@@ -195,7 +197,7 @@ static void i2c_mem_wr_str(unsigned char mem_offset, const char * str )
     return;
 }
 
-int main(void)
+int main2(void)
 {
     char data[MAX_STR_LEN];
 
@@ -228,5 +230,31 @@ int main(void)
     printf("new str: %s\n", data );
 
     return 0;
+}
+
+int main(void)
+{
+	volatile unsigned int* const ptr = (volatile unsigned int*)MEMORY_PASSTHRU_BASE_ADDRESS;
+	volatile MicoGPIO_t const *gp = (volatile MicoGPIO_t *)(gpio_gpio.base);
+	volatile unsigned int *data = (volatile unsigned int *)(&gp->data);
+	volatile unsigned int *tri = (volatile unsigned int *)(&gp->tristate);
+	//printf("\nstarting i2c mem. operation %h\n", ptr);
+
+
+    int i = 0;
+    volatile unsigned int tmp=0;
+    *tri = 0x1000000;
+    //*tri = 0xffffffff;
+
+	while(1)
+	{
+		//*ptr = 0xfeedbeef;
+		tmp = *(ptr+1);
+		*ptr = 0xFAFA9999;
+		*data=  ((++i) & 0x1)<<24;
+		//*data= 0xffffffff;
+		MicoSleepMilliSecs(1000);
+	}
+	return 0;
 }
 

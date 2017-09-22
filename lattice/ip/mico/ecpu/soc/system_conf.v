@@ -14,7 +14,7 @@
    `define CFG_DEBUG_ENABLED
 `endif
 `define CFG_EBA_RESET 32'h0
-`define CFG_DEBA_RESET 32'h0
+`define CFG_DEBA_RESET 32'h8000
 `define CFG_DISTRAM_POSEDGE_REGISTER_FILE
 `define SHIFT_ENABLE
 `define CFG_PL_BARREL_SHIFT_ENABLED
@@ -28,17 +28,7 @@
    `define CFG_JTAG_UART_ENABLED
 `endif
 `define INCLUDE_LM32
-`define CFG_IROM_ENABLED
-`define CFG_IROM_BASE_ADDRESS 32'h8000
-`define CFG_IROM_LIMIT 32'hbfff
-`define CFG_IROM_INIT_FILE_FORMAT "hex"
-`define CFG_IROM_INIT_FILE "none"
-`define CFG_DRAM_ENABLED
-`define CFG_DRAM_BASE_ADDRESS 32'hc000
-`define CFG_DRAM_LIMIT 32'hcfff
-`define CFG_DRAM_INIT_FILE_FORMAT "hex"
-`define CFG_DRAM_INIT_FILE "none"
-`define LM32_I_PC_WIDTH 16
+`define LM32_I_PC_WIDTH 17
 `define spiMASTER
 `define spiSLAVE_NUMBER 32'h1
 `define spiCLOCK_SEL 7
@@ -53,11 +43,12 @@
 `define i2cm_ocSYSCLK 0
 `define gpioGPIO_WB_DAT_WIDTH 32
 `define gpioGPIO_WB_ADR_WIDTH 4
-`define gpioBOTH_INPUT_AND_OUTPUT
-`define gpioDATA_WIDTH 32'h1
-`define gpioINPUT_WIDTH 32'h1
-`define gpioOUTPUT_WIDTH 32'h1
+`define gpioOUTPUT_PORTS_ONLY
+`define gpioDATA_WIDTH 32'h20
 `define memory_passthruMEM_WB_DAT_WIDTH 32
 `define MEM_WB_SEL_WIDTH 4
 `define memory_passthruMEM_WB_ADR_WIDTH 32
+`define ebrEBR_WB_DAT_WIDTH 32
+`define ebrINIT_FILE_NAME "none"
+`define ebrINIT_FILE_FORMAT "hex"
 `endif // SYSTEM_CONF

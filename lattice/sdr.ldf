@@ -2,7 +2,7 @@
 <BaliProject version="3.2" title="sdr" device="LFE5U-25F-6BG381C" default_implementation="impl1">
     <Options/>
     <Implementation title="impl1" dir="impl1" description="impl1" synthesis="lse" default_strategy="Strategy1">
-        <Options def_top="top" top="top"/>
+        <Options def_top="TYPEB" top="top"/>
         <Source name="ip/a2f_fifo/a2f_fifo.sbx" type="sbx" type_short="SBX">
             <Options/>
         </Source>
@@ -24,7 +24,7 @@
         <Source name="ip/pll/pll.sbx" type="sbx" type_short="SBX">
             <Options/>
         </Source>
-        <Source name="ip/mico/ecpu/soc/ecpu.v" type="Verilog" type_short="Verilog" excluded="TRUE">
+        <Source name="ip/mico/ecpu/soc/ecpu.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
         <Source name="../src/sel_a2f.v" type="Verilog" type_short="Verilog">
@@ -42,19 +42,13 @@
         <Source name="../src/afe_tx.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="afe.rva" type="Reveal Analyzer Project File" type_short="RVA">
+        <Source name="../src/sdr.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="afe.rvl" type="Reveal" type_short="Reveal">
+        <Source name="../src/wb2fifo.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="constr.ldc" type="LSE Design Constraints File" type_short="LDC">
-            <Options/>
-        </Source>
-        <Source name="fsm.rva" type="Reveal Analyzer Project File" type_short="RVA" excluded="TRUE">
-            <Options/>
-        </Source>
-        <Source name="fsm.rvl" type="Reveal" type_short="Reveal" excluded="TRUE">
+        <Source name="constr.ldc" type="LSE Design Constraints File" type_short="LDC" excluded="TRUE">
             <Options/>
         </Source>
         <Source name="impl1/impl1.xcf" type="Programming Project File" type_short="Programming">

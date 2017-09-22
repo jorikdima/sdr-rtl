@@ -2,9 +2,9 @@
 <SYSLIB>
 <MSB_FILE name="ecpu.msb" path="../soc"/>
 <MemorySections Deployflag="false" UCflag="true">
-<Section DEPLOY="yes" Load="false" Name=".text" Value="Instruction_IM"/>
-<Section Load="false" Name=".rodata" Value="Data_IM"/>
-<Section Load="false" Name=".data" Value="Data_IM"/>
+<Section DEPLOY="yes" Load="false" Name=".text" Value="ebr"/>
+<Section Load="false" Name=".rodata" Value="ebr"/>
+<Section Load="false" Name=".data" Value="ebr"/>
 </MemorySections>
 <LinkerSettings>
 <Param Name="UserDefinedLinkerFile" Value=""/>
