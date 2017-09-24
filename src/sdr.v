@@ -91,7 +91,7 @@ input wire rpi_oe, rpi_we;
 input wire[1:0] rpi_gpio;
 
 // Misc
-output reg tx_mux, rx_mux, tx_led, rx_led;
+output wire tx_mux, rx_mux, tx_led, rx_led;
 
 wire rd_req, ft_rd_clk, ft_wr_clk, ft_wr_req, ft_rd_req;
 
@@ -259,7 +259,7 @@ fsm_inst
     .error(error)
 );
 
-wire[32-1:0] gpioPIO_OUT;
+wire[7:0] gpioPIO_OUT;
 
 wire            wb_clk_i;
 wire            wb_rst_i;
@@ -288,21 +288,21 @@ ecpu ecpu_u (
 , .i2cm_ocSDA(i2c_sda) // 
 , .i2cm_ocSCL(i2c_clk) // 
 , .gpioPIO_OUT(gpioPIO_OUT) // [1-1:0]
-, .memory_passthruclk(wb_clk_i) // 
-, .memory_passthrurst(wb_rst_i) // 
-, .memory_passthrumem_adr(wb_adr_i) // [32-1:0]
-, .memory_passthrumem_master_data(wb_dat_o) // [32-1:0]
-, .memory_passthrumem_slave_data(wb_dat_i) // [32-1:0]
-, .memory_passthrumem_strb(wb_stb_i) // 
-, .memory_passthrumem_cyc(wb_cyc_i) // 
-, .memory_passthrumem_ack(wb_ack_o) // 
-, .memory_passthrumem_err(wb_err_o) // 
-, .memory_passthrumem_rty(wb_rty_o) // 
-, .memory_passthrumem_sel(wb_sel_i) // [3:0] 
-, .memory_passthrumem_we(wb_we_i) // 
-, .memory_passthrumem_bte(wb_bte_i) // [1:0] 
-, .memory_passthrumem_cti(wb_cti_i) // [2:0] 
-, .memory_passthrumem_lock(wb_lock_i) // 
+, .fifoclk(wb_clk_i) // 
+, .fiforst(wb_rst_i) // 
+, .fifomem_adr(wb_adr_i) // [32-1:0]
+, .fifomem_master_data(wb_dat_o) // [32-1:0]
+, .fifomem_slave_data(wb_dat_i) // [32-1:0]
+, .fifomem_strb(wb_stb_i) // 
+, .fifomem_cyc(wb_cyc_i) // 
+, .fifomem_ack(wb_ack_o) // 
+, .fifomem_err(wb_err_o) // 
+, .fifomem_rty(wb_rty_o) // 
+, .fifomem_sel(wb_sel_i) // [3:0] 
+, .fifomem_we(wb_we_i) // 
+, .fifomem_bte(wb_bte_i) // [1:0] 
+, .fifomem_cti(wb_cti_i) // [2:0] 
+, .fifomem_lock(wb_lock_i) // 
 );
 
 
@@ -310,18 +310,19 @@ wb2fifo #(.FT_DATA_WIDTH (FT_DATA_WIDTH))
 wb2fifo_inst 
 (
 	// FIFO to read from
-	.fifo_data_i(),
-	.fifo_clk_o(),
-	.fifo_rd_o(),
-    .fifo_empty_i(),
-    .fifo_full_i(),
+	.fifoin_data_i(cpuin_fifo_q),
+	.fifoin_clk_o(cpuin_fifo_rdclk),
+	.fifoin_rd_o(cpuin_fifo_rden),
+    .fifoin_empty_i(cpuin_fifo_empty),
+    .fifoin_full_i(cpuin_fifo_full),
     
 	
 	//FIFO to write to
-	.cpu_data_o(),
-    .cpu_empty_i(),
-	.cpu_clk_o(),
-	.cpu_wr_o(),
+	.fifoout_data_o(cpuout_fifo_data),
+    .fifoout_empty_i(cpuout_fifo_empty),
+    .fifoout_full_i(cpuout_fifo_full),
+	.fifoout_clk_o(cpuout_fifo_clk),
+	.fifoout_wr_o(cpuout_fifo_wr),
 
 
     // Wishbone interface
@@ -343,11 +344,8 @@ wb2fifo_inst
 );
 
   
-always @(posedge cpuclk)
-begin
-    tx_led <= gpioPIO_OUT[0] | gpioPIO_OUT[31];
-    rx_led <= gpioPIO_OUT[0] | gpioPIO_OUT[31];
-end
+
+assign tx_led = gpioPIO_OUT[0];
 
 
 

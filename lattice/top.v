@@ -104,7 +104,7 @@ output wire tx_mux, rx_mux, tx_led, rx_led;
 
 reg[7:0] rst_cnt = 8'h00;
 
-wire error, reset_n, osc;
+wire error, reset_n, osc, debug_clk;
 wire en = reset_n;
 
 
@@ -170,7 +170,7 @@ assign vcc_virt_1 = 1'b1;
 assign vcc_virt_2 = 1'b1;
 
 
-pll pll_inst (.CLKI(ft_clk ), .CLKOP( clk), .LOCK( pll_locked));
+pll pll_inst (.CLKI(ft_clk ), .CLKOP( clk), .CLKOS2( debug_clk), .LOCK( pll_locked));
 
 OSCG #(.DIV (8)) osc_i (.OSC(osc));
 

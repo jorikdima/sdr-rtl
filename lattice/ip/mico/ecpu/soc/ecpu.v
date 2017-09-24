@@ -37,7 +37,7 @@
 //
 //      Project:           ecpu
 //      File:              ecpu.v
-//      Date:              Wed, 20 Sep 2017 22:55:03 PDT
+//      Date:              Sat, 23 Sep 2017 23:42:38 PDT
 //      Version:           2.1
 //      Targeted Family:   All
 //
@@ -345,21 +345,21 @@ module ecpu (
 , i2cm_ocSDA
 , i2cm_ocSCL
 , gpioPIO_OUT
-, memory_passthruclk
-, memory_passthrurst
-, memory_passthrumem_adr
-, memory_passthrumem_master_data
-, memory_passthrumem_slave_data
-, memory_passthrumem_strb
-, memory_passthrumem_cyc
-, memory_passthrumem_ack
-, memory_passthrumem_err
-, memory_passthrumem_rty
-, memory_passthrumem_sel
-, memory_passthrumem_we
-, memory_passthrumem_bte
-, memory_passthrumem_cti
-, memory_passthrumem_lock
+, fifoclk
+, fiforst
+, fifomem_adr
+, fifomem_master_data
+, fifomem_slave_data
+, fifomem_strb
+, fifomem_cyc
+, fifomem_ack
+, fifomem_err
+, fifomem_rty
+, fifomem_sel
+, fifomem_we
+, fifomem_bte
+, fifomem_cti
+, fifomem_lock
 );
 input	clk_i, reset_n;
 genvar i;
@@ -439,28 +439,28 @@ wire   gpioGPIO_ERR_O;
 wire   gpioGPIO_RTY_O;
 wire gpioGPIO_en;
 wire gpioIRQ_O;
-output [32-1:0] gpioPIO_OUT;
+output [8-1:0] gpioPIO_OUT;
 
-wire [31:0] memory_passthruMEM_DAT_O;
-wire   memory_passthruMEM_ACK_O;
-wire   memory_passthruMEM_ERR_O;
-wire   memory_passthruMEM_RTY_O;
-wire memory_passthruMEM_en;
-output  memory_passthruclk;
-output  memory_passthrurst;
-output [32-1:0] memory_passthrumem_adr;
-output [32-1:0] memory_passthrumem_master_data;
-input [32-1:0] memory_passthrumem_slave_data;
-output  memory_passthrumem_strb;
-output  memory_passthrumem_cyc;
-input  memory_passthrumem_ack;
-input  memory_passthrumem_err;
-input  memory_passthrumem_rty;
-output [3:0]  memory_passthrumem_sel;
-output  memory_passthrumem_we;
-output [1:0]  memory_passthrumem_bte;
-output [2:0]  memory_passthrumem_cti;
-output  memory_passthrumem_lock;
+wire [31:0] fifoMEM_DAT_O;
+wire   fifoMEM_ACK_O;
+wire   fifoMEM_ERR_O;
+wire   fifoMEM_RTY_O;
+wire fifoMEM_en;
+output  fifoclk;
+output  fiforst;
+output [32-1:0] fifomem_adr;
+output [32-1:0] fifomem_master_data;
+input [32-1:0] fifomem_slave_data;
+output  fifomem_strb;
+output  fifomem_cyc;
+input  fifomem_ack;
+input  fifomem_err;
+input  fifomem_rty;
+output [3:0]  fifomem_sel;
+output  fifomem_we;
+output [1:0]  fifomem_bte;
+output [2:0]  fifomem_cti;
+output  fifomem_lock;
 
 wire [31:0] ebrEBR_DAT_O;
 wire   ebrEBR_ACK_O;
@@ -537,7 +537,7 @@ LM32DEBUG_en ? LM32DEBUG_DAT_O :
 spiSPI_en ? spiSPI_DAT_O : 
 i2cm_ocI2CM_en ? i2cm_ocI2CM_DAT_O : 
 gpioGPIO_en ? gpioGPIO_DAT_O : 
-memory_passthruMEM_en ? memory_passthruMEM_DAT_O : 
+fifoMEM_en ? fifoMEM_DAT_O : 
 ebrEBR_en ? ebrEBR_DAT_O : 
 0;
 assign SHAREDBUS_ERR_O = SHAREDBUS_CYC_I & !(
@@ -545,7 +545,7 @@ assign SHAREDBUS_ERR_O = SHAREDBUS_CYC_I & !(
 (!spiSPI_ERR_O & spiSPI_en) | 
 (!i2cm_ocI2CM_ERR_O & i2cm_ocI2CM_en) | 
 (!gpioGPIO_ERR_O & gpioGPIO_en) | 
-(!memory_passthruMEM_ERR_O & memory_passthruMEM_en) | 
+(!fifoMEM_ERR_O & fifoMEM_en) | 
 (!ebrEBR_ERR_O & ebrEBR_en) | 
 0);
 assign SHAREDBUS_ACK_O = 
@@ -553,7 +553,7 @@ LM32DEBUG_en ? LM32DEBUG_ACK_O :
 spiSPI_en ? spiSPI_ACK_O : 
 i2cm_ocI2CM_en ? i2cm_ocI2CM_ACK_O : 
 gpioGPIO_en ? gpioGPIO_ACK_O : 
-memory_passthruMEM_en ? memory_passthruMEM_ACK_O : 
+fifoMEM_en ? fifoMEM_ACK_O : 
 ebrEBR_en ? ebrEBR_ACK_O : 
 0;
 assign SHAREDBUS_RTY_O = 
@@ -561,14 +561,14 @@ LM32DEBUG_en ? LM32DEBUG_RTY_O :
 spiSPI_en ? spiSPI_RTY_O : 
 i2cm_ocI2CM_en ? i2cm_ocI2CM_RTY_O : 
 gpioGPIO_en ? gpioGPIO_RTY_O : 
-memory_passthruMEM_en ? memory_passthruMEM_RTY_O : 
+fifoMEM_en ? fifoMEM_RTY_O : 
 ebrEBR_en ? ebrEBR_RTY_O : 
 0;
 wire [31:0] LM32DEBUG_DAT_I;
 assign LM32DEBUG_DAT_I = SHAREDBUS_DAT_I[31:0];
 wire [3:0] LM32DEBUG_SEL_I;
 assign LM32DEBUG_SEL_I = SHAREDBUS_SEL_I;
-assign LM32DEBUG_en = ( SHAREDBUS_ADR_I[31:14] == 18'b000000000000000010);
+assign LM32DEBUG_en = ( SHAREDBUS_ADR_I[31:14] == 18'b000000000000000100);
 lm32_top 
  LM32( 
 .I_ADR_O(LM32I_ADR_O),
@@ -660,7 +660,7 @@ assign i2cm_ocI2CM_en = ( SHAREDBUS_ADR_I[31:7] == 25'b1000000000000000000000010
 i2cm_opencores 
 #(
 .SPEED(400),
-.SYSCLK(40.0))
+.SYSCLK(20.0))
  i2cm_oc( 
 .I2CM_ADR_I(SHAREDBUS_ADR_I[31:0]),
 .I2CM_DAT_I(i2cm_ocI2CM_DAT_I[31:0]),
@@ -694,7 +694,7 @@ gpio
 .INPUT_PORTS_ONLY(0),
 .TRISTATE_PORTS(0),
 .BOTH_INPUT_AND_OUTPUT(0),
-.DATA_WIDTH(32'h20),
+.DATA_WIDTH(32'h8),
 .INPUT_WIDTH(32'h1),
 .OUTPUT_WIDTH(32'h1),
 .IRQ_MODE(0),
@@ -722,44 +722,44 @@ gpio
 .CLK_I(clk_i), .RST_I(sys_reset));
 
 
-wire [31:0] memory_passthruMEM_DAT_I;
-assign memory_passthruMEM_DAT_I = SHAREDBUS_DAT_I[31:0];
-wire [3:0] memory_passthruMEM_SEL_I;
-assign memory_passthruMEM_SEL_I = SHAREDBUS_SEL_I;
-assign memory_passthruMEM_en = ( SHAREDBUS_ADR_I[31:8] == 24'b000000000000000100000000);
+wire [31:0] fifoMEM_DAT_I;
+assign fifoMEM_DAT_I = SHAREDBUS_DAT_I[31:0];
+wire [3:0] fifoMEM_SEL_I;
+assign fifoMEM_SEL_I = SHAREDBUS_SEL_I;
+assign fifoMEM_en = ( SHAREDBUS_ADR_I[31:4] == 28'b0000000000000010000000000000);
 memory_passthru 
 #(
 .MEM_WB_DAT_WIDTH(32),
 .MEM_WB_ADR_WIDTH(32))
- memory_passthru( 
+ fifo( 
 .MEM_ADR_I(SHAREDBUS_ADR_I[31:0]),
-.MEM_DAT_I(memory_passthruMEM_DAT_I[31:0]),
-.MEM_DAT_O(memory_passthruMEM_DAT_O[31:0]),
-.MEM_SEL_I(memory_passthruMEM_SEL_I[3:0]),
+.MEM_DAT_I(fifoMEM_DAT_I[31:0]),
+.MEM_DAT_O(fifoMEM_DAT_O[31:0]),
+.MEM_SEL_I(fifoMEM_SEL_I[3:0]),
 .MEM_WE_I(SHAREDBUS_WE_I),
-.MEM_ACK_O(memory_passthruMEM_ACK_O),
-.MEM_ERR_O(memory_passthruMEM_ERR_O),
-.MEM_RTY_O(memory_passthruMEM_RTY_O),
+.MEM_ACK_O(fifoMEM_ACK_O),
+.MEM_ERR_O(fifoMEM_ERR_O),
+.MEM_RTY_O(fifoMEM_RTY_O),
 .MEM_CTI_I(SHAREDBUS_CTI_I),
 .MEM_BTE_I(SHAREDBUS_BTE_I),
 .MEM_LOCK_I(SHAREDBUS_LOCK_I),
-.MEM_CYC_I(SHAREDBUS_CYC_I & memory_passthruMEM_en),
-.MEM_STB_I(SHAREDBUS_STB_I & memory_passthruMEM_en),
-.clk(memory_passthruclk),
-.rst(memory_passthrurst),
-.mem_adr(memory_passthrumem_adr),
-.mem_master_data(memory_passthrumem_master_data),
-.mem_slave_data(memory_passthrumem_slave_data),
-.mem_strb(memory_passthrumem_strb),
-.mem_cyc(memory_passthrumem_cyc),
-.mem_ack(memory_passthrumem_ack),
-.mem_err(memory_passthrumem_err),
-.mem_rty(memory_passthrumem_rty),
-.mem_sel(memory_passthrumem_sel),
-.mem_we(memory_passthrumem_we),
-.mem_bte(memory_passthrumem_bte),
-.mem_cti(memory_passthrumem_cti),
-.mem_lock(memory_passthrumem_lock),
+.MEM_CYC_I(SHAREDBUS_CYC_I & fifoMEM_en),
+.MEM_STB_I(SHAREDBUS_STB_I & fifoMEM_en),
+.clk(fifoclk),
+.rst(fiforst),
+.mem_adr(fifomem_adr),
+.mem_master_data(fifomem_master_data),
+.mem_slave_data(fifomem_slave_data),
+.mem_strb(fifomem_strb),
+.mem_cyc(fifomem_cyc),
+.mem_ack(fifomem_ack),
+.mem_err(fifomem_err),
+.mem_rty(fifomem_rty),
+.mem_sel(fifomem_sel),
+.mem_we(fifomem_we),
+.mem_bte(fifomem_bte),
+.mem_cti(fifomem_cti),
+.mem_lock(fifomem_lock),
 .CLK_I(clk_i), .RST_I(sys_reset));
 
 
@@ -767,12 +767,12 @@ wire [31:0] ebrEBR_DAT_I;
 assign ebrEBR_DAT_I = SHAREDBUS_DAT_I[31:0];
 wire [3:0] ebrEBR_SEL_I;
 assign ebrEBR_SEL_I = SHAREDBUS_SEL_I;
-assign ebrEBR_en = ( SHAREDBUS_ADR_I[31:15] == 17'b00000000000000000);
+assign ebrEBR_en = ( SHAREDBUS_ADR_I[31:16] == 16'b0000000000000000);
 wb_ebr_ctrl 
 #(
-.SIZE(24576),
+.SIZE(40960),
 .EBR_WB_DAT_WIDTH(32),
-.INIT_FILE_NAME("none"),
+.INIT_FILE_NAME("C:/work/sdr-rtl/lattice/ip/mico/ecpu/sw/meminit.mem"),
 .INIT_FILE_FORMAT("hex"))
  ebr( 
 .EBR_ADR_I(SHAREDBUS_ADR_I[31:0]),

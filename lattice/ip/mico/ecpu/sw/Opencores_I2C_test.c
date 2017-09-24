@@ -232,27 +232,45 @@ int main2(void)
     return 0;
 }
 
+struct CMDFIFO
+{
+	unsigned long data;
+	unsigned long status;
+};
+
 int main(void)
 {
-	volatile unsigned int* const ptr = (volatile unsigned int*)MEMORY_PASSTHRU_BASE_ADDRESS;
+	volatile CMDFIFO* const ptr = (volatile CMDFIFO*)FIFO_BASE_ADDRESS;
 	volatile MicoGPIO_t const *gp = (volatile MicoGPIO_t *)(gpio_gpio.base);
 	volatile unsigned int *data = (volatile unsigned int *)(&gp->data);
 	volatile unsigned int *tri = (volatile unsigned int *)(&gp->tristate);
-	//printf("\nstarting i2c mem. operation %h\n", ptr);
+	//printf("\nFIFOCMD base address = %x\n", (unsigned int)ptr);
 
 
     int i = 0;
     volatile unsigned int tmp=0;
     *tri = 0x1000000;
-    //*tri = 0xffffffff;
+    *data= 0x1000000;
+
+    MicoSleepMilliSecs(1000);
+    *data= 0x1000000;
+
+    unsigned long tt = 0xFAFA9999;
 
 	while(1)
 	{
-		//*ptr = 0xfeedbeef;
-		tmp = *(ptr+1);
-		*ptr = 0xFAFA9999;
-		*data=  ((++i) & 0x1)<<24;
-		//*data= 0xffffffff;
+		ptr->data = tt++;
+
+		*data = (ptr->status & 0x8)?0x1000000:0x0;
+
+		while (!(ptr->status & 0x8))
+		{
+			i = ptr->data;
+			printf("\nFIFOCMD data = %x\n", i);
+		}
+
+		//*data=  ((++i) & 0x1) << 24;
+		//printf("\nFIFOCMD status = %x\n", ptr->status);
 		MicoSleepMilliSecs(1000);
 	}
 	return 0;

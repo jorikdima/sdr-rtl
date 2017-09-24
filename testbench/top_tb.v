@@ -171,6 +171,19 @@ reg [31:0] rd_data [];
 integer len;
 logic res;
 
+
+wr_data = new[3];
+len = wr_data.size();
+wr_data[0] = 32'h90200000;
+wr_data[1] = 32'hfeedbeef;
+wr_data[2] = 32'hdeefb00b;
+
+#1000 write(wr_data, len);
+
+$display("Write to CPU ccommand buffer %0d words", len);
+
+
+
 wr_data = new[2024];
 len = wr_data.size();
 rd_data = new[len];
@@ -304,4 +317,5 @@ end
 endtask  
 
 endmodule
+
 
