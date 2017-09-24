@@ -2,6 +2,7 @@
 
 module sel_a2f(
     reset_n,
+    loopback,
 		// FIFO/ECPU to FTDI
 	//input from FIFO
 	fifo_data_i,
@@ -34,7 +35,7 @@ module sel_a2f(
     
     parameter FROMFIFO=1'b0, FROMCPU=1'b1;
     
-    input wire reset_n;
+    input wire reset_n, loopback;
     
     input wire clk_i;
     output wire cpu_clk_o;

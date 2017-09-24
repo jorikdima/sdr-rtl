@@ -198,6 +198,7 @@ sel_a2f #(.FT_DATA_WIDTH (FT_DATA_WIDTH), .IQ_PAIR_WIDTH(IQ_PAIR_WIDTH), .QSTART
 sel_a2f_inst
 (
     .reset_n(en),
+    .loopback(loopback),
 		// FIFO/ECPU to FTDI
 	//input from FIFO
 	.fifo_data_i(a2f_fifo_data),

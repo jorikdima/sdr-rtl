@@ -94,24 +94,13 @@ wire [WB_ADDR_BITS_USED-1:0] wb_adr = wb_adr_i[2+WB_ADDR_BITS_USED:2];
 always @(posedge wb_clk_i)
   wb_ack_o <= #1 wb_cyc_i & wb_stb_i & ~wb_ack_o; // because timing is always honored
 
-// assign DAT_O
-
+// Read from FIFO
 assign fifoin_rd_o = wb_racc & DATA_ADDR & ~fifoin_empty_i & ~wb_ack_o;
 assign wb_dat_o = (STATUS_ADDR)?status:(DATA_ADDR)?fifoin_data_i:32'h0;
 
 
-// generate registers
-always @(posedge wb_clk_i or negedge rst)
-if (!rst)
-begin
-    data <= 32'h0;
-end
-else
-if (wb_wacc)
-  case (1'b1) // synopsis parallel_case
-     DATA_ADDR :    data <= #1 wb_dat_i;     
-     default: ;
-  endcase                   
-
+// Save to FIFO
+assign fifoout_wr_o = wb_wacc & DATA_ADDR & ~fifoout_full_i & ~wb_ack_o;
+assign fifoout_data_o = wb_dat_i;
 
 endmodule    
