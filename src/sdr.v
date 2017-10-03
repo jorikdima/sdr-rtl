@@ -144,6 +144,7 @@ wire cpuin_fifo_wr, cpuin_fifo_clk, cpuin_fifo_empty, cpuin_fifo_rd, cpuin_fifo_
 wire cpuout_fifo_wr, cpuout_fifo_rdclk, cpuout_fifo_empty, cpuout_fifo_rd, cpuout_fifo_clk;
 wire a2f_empty, a2f_enough;
 wire a2f_data_incomming;
+wire[3:0] fifoout_blkcnt;
 
 wire[FT_DATA_WIDTH-1:0] cpuin_fifo_q, cpuout_fifo_q;
 wire cpuin_fifo_rden, cpuin_fifo_rdclk;
@@ -213,7 +214,7 @@ sel_a2f_inst
     .cpu_empty_i(cpuout_fifo_empty),
 	.cpu_clk_o(cpuout_fifo_rdclk),
 	.cpu_re_o(cpuout_fifo_rd),
-    .cpu_data_incomming_i(cpuout_fifo_wr),
+    .fifoout_blkcnt_i(fifoout_blkcnt),
     	
 	//output to FTDI
 	.data_o(ft_wdata),
@@ -324,6 +325,7 @@ wb2fifo_inst
     .fifoout_full_i(cpuout_fifo_full),
 	.fifoout_clk_o(cpuout_fifo_clk),
 	.fifoout_wr_o(cpuout_fifo_wr),
+    .fifoout_blkcnt_o(fifoout_blkcnt),
 
 
     // Wishbone interface

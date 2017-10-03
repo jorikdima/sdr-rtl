@@ -257,19 +257,26 @@ int main(void)
 
     unsigned long tt = 0xFAFA9999;
 
+    ptr->data = tt++;
+    ptr->data = tt++;
+    ptr->data = tt++;
+
+    ptr->status = 0x10;
+
 	while(1)
 	{
-		ptr->data = tt++;
+		//ptr->data = tt++;
 
-		*data = (ptr->status & 0x8)?0x1000000:0x0;
+		//*data = (ptr->status & 0x8)?0x1000000:0x0;
 
-		while (!(ptr->status & 0x8))
+		//while (!(ptr->status & 0x8))
 		{
-			i = ptr->data;
-			printf("\nFIFOCMD data = %x\n", i);
+			//i = ptr->data;
+			//printf("\nFIFOCMD data = %x\n", i);
 		}
 
-		//*data=  ((++i) & 0x1) << 24;
+		*data=  ((++i) & 0x1) << 24;
+		ptr->status = 0x10;
 		//printf("\nFIFOCMD status = %x\n", ptr->status);
 		MicoSleepMilliSecs(1000);
 	}

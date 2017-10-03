@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <SYSLIB>
 <MSB_FILE name="ecpu.msb" path="../soc"/>
-<MemorySections Deployflag="false" UCflag="true">
-<Section DEPLOY="yes" Load="false" Name=".text" Value="ebr"/>
-<Section Load="false" Name=".rodata" Value="ebr"/>
-<Section Load="false" Name=".data" Value="ebr"/>
+<MemorySections Deployflag="true" UCflag="true">
+<Section DEPLOY="yes" Load="true" Name=".text" Value="ebr"/>
+<Section Load="true" Name=".rodata" Value="ebr"/>
+<Section Load="true" Name=".data" Value="ebr"/>
 </MemorySections>
 <LinkerSettings>
 <Param Name="UserDefinedLinkerFile" Value=""/>

@@ -16,6 +16,7 @@ module wb2fifo(
     fifoout_full_i,
 	fifoout_clk_o,
 	fifoout_wr_o,
+    fifoout_blkcnt_o,
 
 
     // Wishbone interface
@@ -66,13 +67,14 @@ input                       fifoin_empty_i, fifoin_full_i;
 output [FT_DATA_WIDTH-1:0]  fifoout_data_o;
 input                       fifoout_empty_i, fifoout_full_i;
 output                      fifoout_clk_o, fifoout_wr_o;
+output reg[3:0]             fifoout_blkcnt_o;
 
 
 
 //-----------------------------------------------
 assign wb_err_o = 1'b0;
 assign wb_rty_o = 1'b0;
-assign rst =	~wb_rst_i;
+
 assign fifoin_clk_o = wb_clk_i;
 assign fifoout_clk_o = wb_clk_i;
 
@@ -103,4 +105,11 @@ assign wb_dat_o = (STATUS_ADDR)?status:(DATA_ADDR)?fifoin_data_i:32'h0;
 assign fifoout_wr_o = wb_wacc & DATA_ADDR & ~fifoout_full_i & ~wb_ack_o;
 assign fifoout_data_o = wb_dat_i;
 
+always @(posedge wb_clk_i)
+if (wb_rst_i)
+    fifoout_blkcnt_o <= 4'h0;
+else if (wb_ack_o & STATUS_ADDR & wb_dat_i[4])
+    fifoout_blkcnt_o <= fifoout_blkcnt_o + 4'h1;
+    
+    
 endmodule    
