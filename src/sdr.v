@@ -41,7 +41,7 @@ tx_led, rx_led
 
 parameter FT_DATA_WIDTH=32;
 
-wire loopback = 1'b0;
+wire loopback = 1'b1;
 parameter IQ_PAIR_WIDTH = 24;
 
 parameter RPI_DATA_WIDTH=18;
@@ -142,8 +142,7 @@ wire[FT_DATA_WIDTH-1:0] ft_rdata, ft_wdata;
 wire[FT_DATA_WIDTH-1:0] cpuin_fifo_data, cpuout_fifo_data;
 wire cpuin_fifo_wr, cpuin_fifo_clk, cpuin_fifo_empty, cpuin_fifo_rd, cpuin_fifo_full;
 wire cpuout_fifo_wr, cpuout_fifo_rdclk, cpuout_fifo_empty, cpuout_fifo_rd, cpuout_fifo_clk;
-wire a2f_empty, a2f_enough;
-wire a2f_data_incomming;
+wire a2f_available;
 wire[3:0] fifoout_blkcnt;
 
 wire[FT_DATA_WIDTH-1:0] cpuin_fifo_q, cpuout_fifo_q;
@@ -169,7 +168,7 @@ sel_f2a #(.FT_DATA_WIDTH (FT_DATA_WIDTH), .IQ_PAIR_WIDTH(IQ_PAIR_WIDTH), .QSTART
 sel_f2a_inst
 (
     .reset_n(en),
-    .loopback(loopback),
+    .loopback(1'b0),
     // FTDI interface
     // input
 	.data_i(ft_rdata),
@@ -199,7 +198,7 @@ sel_a2f #(.FT_DATA_WIDTH (FT_DATA_WIDTH), .IQ_PAIR_WIDTH(IQ_PAIR_WIDTH), .QSTART
 sel_a2f_inst
 (
     .reset_n(en),
-    .loopback(loopback),
+    .loopback(1'b0),
 		// FIFO/ECPU to FTDI
 	//input from FIFO
 	.fifo_data_i(a2f_fifo_data),
@@ -220,9 +219,8 @@ sel_a2f_inst
 	.data_o(ft_wdata),
 	.clk_i(ft_wr_clk),
 	.re_i(ft_wr_req),
-    .enough_o(a2f_enough),
-    .empty_o(a2f_empty),
-    .data_incomming_o(a2f_data_incomming)
+    
+    .available_o(a2f_available)
 );
 
 ft600_fsm #(.FT_DATA_WIDTH (FT_DATA_WIDTH))
@@ -235,9 +233,7 @@ fsm_inst
     .wr_n(ft_wr_n),
     
     .wdata(ft_wdata),
-    .wr_enough(a2f_enough),
-    .wr_empty(a2f_empty),
-    .wr_incomming(a2f_data_incomming),
+    .wr_available(a2f_available),
     
     .rd_full(rd_full),
     .rd_enough(rd_enough),

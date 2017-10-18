@@ -24,9 +24,7 @@ reset_n,
 // A2F interface
 	// input
 	wdata,
-	wr_enough, // >4kB
-	wr_empty,
-    wr_incomming,  // writing to FIFO right now
+	wr_available,  
 	
 	// output
 	wr_req,
@@ -51,7 +49,7 @@ parameter FT_DATA_WIDTH = 32;
 input wire reset_n;
 input wire clk, txe_n, rxf_n;
 
-input wire wr_enough, rd_full, wr_empty, rd_enough, wr_incomming;
+input wire wr_available, rd_full, rd_enough;
 input wire[FT_DATA_WIDTH-1:0] wdata;
 
 // output
@@ -85,10 +83,10 @@ assign rdata =  ft_data;
 reg have_unread_word_a2f;
 reg have_wr_chance_reg, have_rd_chance_reg, no_more_read_reg, no_more_write_reg;
 
-wire have_wr_chance = ~txe_n & (wr_enough | (~wr_incomming & (~wr_empty | have_unread_word_a2f)));
+wire have_wr_chance = ~txe_n & (wr_available | have_unread_word_a2f);
 wire have_rd_chance = ~rxf_n & rd_enough;
 wire no_more_read = rxf_n | rd_full;
-wire no_more_write = txe_n | wr_empty;
+wire no_more_write = txe_n | ~wr_available;
 
 
 always @ (posedge clk or negedge reset_n)
@@ -172,7 +170,7 @@ if (~reset_n)
 else	
     begin
 	    
-    wr_n <= (~have_unread_word_a2f & (~wr_local | wr_empty)) | txe_n | ~state[WRITE];
+    wr_n <= (~have_unread_word_a2f & (~wr_local | ~wr_available)) | txe_n | ~state[WRITE];
     
     oe_n <= (state[READ]) ? 1'b0 : 1'b1;
     

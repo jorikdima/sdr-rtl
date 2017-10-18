@@ -23,9 +23,7 @@ module sel_a2f(
 	clk_i,
 	re_i,
     data_o,
-    enough_o,
-    empty_o,
-    data_incomming_o
+    available_o    
 	);
 	
 	
@@ -33,7 +31,7 @@ module sel_a2f(
 	parameter IQ_PAIR_WIDTH = 24;
 	parameter QSTART_BIT_INDEX = 16;	
     
-    parameter ST_IDLE=1, ST_HEADGEN_FIFO=2, ST_HEADGEN_CPU=3, ST_FIFO=4, ST_CPU=5;
+    parameter ST_IDLE=0, ST_HEADGEN_FIFO=1, ST_HEADGEN_FIFO2 = 2, ST_HEADGEN_CPU=3, ST_FIFO=4, ST_CPU=5;
     
     input wire reset_n, loopback;
     
@@ -50,7 +48,7 @@ module sel_a2f(
 	
     
     input wire fifo_empty_i, fifo_enough_i, fifo_data_incomming_i, cpu_empty_i;
-    output wire enough_o, empty_o, data_incomming_o;
+    output wire available_o;
     input wire[3:0] fifoout_blkcnt_i;
     
     
@@ -69,30 +67,36 @@ module sel_a2f(
     
     
     
-    assign data_o = state[ST_FIFO] ? fifo_data_32 : state[ST_HEADGEN_FIFO] ? header : cpu_data_i;
+    assign data_o = state[ST_FIFO] ? fifo_data_32 : state[ST_HEADGEN_FIFO2] ? header : cpu_data_i;
     
     
     assign fifo_re_o = re_i & (state[ST_FIFO] | state[ST_HEADGEN_FIFO]);
     assign cpu_re_o = re_i & (state[ST_CPU] | state[ST_HEADGEN_CPU]);
     
-    assign enough_o = fifo_enough_i;
-    assign empty_o = fifo_empty_i;
-    assign data_incomming_o = fifo_data_incomming_i;
+    assign available_o = fifo_enough_i | state[ST_FIFO] | ~cpu_empty_i;
     
     // Internal  
     
     reg[FT_DATA_WIDTH-1:0] data_reg;
     
-    reg[4:0] state;
+    reg[5:0] state;
     reg[3:0] cpu_fifo_blks_done;
     reg[FT_DATA_WIDTH-1:0] header;
     reg[15:0] packet_cnt;
     
     
+    task set_state;
+    input bitnum;
+    begin
+        state = 6'b000000;
+        state[bitnum] = 1;
+    end
+    endtask
+    
+    
     always @ (posedge clk_i or negedge reset_n)    
     if (~reset_n) begin
-        state <= 5'b00000;
-        state[ST_IDLE] <= 1;
+        set_state(ST_IDLE);
         cpu_fifo_blks_done <= 4'h0;
         header <= {FT_DATA_WIDTH{1'b0}};
         packet_cnt <= 16'h0;
@@ -101,27 +105,28 @@ module sel_a2f(
         case (1'b1) // synopsys full_case parallel_case
             state[ST_IDLE]: 
                 if (cpu_fifo_blks_done != fifoout_blkcnt_i) begin
-                    state <= 5'b00000;
-                    state[ST_HEADGEN_CPU] <= 1;
+                    set_state(ST_HEADGEN_CPU);
                     cpu_fifo_blks_done <= cpu_fifo_blks_done + 4'h1;
                     end
                 else if(fifo_enough_i) begin
-                    state <= 5'b00000;
-                    state[ST_HEADGEN_FIFO] <= 1;
+                    set_state(ST_HEADGEN_FIFO);
                     header[FT_DATA_WIDTH-1:0] <= 32'd4095;
                     end
             
             state[ST_HEADGEN_FIFO]:
                 if (re_i) begin
-                    state <= 5'b00000;
-                    state[ST_FIFO] <= 1;
+                    set_state(ST_HEADGEN_FIFO2);
+                    end
+            state[ST_HEADGEN_FIFO2]:
+                if (re_i) begin
+                    set_state(ST_FIFO);
+                    packet_cnt <= packet_cnt + 16'h1;
                     end
             
             state[ST_FIFO]:
                 if (re_i) begin
                     if (packet_cnt == 32'd4095) begin
-                        state <= 5'b00000;
-                        state[ST_IDLE] <= 1;
+                        set_state(ST_IDLE);
                         packet_cnt <= 16'h0;
                         end
                     else

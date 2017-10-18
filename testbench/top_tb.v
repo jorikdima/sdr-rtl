@@ -108,6 +108,8 @@ integer rx_head_correction[0:3]; //= '{0, 0, FT_PACKET_WORDS-1, FT_PACKET_WORDS 
 integer rx_head_cpuonly[0:3];// = '{0,0,1,1};
 integer rx_head_corr;  
 
+string strvar="";
+
 initial                                                
 begin             
 
@@ -172,7 +174,7 @@ integer len;
 logic res;
 
 
-wr_data = new[3];
+/* wr_data = new[3];
 len = wr_data.size();
 wr_data[0] = 32'h90200000;
 wr_data[1] = 32'hfeedbeef;
@@ -180,19 +182,20 @@ wr_data[2] = 32'hdeefb00b;
 
 #1000 write(wr_data, len);
 
-$display("Write to CPU ccommand buffer %0d words", len);
+$display("Write to CPU ccommand buffer %0d words", len); */
 
 
 
-wr_data = new[2024];
+wr_data = new[4096];
 len = wr_data.size();
 rd_data = new[len];
-get_seq_array(wr_data, 0, len);
+get_seq_array(wr_data, 1, len-1);
+wr_data[0] = 4095;
 
 
-#1000 write_read_seq(wr_data, len, res);
-
+#1000 write_read_seq(wr_data, len, res); 
 $display("Sequentially Write/Read with %0d words, result = %s", len, res?"PASS":"NOT PASS");
+	
 
 len = 10;
 #1000 write_read_seq(wr_data, len, res);
@@ -231,6 +234,15 @@ rdata = new[$size(data)];
 #1000 read(rdata, num);
 
 result = arrays_equal(data, rdata, num);
+
+if (!result)
+	begin
+	foreach (data[i]) strvar = {strvar, $sformatf("%x, ", data[i])};
+    $display("Original data:\n%s", strvar);	 
+	foreach (rdata[i]) strvar = {strvar, $sformatf("%x, ", rdata[i])};
+    $display("Received data:\n%s", strvar);	
+	end
+	
 endtask
 
 task automatic read( inout reg [31:0] data[], input integer num);

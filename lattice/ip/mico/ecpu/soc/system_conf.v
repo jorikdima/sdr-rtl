@@ -55,6 +55,6 @@
 `define fifoMEM_WB_ADR_WIDTH 32
 `define ADDRESS_LOCK
 `define ebrEBR_WB_DAT_WIDTH 32
-`define ebrINIT_FILE_NAME "C:/work/sdr-rtl/lattice/ip/mico/ecpu/sw/meminit.mem"
+`define ebrINIT_FILE_NAME "none"
 `define ebrINIT_FILE_FORMAT "hex"
 `endif // SYSTEM_CONF

@@ -110,6 +110,7 @@ wire en = reset_n;
 
 sdr sdr_inst(
 .clk_sr1(clk_sr1),
+.clk_sr2(clk_sr2),
 .cpuclk(clk),
 
 .en(en),
