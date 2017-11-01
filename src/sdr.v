@@ -35,7 +35,9 @@ rpi_gpio,
 
 // Misc
 tx_mux, rx_mux,
-tx_led, rx_led
+tx_led, rx_led,
+
+debug
 );
 
 
@@ -92,6 +94,8 @@ input wire[1:0] rpi_gpio;
 
 // Misc
 output wire tx_mux, rx_mux, tx_led, rx_led;
+
+output wire[32:0] debug;
 
 wire rd_req, ft_rd_clk, ft_wr_clk, ft_wr_req, ft_rd_req;
 
@@ -220,7 +224,8 @@ sel_a2f_inst
 	.clk_i(ft_wr_clk),
 	.re_i(ft_wr_req),
     
-    .available_o(a2f_available)
+    .available_o(a2f_available),
+    .debug(debug)
 );
 
 ft600_fsm #(.FT_DATA_WIDTH (FT_DATA_WIDTH))

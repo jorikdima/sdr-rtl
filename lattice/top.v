@@ -104,14 +104,16 @@ output wire tx_mux, rx_mux, tx_led, rx_led;
 
 reg[7:0] rst_cnt = 8'h00;
 
-wire error, reset_n, osc, debug_clk;
+wire error, reset_n, osc, debug_clk, pll_clk;
 wire en = reset_n;
+
+wire[31:0] debug;
 
 
 sdr sdr_inst(
 .clk_sr1(clk_sr1),
 .clk_sr2(clk_sr2),
-.cpuclk(clk),
+.cpuclk(cpu_clk),
 
 .en(en),
 .error(error),
@@ -149,8 +151,8 @@ sdr sdr_inst(
 
 // Rpi
 .rpi_d(rpi_d),
-.rpi_a(),
-.rpi_we(rpi_a),
+.rpi_a(rpi_a),
+.rpi_we(rpi_we),
 .rpi_oe(rpi_oe),
 .rpi_gpio(rpi_gpio),
 
@@ -158,7 +160,8 @@ sdr sdr_inst(
 .tx_mux(tx_mux),
 .rx_mux(rx_mux),
 .tx_led(tx_led),
-.rx_led(rx_led)
+.rx_led(rx_led),
+.debug(debug)
 );
 
 
@@ -171,20 +174,25 @@ assign vcc_virt_1 = 1'b1;
 assign vcc_virt_2 = 1'b1;
 
 
-pll pll_inst (.CLKI(ft_clk ), .CLKOP( clk), .CLKOS2( debug_clk), .LOCK( pll_locked));
+pll pll_inst (.CLKI(ft_clk ), .CLKOP( pll_clk), .CLKOS2( debug_clk), .LOCK( pll_locked));
+//assign pll_locked = 1'b1;
 
 OSCG #(.DIV (8)) osc_i (.OSC(osc));
 
 assign clk_sr1 = osc;
 assign clk_sr2 = osc;
 
+assign cpu_clk = pll_clk;
 
-assign rpi_d[6] = error;
+
+//assign rpi_d = debug[17:0];
+
 
 assign reset_n = rst_cnt[6];
 
 always @(posedge osc)
 if (rst_cnt< 8'hff & pll_locked)
     rst_cnt <= rst_cnt + 8'h1;
+    
 
 endmodule

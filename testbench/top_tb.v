@@ -159,7 +159,7 @@ $display("Running testbench");
                      
 end        
 
-initial forever #10 ft_clk = ~ ft_clk;
+initial forever #20 ft_clk = ~ ft_clk;
 //initial forever #1.25 clk26 = ~ clk26;
 initial forever #12.5 clk_sr1 = ~ clk_sr1;
 //initial forever #12.5 clk_sr2 = ~ clk_sr2;

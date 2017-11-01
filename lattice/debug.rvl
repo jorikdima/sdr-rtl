@@ -1,10 +1,10 @@
-<Project ModBy="Inserter" SigType="0" Name="C:/work/sdr-rtl/lattice/debug.rvl" Date="2017-09-21">
+<Project ModBy="Inserter" SigType="0" Name="C:/work/sdr-rtl/lattice/debug.rvl" Date="2017-10-30">
     <IP Version="1_5_062609"/>
     <Design DesignEntry="Schematic/Verilog HDL" Synthesis="lse" DeviceFamily="ECP5U" DesignName="sdr"/>
-    <Core InsertDataset="0" Insert="1" Reveal_sig="107705255" Name="top_LA0" ID="0">
+    <Core InsertDataset="0" Insert="0" Reveal_sig="113076786" Name="top_LA0" ID="0">
         <Setting>
-            <Clock SampleClk="ft_clk" SampleEnable="0" EnableClk="" EnableClk_Pri="0"/>
-            <TraceBuffer Implementation="0" BitTimeStamp="0" hasTimeStamp="0" IncTrigSig="0" BufferDepth="128"/>
+            <Clock SampleClk="debug_clk" SampleEnable="0" EnableClk="" EnableClk_Pri="0"/>
+            <TraceBuffer Implementation="0" BitTimeStamp="0" hasTimeStamp="0" IncTrigSig="0" BufferDepth="512"/>
             <Capture Mode="0" MinSamplesPerTrig="8"/>
             <Event CntEnable="0" MaxEventCnt="8"/>
             <TrigOut Polarity="0" MinPulseWidth="0" TrigOutNetType="1" EnableTrigOut="0" TrigOutNet="reveal_debug_top_LA0_net"/>
@@ -12,15 +12,8 @@
         </Setting>
         <Dataset Name="Base">
             <Trace>
+                <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_clk_i"/>
                 <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_ack_o"/>
-                <Bus Name="sdr_inst/wb2fifo_inst/wb_adr">
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_adr:0"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_adr:1"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_adr:2"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_adr:3"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_adr:4"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_adr:5"/>
-                </Bus>
                 <Bus Name="sdr_inst/wb2fifo_inst/wb_adr_i">
                     <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_adr_i:0"/>
                     <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_adr_i:1"/>
@@ -54,16 +47,6 @@
                     <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_adr_i:29"/>
                     <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_adr_i:30"/>
                     <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_adr_i:31"/>
-                </Bus>
-                <Bus Name="sdr_inst/wb2fifo_inst/wb_bte_i">
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_bte_i:0"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_bte_i:1"/>
-                </Bus>
-                <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_clk_i"/>
-                <Bus Name="sdr_inst/wb2fifo_inst/wb_cti_i">
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_cti_i:0"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_cti_i:1"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_cti_i:2"/>
                 </Bus>
                 <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_cyc_i"/>
                 <Bus Name="sdr_inst/wb2fifo_inst/wb_dat_i">
@@ -134,91 +117,257 @@
                     <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_dat_o:30"/>
                     <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_dat_o:31"/>
                 </Bus>
-                <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_err_o"/>
-                <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_lock_i"/>
-                <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_rst_i"/>
-                <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_rty_o"/>
-                <Bus Name="sdr_inst/wb2fifo_inst/wb_sel_i">
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_sel_i:0"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_sel_i:1"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_sel_i:2"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_sel_i:3"/>
-                </Bus>
                 <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_stb_i"/>
                 <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_wacc"/>
                 <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/wb_we_i"/>
-                <Bus Name="sdr_inst/wb2fifo_inst/tmp1">
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:0"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:1"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:2"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:3"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:4"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:5"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:6"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:7"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:8"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:9"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:10"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:11"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:12"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:13"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:14"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:15"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:16"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:17"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:18"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:19"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:20"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:21"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:22"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:23"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:24"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:25"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:26"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:27"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:28"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:29"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:30"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp1:31"/>
+                <Bus Name="sdr_inst/wb2fifo_inst/status">
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/status:0"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/status:1"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/status:2"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/status:3"/>
                 </Bus>
-                <Bus Name="sdr_inst/wb2fifo_inst/tmp2">
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:0"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:1"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:2"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:3"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:4"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:5"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:6"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:7"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:8"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:9"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:10"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:11"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:12"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:13"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:14"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:15"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:16"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:17"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:18"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:19"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:20"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:21"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:22"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:23"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:24"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:25"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:26"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:27"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:28"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:29"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:30"/>
-                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/tmp2:31"/>
+                <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_empty_i"/>
+                <Bus Name="sdr_inst/wb2fifo_inst/fifoout_data_o">
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:0"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:1"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:2"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:3"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:4"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:5"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:6"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:7"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:8"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:9"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:10"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:11"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:12"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:13"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:14"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:15"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:16"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:17"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:18"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:19"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:20"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:21"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:22"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:23"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:24"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:25"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:26"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:27"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:28"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:29"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:30"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_data_o:31"/>
+                </Bus>
+                <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_wr_o"/>
+                <Bus Name="sdr_inst/wb2fifo_inst/fifoout_blkcnt_o">
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_blkcnt_o:0"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_blkcnt_o:1"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_blkcnt_o:2"/>
+                    <Sig Type="SIG" Name="sdr_inst/wb2fifo_inst/fifoout_blkcnt_o:3"/>
                 </Bus>
             </Trace>
             <Trigger>
                 <TU Serialbits="0" Type="0" ID="1" Sig="sdr_inst/wb2fifo_inst/wb_stb_i,"/>
+                <TU Serialbits="0" Type="0" ID="2" Sig="(BUS)sdr_inst/wb2fifo_inst/fifoout_blkcnt_o[3:0],"/>
+                <TU Serialbits="0" Type="0" ID="3" Sig="sdr_inst/wb2fifo_inst/wb_we_i,"/>
+                <TU Serialbits="0" Type="0" ID="4" Sig="sdr_inst/wb2fifo_inst/fifoin_rd_o,"/>
                 <TE MaxSequence="2" MaxEvnCnt="1" ID="1" Resource="0"/>
+                <TE MaxSequence="2" MaxEvnCnt="1" ID="2" Resource="0"/>
+                <TE MaxSequence="2" MaxEvnCnt="1" ID="3" Resource="0"/>
+                <TE MaxSequence="2" MaxEvnCnt="1" ID="4" Resource="0"/>
+            </Trigger>
+        </Dataset>
+    </Core>
+    <Core InsertDataset="0" Insert="1" Reveal_sig="113076787" Name="top_LA1" ID="1">
+        <Setting>
+            <Clock SampleClk="debug_clk" SampleEnable="0" EnableClk="" EnableClk_Pri="0"/>
+            <TraceBuffer Implementation="0" BitTimeStamp="0" hasTimeStamp="0" IncTrigSig="0" BufferDepth="512"/>
+            <Capture Mode="0" MinSamplesPerTrig="8"/>
+            <Event CntEnable="0" MaxEventCnt="8"/>
+            <TrigOut Polarity="0" MinPulseWidth="0" TrigOutNetType="1" EnableTrigOut="0" TrigOutNet="reveal_debug_top_LA1_net"/>
+            <DistRAM Disable="0"/>
+        </Setting>
+        <Dataset Name="Base">
+            <Trace>
+                <Sig Type="SIG" Name="ft_clk"/>
+                <Bus Name="sdr_inst/fsm_inst/wdata">
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:0"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:1"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:2"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:3"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:4"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:5"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:6"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:7"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:8"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:9"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:10"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:11"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:12"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:13"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:14"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:15"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:16"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:17"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:18"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:19"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:20"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:21"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:22"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:23"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:24"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:25"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:26"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:27"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:28"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:29"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:30"/>
+                    <Sig Type="SIG" Name="sdr_inst/fsm_inst/wdata:31"/>
+                </Bus>
+                <Bus Name="ft_data">
+                    <Sig Type="SIG" Name="ft_data:0"/>
+                    <Sig Type="SIG" Name="ft_data:1"/>
+                    <Sig Type="SIG" Name="ft_data:2"/>
+                    <Sig Type="SIG" Name="ft_data:3"/>
+                    <Sig Type="SIG" Name="ft_data:4"/>
+                    <Sig Type="SIG" Name="ft_data:5"/>
+                    <Sig Type="SIG" Name="ft_data:6"/>
+                    <Sig Type="SIG" Name="ft_data:7"/>
+                    <Sig Type="SIG" Name="ft_data:8"/>
+                    <Sig Type="SIG" Name="ft_data:9"/>
+                    <Sig Type="SIG" Name="ft_data:10"/>
+                    <Sig Type="SIG" Name="ft_data:11"/>
+                    <Sig Type="SIG" Name="ft_data:12"/>
+                    <Sig Type="SIG" Name="ft_data:13"/>
+                    <Sig Type="SIG" Name="ft_data:14"/>
+                    <Sig Type="SIG" Name="ft_data:15"/>
+                    <Sig Type="SIG" Name="ft_data:16"/>
+                    <Sig Type="SIG" Name="ft_data:17"/>
+                    <Sig Type="SIG" Name="ft_data:18"/>
+                    <Sig Type="SIG" Name="ft_data:19"/>
+                    <Sig Type="SIG" Name="ft_data:20"/>
+                    <Sig Type="SIG" Name="ft_data:21"/>
+                    <Sig Type="SIG" Name="ft_data:22"/>
+                    <Sig Type="SIG" Name="ft_data:23"/>
+                    <Sig Type="SIG" Name="ft_data:24"/>
+                    <Sig Type="SIG" Name="ft_data:25"/>
+                    <Sig Type="SIG" Name="ft_data:26"/>
+                    <Sig Type="SIG" Name="ft_data:27"/>
+                    <Sig Type="SIG" Name="ft_data:28"/>
+                    <Sig Type="SIG" Name="ft_data:29"/>
+                    <Sig Type="SIG" Name="ft_data:30"/>
+                    <Sig Type="SIG" Name="ft_data:31"/>
+                </Bus>
+                <Sig Type="SIG" Name="ft_oe_n"/>
+                <Sig Type="SIG" Name="ft_txe_n"/>
+                <Sig Type="SIG" Name="ft_wr_n"/>
+                <Bus Name="sdr_inst/sel_a2f_inst/data_o">
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:0"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:1"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:2"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:3"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:4"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:5"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:6"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:7"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:8"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:9"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:10"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:11"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:12"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:13"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:14"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:15"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:16"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:17"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:18"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:19"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:20"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:21"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:22"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:23"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:24"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:25"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:26"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:27"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:28"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:29"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:30"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/data_o:31"/>
+                </Bus>
+                <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/re_i"/>
+                <Bus Name="sdr_inst/sel_a2f_inst/fifo_data_i">
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:0"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:1"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:2"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:3"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:4"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:5"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:6"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:7"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:8"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:9"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:10"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:11"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:12"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:13"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:14"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:15"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:16"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:17"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:18"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:19"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:20"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:21"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:22"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_data_i:23"/>
+                </Bus>
+                <Bus Name="sdr_inst/sel_a2f_inst/state">
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/state:0"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/state:1"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/state:2"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/state:3"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/state:4"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/state:5"/>
+                </Bus>
+                <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_re_o"/>
+                <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_enough_i"/>
+                <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifo_empty_i"/>
+                <Bus Name="sdr_inst/sel_a2f_inst/fifoout_blkcnt_i">
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifoout_blkcnt_i:0"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifoout_blkcnt_i:1"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifoout_blkcnt_i:2"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/fifoout_blkcnt_i:3"/>
+                </Bus>
+                <Bus Name="sdr_inst/sel_a2f_inst/packet_cnt">
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:0"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:1"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:2"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:3"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:4"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:5"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:6"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:7"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:8"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:9"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:10"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:11"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:12"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:13"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:14"/>
+                    <Sig Type="SIG" Name="sdr_inst/sel_a2f_inst/packet_cnt:15"/>
+                </Bus>
+            </Trace>
+            <Trigger>
+                <TU Serialbits="0" Type="0" ID="1" Sig="sdr_inst/sel_a2f_inst/fifo_enough_i,"/>
+                <TU Serialbits="0" Type="0" ID="2" Sig="ft_wr_n,"/>
+                <TU Serialbits="0" Type="0" ID="3" Sig="(BUS)sdr_inst/sel_a2f_inst/state[5:0],"/>
+                <TE MaxSequence="2" MaxEvnCnt="1" ID="1" Resource="0"/>
+                <TE MaxSequence="2" MaxEvnCnt="1" ID="2" Resource="0"/>
+                <TE MaxSequence="2" MaxEvnCnt="1" ID="3" Resource="0"/>
             </Trigger>
         </Dataset>
     </Core>

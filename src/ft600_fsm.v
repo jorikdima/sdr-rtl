@@ -75,7 +75,7 @@ assign ft_be   = oe_n ? 4'b1111 : 4'bzzzz;
 assign ft_data = oe_n ? wdata : {FT_DATA_WIDTH{1'bz}};
                    
 assign rd_clk = clk;
-assign wr_clk = ~clk;
+assign wr_clk = clk;
 
 
 assign rdata =  ft_data;
@@ -114,7 +114,6 @@ else begin
     end
     
 
-//always @ (state or have_wr_chance or have_rd_chance or no_more_write or no_more_read)
 always @ (posedge clk or negedge reset_n)
 if (~reset_n) begin
     state <= 3'b000;
@@ -133,7 +132,7 @@ else begin
             state <= (3'b001 << READ);
                     
     state[WRITE]:        
-        //either we have sent all data (which should not happen) or FT is full
+        //either we have sent all data or FT is full
         if (no_more_write_reg) 
             state <= (3'b001 << IDLE);
         
@@ -151,18 +150,26 @@ always @ (posedge clk or negedge reset_n)
 if (~reset_n) begin
     wr_local <= 1'b0;
 	wr_req <= 1'b0;
+    wr_local_delayed <= 1'b0;
+    
+    wr_n <= 1'b1;
     end
 else begin
     wr_local <= state[WRITE] & ~no_more_write;
 	wr_req <= state[WRITE] & ~no_more_write;
+    wr_local_delayed <= wr_local;
+    
+    wr_n <= ~(wr_local & wr_available) | txe_n | ~state[WRITE];
     end
+    
+
+   
     
 always @ (negedge clk or negedge reset_n)
 if (~reset_n)
 	begin
-		wr_n <= 1'b1;
-        
-        wr_local_delayed <= 1'b0;
+		//wr_n <= 1'b1;
+
 		rd_n <= 1'b1;
         rd_n_local <= 1'b1;
 		oe_n <= 1'b1;
@@ -170,7 +177,7 @@ if (~reset_n)
 else	
     begin
 	    
-    wr_n <= (~have_unread_word_a2f & (~wr_local | ~wr_available)) | txe_n | ~state[WRITE];
+    //wr_n <= (~have_unread_word_a2f & (~(wr_local_delayed & wr_local) | ~wr_available)) | txe_n | ~state[WRITE];
     
     oe_n <= (state[READ]) ? 1'b0 : 1'b1;
     
