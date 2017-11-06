@@ -26,7 +26,7 @@
 							<tool id="com.lattice.mdk.managedbuilder.ui.tool.syslib.debug.compiler.721448514" name="LatticeMico32 C/C++ System Library Compiler" superClass="com.lattice.mdk.managedbuilder.ui.tool.syslib.debug.compiler"/>
 							<tool id="com.lattice.mdk.managedbuilder.ui.tool.debug.linker.533702403" name="LatticeMico32 Linker" superClass="com.lattice.mdk.managedbuilder.ui.tool.debug.linker"/>
 							<tool id="com.lattice.mdk.managedbuilder.ui.tool.cc.debug.compiler.1430871649" name="LatticeMico32 C++ Compiler" superClass="com.lattice.mdk.managedbuilder.ui.tool.cc.debug.compiler">
-								<option id="com.lattice.mdk.managedbuilder.ui.option.cc.debug.optim.1846179402" name="LatticeMico32 Optimization Options" superClass="com.lattice.mdk.managedbuilder.ui.option.cc.debug.optim" value="com.lattice.mdk.managedbuilder.ui.cc.enumeratedOptionValue.optim0" valueType="enumerated"/>
+								<option id="com.lattice.mdk.managedbuilder.ui.option.cc.debug.optim.1846179402" name="LatticeMico32 Optimization Options" superClass="com.lattice.mdk.managedbuilder.ui.option.cc.debug.optim" value="com.lattice.mdk.managedbuilder.ui.cc.enumeratedOptionValue.optim3" valueType="enumerated"/>
 								<option id="com.lattice.mdk.managedbuilder.ui.option.cc.debug.debug.546405026" name="LatticeMico32 Debug Options" superClass="com.lattice.mdk.managedbuilder.ui.option.cc.debug.debug" value="com.lattice.mdk.managedbuilder.ui.cc.enumeratedOptionValue.debug3" valueType="enumerated"/>
 							</tool>
 							<tool id="com.lattice.mdk.managedbuilder.ui.tool.syslib.cc.debug.compiler.149928280" name="LatticeMico32 C++ System Library Compiler" superClass="com.lattice.mdk.managedbuilder.ui.tool.syslib.cc.debug.compiler">

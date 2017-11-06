@@ -16,8 +16,8 @@ CoreRevision=5.8
 ModuleName=f2a_fifo
 SourceFormat=verilog
 ParameterFileVersion=1.0
-Date=10/17/2017
-Time=21:23:14
+Date=11/05/2017
+Time=21:34:17
 
 [Parameters]
 Verilog=1
@@ -37,7 +37,7 @@ ClockEn=0
 CtrlByRdEn=0
 EmpFlg=1
 PeMode=Static - Single Threshold
-PeAssert=4095
+PeAssert=1023
 PeDeassert=12
 FullFlg=0
 PfMode=Static - Single Threshold
@@ -50,4 +50,4 @@ WDataCount=0
 EnECC=0
 
 [Command]
-cmd_line= -w -n f2a_fifo -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 8192 -width 24 -rwidth 24 -reset_rel SYNC -pe 4095 -pf -1
+cmd_line= -w -n f2a_fifo -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 8192 -width 24 -rwidth 24 -reset_rel SYNC -pe 1023 -pf -1

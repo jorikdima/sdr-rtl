@@ -186,11 +186,11 @@ $display("Write to CPU ccommand buffer %0d words", len); */
 
 
 
-wr_data = new[4096];
+wr_data = new[1024];
 len = wr_data.size();
 rd_data = new[len];
 get_seq_array(wr_data, 1, len-1);
-wr_data[0] = 4095;
+wr_data[0] = 1023;
 
 
 #1000 write_read_seq(wr_data, len, res); 

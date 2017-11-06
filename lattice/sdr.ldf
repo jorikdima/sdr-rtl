@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BaliProject version="3.2" title="sdr" device="LFE5U-25F-6BG381C" default_implementation="impl1">
     <Options/>
-    <Implementation title="impl1" dir="impl1" description="impl1" synthesis="lse" default_strategy="Strategy1">
+    <Implementation title="impl1" dir="impl1" description="impl1" synthesis="lse" default_strategy="Timing">
         <Options def_top="TYPEB" top="top"/>
         <Source name="ip/a2f_fifo/a2f_fifo.sbx" type="sbx" type_short="SBX">
             <Options/>
@@ -48,10 +48,10 @@
         <Source name="../src/wb2fifo.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="constr.ldc" type="LSE Design Constraints File" type_short="LDC" excluded="TRUE">
+        <Source name="../src/cpu2sdr.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="debug.rva" type="Reveal Analyzer Project File" type_short="RVA">
+        <Source name="constr.ldc" type="LSE Design Constraints File" type_short="LDC" excluded="TRUE">
             <Options/>
         </Source>
         <Source name="debug.rvl" type="Reveal" type_short="Reveal">
@@ -64,6 +64,12 @@
             <Options/>
         </Source>
         <Source name="sim/sim.spf" type="Simulation Project File" type_short="SPF">
+            <Options/>
+        </Source>
+        <Source name="simfit/simfit.spf" type="Simulation Project File" type_short="SPF">
+            <Options/>
+        </Source>
+        <Source name="untitled.rva" type="Reveal Analyzer Project File" type_short="RVA">
             <Options/>
         </Source>
     </Implementation>

@@ -37,7 +37,7 @@
 //
 //      Project:           ecpu
 //      File:              ecpu.v
-//      Date:              Tue, 17 Oct 2017 23:15:34 PDT
+//      Date:              Sun, 5 Nov 2017 18:59:35 PST
 //      Version:           2.1
 //      Targeted Family:   All
 //
@@ -772,7 +772,7 @@ wb_ebr_ctrl
 #(
 .SIZE(40960),
 .EBR_WB_DAT_WIDTH(32),
-.INIT_FILE_NAME("none"),
+.INIT_FILE_NAME("C:/work/sdr-rtl/lattice/ip/mico/ecpu/sw/meminit.mem"),
 .INIT_FILE_FORMAT("hex"))
  ebr( 
 .EBR_ADR_I(SHAREDBUS_ADR_I[31:0]),

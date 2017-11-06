@@ -177,7 +177,7 @@ assign vcc_virt_2 = 1'b1;
 pll pll_inst (.CLKI(ft_clk ), .CLKOP( pll_clk), .CLKOS2( debug_clk), .LOCK( pll_locked));
 //assign pll_locked = 1'b1;
 
-OSCG #(.DIV (8)) osc_i (.OSC(osc));
+OSCG #(.DIV (8)) osc_i (.OSC(osc));  //155MHz -> div = 2
 
 assign clk_sr1 = osc;
 assign clk_sr2 = osc;

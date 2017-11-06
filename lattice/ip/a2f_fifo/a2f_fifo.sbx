@@ -39,7 +39,7 @@
             <lattice:device>LFE5U-25F-6BG381C</lattice:device>
             <lattice:synthesis>lse</lattice:synthesis>
             <lattice:date>2017-01-29.09:14:16</lattice:date>
-            <lattice:modified>2017-11-01.00:27:46</lattice:modified>
+            <lattice:modified>2017-11-05.21:33:22</lattice:modified>
             <lattice:diamond>3.9.1.119</lattice:diamond>
             <lattice:language>Verilog</lattice:language>
             <lattice:attributes>
@@ -109,7 +109,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Date</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">11/01/2017</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">11/05/2017</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>ModuleName</lattice:lpckey>
@@ -125,7 +125,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Time</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">00:27:44</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">21:33:21</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>VendorName</lattice:lpckey>
@@ -194,7 +194,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>PfAssert</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">1024</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">1023</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>PfDeassert</lattice:lpckey>
@@ -247,7 +247,7 @@
                 <lattice:lpcsection lattice:name="Command"/>
                 <lattice:lpcentry>
                     <lattice:lpckey>cmd_line</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">-w -n a2f_fifo -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 8192 -width 24 -rwidth 24 -reset_rel SYNC -pe -1 -pf 1024</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">-w -n a2f_fifo -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 8192 -width 24 -rwidth 24 -reset_rel SYNC -pe -1 -pf 1023</lattice:lpcvalue>
                 </lattice:lpcentry>
             </lattice:lpc>
             <lattice:groups/>

@@ -95,7 +95,7 @@ input wire[1:0] rpi_gpio;
 // Misc
 output wire tx_mux, rx_mux, tx_led, rx_led;
 
-output wire[32:0] debug;
+output wire[31:0] debug;
 
 wire rd_req, ft_rd_clk, ft_wr_clk, ft_wr_req, ft_rd_req;
 
@@ -143,23 +143,18 @@ wire f2a_fifo_wren, f2a_fifo_wrclk;
 wire a2f_fifo_rden, a2f_fifo_rdclk;
 wire[IQ_PAIR_WIDTH-1:0] f2a_fifo_data, a2f_fifo_data;
 wire[FT_DATA_WIDTH-1:0] ft_rdata, ft_wdata;
-wire[FT_DATA_WIDTH-1:0] cpuin_fifo_data, cpuout_fifo_data;
-wire cpuin_fifo_wr, cpuin_fifo_clk, cpuin_fifo_empty, cpuin_fifo_rd, cpuin_fifo_full;
-wire cpuout_fifo_wr, cpuout_fifo_rdclk, cpuout_fifo_empty, cpuout_fifo_rd, cpuout_fifo_clk;
+
+
 wire a2f_available;
-wire[3:0] fifoout_blkcnt;
 
-wire[FT_DATA_WIDTH-1:0] cpuin_fifo_q, cpuout_fifo_q;
-wire cpuin_fifo_rden, cpuin_fifo_rdclk;
+wire [FT_DATA_WIDTH-1:0] cpuout_fifo_data;
+wire [FT_DATA_WIDTH-1:0] cpuin_fifo_data;
+wire cpuout_fifo_rdclk, cpuout_fifo_rd;
+wire cpuin_fifo_wr, cpuin_fifo_wrclk;
 
+wire[7:0] cpuout_wc, fifoout_wcadd;
+wire fifoout_wcen;
 
-cpucmd_fifo cpuout_fifo_inst (.Data(cpuout_fifo_data ), .WrClock(cpuout_fifo_clk ), .RdClock(cpuout_fifo_rdclk ), .WrEn(cpuout_fifo_wr ), .RdEn(cpuout_fifo_rd ), 
-    .Reset(~en ), .RPReset(1'b0 ), .Q(cpuout_fifo_q ), .Empty(cpuout_fifo_empty ), .Full(cpuout_fifo_full ));
-    
-cpucmd_fifo cpuin_fifo_inst (.Data(cpuin_fifo_data ), .WrClock(cpuin_fifo_clk ), .RdClock(cpuin_fifo_rdclk ), .WrEn(cpuin_fifo_wr ), .RdEn(cpuin_fifo_rden ), 
-    .Reset(~en ), .RPReset(1'b0 ), .Q(cpuin_fifo_q ), .Empty(cpuin_fifo_empty ), .Full(cpuin_fifo_full ));
-    
-    
     
 a2f_fifo a2f_fifo_inst (.Data(afe_wdata ), .WrClock(a2f_fifo_clk ), .RdClock(a2f_fifo_rdclk ), .WrEn(a2f_fifo_wr ), .RdEn(a2f_fifo_rden ), 
     .Reset(~en ), .RPReset(1'b0), .Q(a2f_fifo_data), .AlmostFull(a2f_fifo_enough ), .Empty(a2f_fifo_empty ), .Full(a2f_fifo_full ));
@@ -194,7 +189,7 @@ sel_f2a_inst
 	
 	// ECPU interface
 	.cpu_data_o(cpuin_fifo_data),
-	.cpu_clk_o(cpuin_fifo_clk),
+	.cpu_clk_o(cpuin_fifo_wrclk),
 	.cpu_we_o(cpuin_fifo_wr)
 );
 
@@ -213,11 +208,11 @@ sel_a2f_inst
     .fifo_data_incomming_i(a2f_fifo_wr),
 	
 	//input from ECPU
-	.cpu_data_i(cpuout_fifo_q),
+	.cpu_data_i(cpuout_fifo_data),
     .cpu_empty_i(cpuout_fifo_empty),
 	.cpu_clk_o(cpuout_fifo_rdclk),
 	.cpu_re_o(cpuout_fifo_rd),
-    .fifoout_blkcnt_i(fifoout_blkcnt),
+    .fifoout_wc_i(cpuout_wc),
     	
 	//output to FTDI
 	.data_o(ft_wdata),
@@ -309,43 +304,38 @@ ecpu ecpu_u (
 );
 
 
-wb2fifo #(.FT_DATA_WIDTH (FT_DATA_WIDTH))
-wb2fifo_inst 
+cpu2sdr cpu2sdr_inst 
 (
-	// FIFO to read from
-	.fifoin_data_i(cpuin_fifo_q),
-	.fifoin_clk_o(cpuin_fifo_rdclk),
-	.fifoin_rd_o(cpuin_fifo_rden),
-    .fifoin_empty_i(cpuin_fifo_empty),
-    .fifoin_full_i(cpuin_fifo_full),
+    .reset_n(en ), 
+    // Commands from Host    
+    .InData(cpuin_fifo_data), 
+    .InClk(cpuin_fifo_wrclk), 
+    .InWr(cpuin_fifo_wr), 
     
-	
-	//FIFO to write to
-	.fifoout_data_o(cpuout_fifo_data),
-    .fifoout_empty_i(cpuout_fifo_empty),
-    .fifoout_full_i(cpuout_fifo_full),
-	.fifoout_clk_o(cpuout_fifo_clk),
-	.fifoout_wr_o(cpuout_fifo_wr),
-    .fifoout_blkcnt_o(fifoout_blkcnt),
-
-
-    // Wishbone interface
-    .wb_clk_i(wb_clk_i)  ,
-    .wb_rst_i(wb_rst_i)  ,
-    .wb_adr_i(wb_adr_i)  ,
-    .wb_dat_i(wb_dat_o)  ,
-    .wb_we_i(wb_we_i)   ,
-    .wb_cyc_i(wb_cyc_i)  ,
-    .wb_stb_i(wb_stb_i) ,
-    .wb_sel_i(wb_sel_i)  ,
-    .wb_cti_i(wb_cti_i)  ,
-    .wb_bte_i(wb_bte_i)  ,
-    .wb_lock_i(wb_lock_i) ,
-    .wb_dat_o(wb_dat_i)  ,
-    .wb_ack_o(wb_ack_o)  ,
-    .wb_err_o(wb_err_o)  ,
-    .wb_rty_o(wb_rty_o)  	
-);
+// Replies from CPU    
+    .OutData(cpuout_fifo_data),
+    .OutClk(cpuout_fifo_rdclk),
+    .OutRd(cpuout_fifo_rd), 
+    .OutWc(cpuout_wc),
+    
+ // Wishbone interface
+    .wb_clk_i  (wb_clk_i),
+    .wb_rst_i  (wb_rst_i),
+    .wb_adr_i  (wb_adr_i),
+    .wb_dat_i  (wb_dat_o),
+    .wb_we_i   (wb_we_i),
+    .wb_cyc_i  (wb_cyc_i),
+    .wb_stb_i  (wb_stb_i),
+    .wb_sel_i  (wb_sel_i),
+    .wb_cti_i  (wb_cti_i),
+    .wb_bte_i  (wb_bte_i),
+    .wb_lock_i (wb_lock_i),
+    .wb_dat_o  (wb_dat_i),
+    .wb_ack_o  (wb_ack_o),
+    .wb_err_o  (wb_err_o),
+    .wb_rty_o (wb_rty_o) 	
+    );
+   
 
   
 

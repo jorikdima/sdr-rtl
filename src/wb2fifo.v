@@ -16,7 +16,9 @@ module wb2fifo(
     fifoout_full_i,
 	fifoout_clk_o,
 	fifoout_wr_o,
-    fifoout_blkcnt_o,
+    
+    fifoout_wc_o,
+    fifoout_wcen_o,
 
 
     // Wishbone interface
@@ -65,11 +67,10 @@ input                       fifoin_empty_i, fifoin_full_i;
 
 //FIFO to write to
 output [FT_DATA_WIDTH-1:0]  fifoout_data_o;
-input                       fifoout_empty_i, fifoout_full_i;
-output                      fifoout_clk_o, fifoout_wr_o;
-output reg[3:0]             fifoout_blkcnt_o;
-
-
+input                      fifoout_empty_i, fifoout_full_i;
+output                    fifoout_clk_o, fifoout_wr_o;
+output reg[7:0]     fifoout_wc_o;
+output reg             fifoout_wcen_o;
 
 //-----------------------------------------------
 assign wb_err_o = 1'b0;
@@ -81,9 +82,8 @@ assign fifoout_clk_o = wb_clk_i;
 assign DATA_ADDR = (wb_adr == 0)?1'b1:1'b0;
 assign STATUS_ADDR = (wb_adr == 1)?1'b1:1'b0;
 
+reg wc_valid;
 
-
-reg[31:0] data;
 wire[31:0] status = {28'h0, fifoin_empty_i, fifoin_full_i, fifoout_empty_i, fifoout_full_i};
 
 // generate wishbone signals
@@ -105,11 +105,23 @@ assign wb_dat_o = (STATUS_ADDR)?status:(DATA_ADDR)?fifoin_data_i:32'h0;
 assign fifoout_wr_o = wb_wacc & DATA_ADDR & ~fifoout_full_i & ~wb_ack_o;
 assign fifoout_data_o = wb_dat_i;
 
+
+
 always @(posedge wb_clk_i)
-if (wb_rst_i)
-    fifoout_blkcnt_o <= 4'h0;
-else if (wb_ack_o & STATUS_ADDR & wb_dat_i[4])
-    fifoout_blkcnt_o <= fifoout_blkcnt_o + 4'h1;
-    
+if (wb_rst_i) begin
+    fifoout_wc_o <= 8'h0;
+    wc_valid <= 1'b0;
+    end
+else begin
+    fifoout_wcen_o <= wc_valid;  // we guaranty that 1 wb clock after the change it's already valid in wb clock domain.
+    if (wb_ack_o & STATUS_ADDR) begin
+        fifoout_wc_o <= wb_dat_i[7:0];
+        wc_valid <= 1'b1;
+        end
+    else
+        wc_valid <= 1'b0;
+    end
+   
+ 
     
 endmodule    
