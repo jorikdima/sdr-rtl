@@ -71,7 +71,7 @@ wire cpuin_fifo_empty, cpuin_fifo_full;
 wire cpuout_fifo_wr, cpuout_fifo_full, cpuout_fifo_empty, cpuout_fifo_clk;
 
 reg wc_valid1, wc_valid2, wc_valid3;
-reg [7:0] fofoout_wc;
+reg [7:0] fifoout_wc;
 wire [7:0] fifoout_wcadd;
 wire fifoout_wcen;
 
@@ -131,17 +131,17 @@ if (~reset_n) begin
     wc_valid1 <= 1'b0;
     wc_valid2 <= 1'b0;
     wc_valid3 <= 1'b0;
-    fofoout_wc <= 8'b0;
+    fifoout_wc <= 8'b0;
     end
 else begin
     wc_valid1 <= fifoout_wcen;
     wc_valid2 <= wc_valid1;
     wc_valid3 <= wc_valid2;
     if (wc_valid2 & ~wc_valid3)
-        fofoout_wc = fofoout_wc + fifoout_wcadd;   // synced with OutClk
+        fifoout_wc = fifoout_wc + fifoout_wcadd;   // synced with OutClk
     end
 
-assign OutWc = fofoout_wc;
+assign OutWc = fifoout_wc;
 
 
 endmodule

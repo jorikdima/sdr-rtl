@@ -34,7 +34,7 @@ parameter QSTART_BIT_INDEX = 16;
 
 localparam FIFO_WORDS_PER_TRANS = 1024;
 
-parameter ST_IDLE=0, ST_DUMMY_FIFO=1, ST_HEADGEN_FIFO=2,  ST_FIFO=3, ST_DUMMY_CPU=4, ST_HEADGEN_CPU=5,  ST_CPU=6;
+parameter ST_IDLE=0, ST_DUMMY_FIFO=1,  ST_FIFO=2, ST_DUMMY_CPU=3, ST_CPU=4;
 
 input wire reset_n, loopback;
 
@@ -75,18 +75,16 @@ assign fifo_clk_o = clk_i;
 
 // Internal  
     
-reg[6:0] state;
+reg[4:0] state;
 reg[7:0] cpu_fifo_wc_done;
 reg[10:0] packet_cnt;
 
 wire have_cpu_packet = cpu_fifo_wc_done != fifoout_wc_i;
-wire[7:0]  cpu_fifo_words = cpu_data_i[27:20];
-
 
 
 always @ (posedge clk_i or negedge reset_n)    
 if (~reset_n) begin
-    state <= 7'b0000000;
+    state <= 5'b00000;
     state[ST_IDLE] <= 1;
     
     cpu_fifo_wc_done <= 0;
@@ -106,7 +104,7 @@ else begin
             if (have_cpu_packet) begin
                 available_o <= 1'b1;
                 if (re_i) begin
-                    state <= 7'b0000000;
+                    state <= 5'b00000;
                     state[ST_DUMMY_CPU] <= 1;
                     
                     cpu_re_o <= 1'b1;
@@ -119,7 +117,7 @@ else begin
             else  if(fifo_enough_i) begin
                 available_o <= 1'b1;
                 if (re_i) begin
-                    state <= 7'b0000000;
+                    state <= 5'b00000;
                     state[ST_DUMMY_FIFO] <= 1;
                     
                     packet_cnt <= FIFO_WORDS_PER_TRANS - 2;
@@ -131,7 +129,7 @@ else begin
         state[ST_DUMMY_FIFO]: begin
             fifo_re_o <= 1'b1;
             if (fifo_re_o) begin
-                state <= 7'b0000000;
+                state <= 5'b00000;
                 state[ST_FIFO] <= 1;
                 end  
             end
@@ -144,7 +142,7 @@ else begin
                 fifo_re_o <= 1'b0;
             
             if (packet_cnt == 0) begin
-                state <= 7'b0000000;
+                state <= 5'b00000;
                 state[ST_IDLE] <= 1;
                 
                 available_o <= 1'b0;
@@ -155,7 +153,7 @@ else begin
             if (packet_cnt == 0)
                 cpu_re_o <= 1'b0;
                                 
-            state <= 7'b0000000;
+            state <= 5'b00000;
             state[ST_CPU] <= 1;
             end    
 
@@ -165,7 +163,7 @@ else begin
             packet_cnt <= packet_cnt - 11'h1;           
                 
             if (packet_cnt == 0) begin
-                state <= 7'b0000000;
+                state <= 5'b00000;
                 state[ST_IDLE] <= 1;
                 
                 available_o <= 1'b0;
@@ -175,7 +173,7 @@ else begin
             end
 
         default : begin
-            state <= 7'b0000000;
+            state <= 5'b00000;
             state[ST_IDLE] <= 1;
             end
     
