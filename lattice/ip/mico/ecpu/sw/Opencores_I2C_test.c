@@ -272,11 +272,11 @@ int main(void)
 
 		*data=  ((++i) & 0x1) << 24;
 
-		ptr->data = tt++;
-		ptr->data = tt++;
-		ptr->data = tt++;
+		//ptr->data = tt++;
+		//ptr->data = tt++;
+		//ptr->data = tt++;
 
-		ptr->status = 0x3;
+		//ptr->status = 0x3;
 
 		//printf("\nFIFOCMD status = %x\n", ptr->status);
 		MicoSleepMilliSecs(1000);

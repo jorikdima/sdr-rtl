@@ -9,5 +9,6 @@
         <File name="src\afe_tx.v" />
         <File name="src\sdr.v" />
         <File name="src\wb2fifo.v" />
+        <File name="src\cpu2sdr.v" />
     </Project>
 </NotepadPlus>

@@ -39,7 +39,7 @@
             <lattice:device>LFE5U-25F-6BG381C</lattice:device>
             <lattice:synthesis>lse</lattice:synthesis>
             <lattice:date>2017-01-29.09:13:24</lattice:date>
-            <lattice:modified>2017-11-05.21:34:18</lattice:modified>
+            <lattice:modified>2017-11-15.22:10:21</lattice:modified>
             <lattice:diamond>3.9.1.119</lattice:diamond>
             <lattice:language>Verilog</lattice:language>
             <lattice:attributes>
@@ -109,7 +109,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Date</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">11/05/2017</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">11/15/2017</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>ModuleName</lattice:lpckey>
@@ -125,7 +125,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Time</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">21:34:17</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">22:10:20</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>VendorName</lattice:lpckey>
@@ -142,7 +142,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Depth</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">8192</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">4096</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>Destination</lattice:lpckey>
@@ -210,7 +210,7 @@
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>RDepth</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">8192</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">4096</lattice:lpcvalue>
                 </lattice:lpcentry>
                 <lattice:lpcentry>
                     <lattice:lpckey>RWidth</lattice:lpckey>
@@ -247,7 +247,7 @@
                 <lattice:lpcsection lattice:name="Command"/>
                 <lattice:lpcentry>
                     <lattice:lpckey>cmd_line</lattice:lpckey>
-                    <lattice:lpcvalue lattice:resolve="constant">-w -n f2a_fifo -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 8192 -width 24 -rwidth 24 -reset_rel SYNC -pe 1023 -pf -1</lattice:lpcvalue>
+                    <lattice:lpcvalue lattice:resolve="constant">-w -n f2a_fifo -lang verilog -synth lse -bus_exp 7 -bb -arch sa5p00 -type ebfifo -depth 4096 -width 24 -rwidth 24 -reset_rel SYNC -pe 1023 -pf -1</lattice:lpcvalue>
                 </lattice:lpcentry>
             </lattice:lpc>
             <lattice:groups/>

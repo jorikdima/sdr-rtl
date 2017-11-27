@@ -54,10 +54,9 @@ output wire tx_fifo_clk;
 // local 
 
 wire[IQ_PAIR_WIDTH-1:0] rx_fifo_data_afe;
-reg[IQ_PAIR_WIDTH-1:0] lpbck_d;
+
 reg rx_sclk_1x;
 wire rx_fifo_wr_afe, rx_fifo_clk_afe, tx_fifo_clk_afe;
-reg lpbck_tx_req, lpbck_rx_wr;
 
 wire txrx_reset_n = reset_n & ~loopback;
 
@@ -101,25 +100,25 @@ afe_tx afe_tx_inst
     .sel(tx_sel)
 );
 
-assign rx_fifo_data = loopback ? lpbck_d : rx_fifo_data_afe;
+
+wire fifos_ok = ~tx_fifo_empty & ~rx_fifo_full;
+wire lpbck_rx_wr = fifo_ok_delayed | (rxfifo_full_delayed & fifos_ok);
+reg fifo_ok_delayed, rxfifo_full_delayed;
+
+assign rx_fifo_data = loopback ? tx_fifo_data : rx_fifo_data_afe;
 assign rx_fifo_clk = loopback ? rx_sclk_1x : rx_fifo_clk_afe;
 assign rx_fifo_wr = loopback ? lpbck_rx_wr : rx_fifo_wr_afe;
 assign tx_fifo_clk = loopback ? rx_sclk_1x : tx_fifo_clk_afe;
-assign tx_fifo_req = loopback ? lpbck_tx_req : tx_fifo_req_afe;
+assign tx_fifo_req = loopback ? fifos_ok : tx_fifo_req_afe;
 
-always @(negedge rx_sclk_1x or negedge reset_n)
-if (~reset_n)
-    begin
-    lpbck_tx_req <= 1'b0;
-    lpbck_rx_wr <= 1'b0;
-    lpbck_d <= {IQ_PAIR_WIDTH{1'b0}};
+always @(posedge rx_sclk_1x or negedge reset_n)
+if (~reset_n) begin
+    fifo_ok_delayed <= 1'b0;
+    rxfifo_full_delayed <= 1'b0;
     end
-else
-    begin
-    lpbck_tx_req <= ~tx_fifo_empty & ~rx_fifo_full;
-    lpbck_rx_wr <= lpbck_tx_req;
-    if (lpbck_tx_req)
-        lpbck_d <= tx_fifo_data;
+else begin
+    fifo_ok_delayed <= fifos_ok;
+    rxfifo_full_delayed <= rx_fifo_full;
     end
 
 always @(posedge rx_sclk_2x or negedge reset_n)
@@ -127,5 +126,21 @@ if (~reset_n)
     rx_sclk_1x <= 1'b0;
 else    
     rx_sclk_1x <= ~rx_sclk_1x;
+    
+    
+    
+reg [23:0] prev;    
+reg debug_en;
+
+always @ (posedge tx_fifo_clk or negedge reset_n)
+if (~reset_n) begin
+    debug_en <= 0;
+    prev <= 32'h0;
+    end
+else begin
+    debug_en <= (rx_fifo_wr & rx_fifo_data <= 24'h00a00a & rx_fifo_data >= 24'h0);
+        
+    end
+    
 
 endmodule

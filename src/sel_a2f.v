@@ -23,8 +23,7 @@ module sel_a2f(
 	clk_i,
 	re_i,
     data_o,
-    available_o,
-    debug    
+    available_o
 	);
 	
 
@@ -54,8 +53,6 @@ input wire[IQ_PAIR_WIDTH-1:0] fifo_data_i;
 input wire fifo_empty_i, fifo_enough_i, fifo_data_incomming_i, cpu_empty_i;
 output reg available_o;
 input wire[7:0] fifoout_wc_i;
-
-output reg [31:0] debug;
 
 
 //----------------------------------------------------------------------    
@@ -94,8 +91,6 @@ if (~reset_n) begin
     available_o <= 1'b0;
     fifo_re_o <= 1'b0;
     cpu_re_o <= 1'b0;
-    
-    debug <= 0;
     end        
 else begin
     
@@ -140,12 +135,12 @@ else begin
             
             if (packet_cnt == 1) 
                 fifo_re_o <= 1'b0;
-            
-            if (packet_cnt == 0) begin
-                state <= 5'b00000;
-                state[ST_IDLE] <= 1;
-                
+            if (packet_cnt == 0) 
                 available_o <= 1'b0;
+                 
+            if (packet_cnt == 11'h7ff) begin
+                state <= 5'b00000;
+                state[ST_IDLE] <= 1;                
                 end                 
             end      
         
@@ -180,5 +175,23 @@ else begin
     endcase
 
 end
+
+
+reg [23:0] prev;    
+reg debug_en;
+
+always @ (posedge clk_i or negedge reset_n)
+if (~reset_n) begin
+    debug_en <= 0;
+    prev <= 32'h0;
+    end
+else begin
+    if (fifo_re_o) begin
+        prev <= fifo_data_i;
+        if (fifo_data_i == 24'h005005 & prev != 24'h004004)
+            debug_en <= 1;
+    
+        end
+    end
     
 endmodule

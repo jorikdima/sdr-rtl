@@ -111,12 +111,8 @@ always @ (posedge clk or negedge reset_n)
 if (~reset_n) begin
     state <= 3'b000;
     state[IDLE] <= 1;    
-    error <= 1'b0;    
     end
-else begin
-    if (state == 3'b000 | state == 3'b111 | state == 3'b110 | state == 3'b101 | state == 3'b011)        
-        error <= 1;
-        
+else begin        
     case (1'b1) // synopsys full_case parallel_case
     state[IDLE]:        
         if (have_wr_chance_reg) // even if we have smth to read wr has priority
@@ -151,7 +147,7 @@ else begin
     
     wr_req_delayed <= wr_req;
     wr_req_delayed2 <= wr_req_delayed;
-    wr_n <= ~(wr_req_delayed2 & wr_available);
+    wr_n <= ~wr_req_delayed2 | no_more_write;
     end
     
 
@@ -171,6 +167,23 @@ else
     rd_n_local <= (state[READ]) ? 1'b0 : 1'b1;
     rd_n <= rd_n_local | (~state[READ]);
     end	
+    
+    
+reg [9:0]  debug_cnt;
+always @ (posedge clk or negedge reset_n)
+if (~reset_n | wr_n) begin
+    debug_cnt <= 10'h3ff;
+    error <= 1'b0;    
+    end
+else begin
+    debug_cnt <= debug_cnt + 10'h1;
+    if (~error && debug_cnt != wdata[9:0]  && debug_cnt > 0)
+        error <= 1;
+    
+    if (state == 3'b000 | state == 3'b111 | state == 3'b110 | state == 3'b101 | state == 3'b011)        
+        error <= 1;
+    end   
 		
-                             
+ 
 endmodule
+

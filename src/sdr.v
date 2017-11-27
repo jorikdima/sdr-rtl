@@ -219,8 +219,7 @@ sel_a2f_inst
 	.clk_i(ft_wr_clk),
 	.re_i(ft_wr_req),
     
-    .available_o(a2f_available),
-    .debug(debug)
+    .available_o(a2f_available)
 );
 
 ft600_fsm #(.FT_DATA_WIDTH (FT_DATA_WIDTH))
